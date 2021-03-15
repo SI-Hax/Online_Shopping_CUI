@@ -11,8 +11,7 @@ An online shopping system with an integrated inventory management system for Pro
 
 # Technology Stacks
 1. Java 8
-2. Java Swing
-3. File Handling (.txt / .csv)
+2. File Handling (.txt / .csv)
 
 # How To Use
 This App is based on Menu Driven Interface. Depending on your choice, It will display and calculate different outputs.
