@@ -3,7 +3,7 @@ An online shopping system with an integrated inventory management system for Pro
 
 
 # Key Features
-1. Create your own account and save all your personal information into .txt file (Password Will Be Displayed As Encrypted Text). 
+1. Create your own account and save all your personal information into .txt file (Password Will Be Saved As Encrypted Text). 
 2. Get detailed information of the product.
 3. Checkout
 4. Order management.
