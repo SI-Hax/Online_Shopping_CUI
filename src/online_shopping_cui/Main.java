@@ -26,6 +26,8 @@ public class Main {
             System.out.println("Online Shopping");
         }
         System.out.println("Does it work?");
-        System.out.println("It Does Work!");
+        for (int i = 0; i < 10; i++) {
+            System.out.println("It Does Work!");
+        }
     }
 }
