@@ -5,7 +5,7 @@
 * Program Design Construction Assignment 1. 
 * 
 * @author  Miguel Emmara - 18022146
-* @author  Amos Foong - xxx
+* @author  Amos Foong - 18044418
 * @author  Roxy Dao - 1073633
 * @version 1.0 
 * @since   15/03/2021
@@ -23,5 +23,6 @@ public class Main {
      */
     public static void main(String[] args) {
         System.out.println("Testing Netbeans Push");
+        System.out.println("Amos was here.");
     }
 }
