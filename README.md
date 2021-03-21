@@ -25,6 +25,6 @@ This App is based on Menu Driven Interface. Depending on your choice, It will di
 ![Screenshot 1](https://github.com/SI-Hax/Online_Shopping_CUI/blob/master/screenshots/Demo.PNG)
 
 # License
-Copyright 2020. Code released under the MIT license.
+Copyright 2021. Code released under the MIT license.
 
 Written With NetBeans IDE (JDK 8)
