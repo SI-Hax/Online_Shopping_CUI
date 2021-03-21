@@ -22,13 +22,6 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        for (int i = 0; i < 10; i++) {
-            System.out.println("Online Shopping");
-        }
-        System.out.println("Does it work?");
-        for (int i = 0; i < 10; i++) {
-            System.out.println("It Does Work!");
-        }
         System.out.println("Test");
     }
 }
