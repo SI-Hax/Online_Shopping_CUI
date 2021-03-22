@@ -22,7 +22,7 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        System.out.println("Testing Netbeans Push");
+        System.out.println("Pushing...");
         System.out.println("Amos was here.");
     }
 }
