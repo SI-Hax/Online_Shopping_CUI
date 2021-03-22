@@ -1,10 +1,5 @@
 /*
 * This class contains the Product Class which encapsulates the following methods:
-*Data:
-*- Produce Name (String), Product Description (String)
-*- Product ID (int), Price (double), stock (Integer)
-*- Category (Category enum)
-*
 * Methods:
 *- Empty Constructor
 *- Five parameter Constructor
