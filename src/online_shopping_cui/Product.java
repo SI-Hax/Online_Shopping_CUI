@@ -19,16 +19,18 @@ public class Product {
     private String description;
     private int productID;
     private double price;
+    private Category category;
     private Integer stock;
 
     public Product() {
 
     }
 
-    public Product(String productName, int productID, double price, String description, Integer stock) {
+    public Product(String productName, int productID, double price, Category category, String description, Integer stock) {
         this.productName = productName;
         this.productID = productID;
         this.price = price;
+        this.category = category;
         this.description = description;
         this.stock = stock;
     }
@@ -55,6 +57,14 @@ public class Product {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public String getDescription() {
