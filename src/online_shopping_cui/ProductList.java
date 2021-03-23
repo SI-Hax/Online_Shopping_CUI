@@ -29,7 +29,18 @@ public class ProductList {
         addSingleProduct(newProduct);
     }
     
+    /*
+    Core function: Adds a Product object into the entry list by Category
+    
+    @param newProductEntry
+    */
     public void addSingleProduct(Product newProductEntry){
         ArrayList<Product> tempList = new ArrayList<Product>();
+        if(singleProductList.containsKey(newProductEntry.getCategory())){
+            tempList = singleProductList.get(newProductEntry.getCategory());
+        }
+        
+        tempList.add(newProductEntry);
+        singleProductList.put(newProductEntry.getCategory(), tempList);
     }
 }
