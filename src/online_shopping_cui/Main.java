@@ -24,5 +24,6 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("Pushing...");
         System.out.println("Amos was here.");
+        System.out.println("Test with Intellij");
     }
 }
