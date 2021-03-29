@@ -82,15 +82,15 @@ public abstract class User
     // Overridden methods for the purpose of hashing.
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     @Override 
-    public boolean equals(Object o)
+    public boolean equals(Object o) 
     {
         // Check for duplicate login ids (case insensitive).
         return (o != null && o instanceof User && 
-                (((User)o).getLoginID().equalsIgnoreCase(this.getLoginID())));
+                ((User)o).getLoginID().equalsIgnoreCase(this.getLoginID()));
     }
     
     @Override
-    public int hashCode()
+    public int hashCode() 
     {
         // Returns a generated int based on the login id.
         return this.getLoginID().hashCode();
