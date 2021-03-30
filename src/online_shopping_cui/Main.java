@@ -42,6 +42,8 @@ public class Main {
                         String loginID = scanner.nextLine();
                         System.out.print("\tPassword: ");
                         String password = scanner.nextLine();
+                        // TODO login user , should we have an options to login as either customer or admin or using if else to determine
+                        // TODO if it is a customer or admin by using login id?
                         User user = new User(loginID) {
                             @Override
                             public boolean setPassword(String password) {
@@ -140,6 +142,7 @@ public class Main {
         System.out.println("Welcome To Shop & Run Online Shopping");
         System.out.println("\n\t1. Login");
         System.out.println("\t2. Create Account");
+        // TODO view product without login or register?
         System.out.println("\t3. Exit");
     }
 }
