@@ -27,13 +27,13 @@ package online_shopping_cui;
  * @author Miguel Emmara - 18022146
  * @author Amos Foong - 18044418
  * @author Roxy Dao - 1073633
- * @version 1.0
+ * @version 1.01
  * @since 29/03/2021
  **/
 public abstract class User 
 {
     private String loginID;
-    private String password;
+    protected String password;
     private State state;
 
     /**
@@ -68,7 +68,7 @@ public abstract class User
         return password;
     }
 
-    public abstract boolean setPassword(String password);
+    public abstract void setPassword(String password); 
     //-------------------------------------------------------
     public State getState() {
         return state;
@@ -78,7 +78,7 @@ public abstract class User
         this.state = state;
     }
     //-------------------------------------------------------
-    
+
     // Overridden methods for the purpose of hashing.
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     @Override 
