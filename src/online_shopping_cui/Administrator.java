@@ -11,9 +11,21 @@ package online_shopping_cui;
  * @since 30/03/2021
  **/
 
-public class Administrator {
+public class Administrator extends User{
     private String adminName;
     private String adminEmail;
+
+    /**
+     * 1-parameter constructor for User class. Subclasses of User must
+     * call super() and pass in the loginID to initialise their account.
+     *
+     * <p>Newly created accounts have their state set to Active.</p>
+     *
+     * @param loginID : user's login id.
+     **/
+    public Administrator(String loginID) {
+        super(loginID);
+    }
 
     public String getAdminName() {
         return adminName;
@@ -32,15 +44,19 @@ public class Administrator {
     }
 
     public void addProduct() {
-
+        // TODO
     }
 
     public void removeProduct(int productID) {
-
+        // TODO
     }
+
     public void editProduct() {
-
+        // TODO
     }
 
-
+    @Override
+    public boolean setPassword(String password) {
+        return false;
+    }
 }

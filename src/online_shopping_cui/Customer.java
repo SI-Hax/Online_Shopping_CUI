@@ -19,7 +19,6 @@ public class Customer extends User{
     private String email;
     private int cardNumber;
     private int cardExpDate;
-    private int cvv;
     private String cardType;
     private String cardName;
 
@@ -33,6 +32,18 @@ public class Customer extends User{
      **/
     public Customer(String loginID) {
         super(loginID);
+    }
+
+    public Customer(String loginID, String customerName, String address, int phone, String email, int cardNumber, int cardExpDate, String cardType, String cardName) {
+        super(loginID);
+        this.customerName = customerName;
+        this.address = address;
+        this.phone = phone;
+        this.email = email;
+        this.cardNumber = cardNumber;
+        this.cardExpDate = cardExpDate;
+        this.cardType = cardType;
+        this.cardName = cardName;
     }
 
     public String getCustomerName() {
@@ -81,14 +92,6 @@ public class Customer extends User{
 
     public void setCardExpDate(int cardExpDate) {
         this.cardExpDate = cardExpDate;
-    }
-
-    public int getCvv() {
-        return cvv;
-    }
-
-    public void setCvv(int cvv) {
-        this.cvv = cvv;
     }
 
     public String getCardType() {
