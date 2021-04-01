@@ -7,16 +7,17 @@ package online_shopping_cui;
  * 
  * <p>Attributes:</p>
  * <ul>
- *   <li>loginID : Unique identifier for individual users</li>
- *   <li>password : String representation of the account's password</li> 
- *   <li>state : Enum specifying the state of the account</li>
+ *  <li>loginID : Unique identifier for individual users</li>
+ *  <li>password : String representation of the account's password</li> 
+ *  <li>state : Enum specifying the state of the account</li>
  * </ul>
  * 
  * Behaviours:
  * <ul>
- *   <li>1-Parameter Constructor</li>
- *   <li>Getters and Setters</li>
- *   <li>Methods for hashing purposes(equals and hashcode)</li>
+ *  <li>1-Parameter Constructor</li>
+ *  <li>Getters and Setters</li>
+ *  <li>Reset Password</li>
+ *  <li>Methods for hashing purposes(equals and hashcode)</li>
  * </ul>
  *
  * <p>The setPassword method is abstract which must be overridden by User's
@@ -59,10 +60,6 @@ public abstract class User
         this.loginID = loginID.trim(); // Trim any whitespace...
     }
     //-------------------------------------------------------
-    public String getPassword() {
-        return password;
-    }
-
     public abstract void setPassword(String password) throws IllegalArgumentException; 
     //-------------------------------------------------------
     public State getState() {
@@ -73,7 +70,14 @@ public abstract class User
         this.state = state;
     }
     //-------------------------------------------------------
-
+    
+    /**
+     * Method to resets password to a null value.
+     **/
+    public void resetPassword() {
+        this.password = null; 
+    }
+    
     // Overridden methods for the purpose of hashing.
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     @Override 
