@@ -28,7 +28,7 @@ package online_shopping_cui;
  * @author Miguel Emmara - 18022146
  * @author Amos Foong - 18044418
  * @author Roxy Dao - 1073633
- * @version 1.02
+ * @version 1.03
  * @since 29/03/2021
  **/
 public abstract class User 
