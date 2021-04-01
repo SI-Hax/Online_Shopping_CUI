@@ -1,117 +1,167 @@
 package online_shopping_cui;
 
 /**
- * This class handles the customer actions.
- * It inherit User Class.
- *
+ * This class holds information about a Customer.
+ * It is an extension of User class. Behaviours include
+ * getters and setters that uses externally-sourced 
+ * validation methods (from Utilities class).
+ * 
+ * <p>Attributes:</p>
+ * <ul>
+ *  <li>Customer's Name</li>
+ *  <li>Phone Number</li>
+ *  <li>E-mail Address</li>
+ *  <li>Shipping/Billing Address</li>
+ *  <li>Card Number</li>
+ *  <li>Card Holder</li>
+ * </ul>
+ * 
+ * Behaviours:
+ * <ul>
+ *  <li>2-Parameter Constructor</li>
+ *  <li>8-Parameter Constructor</li>
+ *  <li>Getters and Setters</li>
+ * </ul>
  *
  * @author Miguel Emmara - 18022146
  * @author Amos Foong - 18044418
  * @author Roxy Dao - 1073633
- * @version 1.0
+ * @version 1.01
  * @since 30/03/2021
  **/
-
-public class Customer extends User{
-    private String customerName;
-    private String address;
-    private int phone;
+public class Customer extends User 
+{
+    private String name;
+    private String phone;
     private String email;
-    private int cardNumber;
-    private int cardExpDate;
-    private String cardType;
-    private String cardName;
+    private String address;
+    private String cardNumber;
+    private String cardHolder;
 
     /**
-     * 1-parameter constructor for User class. Subclasses of User must
-     * call super() and pass in the loginID to initialise their account.
+     * 2-parameter constructor for Customer class. This is the most basic
+     * constructor. User must have at least a loginID and password to sign up.
      *
-     * <p>Newly created accounts have their state set to Active.</p>
-     *
-     * @param loginID : user's login id.
+     * @param loginID : User's login identifier.
+     * @param password : User-defined password.
      **/
-    public Customer(String loginID) {
+    public Customer(String loginID, String password) {
         super(loginID);
+        this.setPassword(password);
     }
-
-    public Customer(String loginID, String customerName, String address, int phone, String email, int cardNumber, int cardExpDate, String cardType, String cardName) {
+    
+    /**
+     * 8-parameter constructor for Customer class. This constructor
+     * accounts for essential and non-essential details of a shopper.
+     * Calls relevant set methods to perform checks (for data validity),
+     * if data passes checks, it is then stored into the Object's attribute.
+     * 
+     * @param loginID : User's login identifier.
+     * @param password : User-defined password.
+     * @param name : Customer's name.
+     * @param phone : Contact phone number.
+     * @param email : User's email address.
+     * @param address : Shipping/billing address.
+     * @param cardNumber : Card number.
+     * @param cardHolder : Card holder's name.
+     **/
+    public Customer(String loginID, String password, String name, String phone, 
+                    String email, String address, String cardNumber, String cardHolder) 
+    {
         super(loginID);
-        this.customerName = customerName;
-        this.address = address;
-        this.phone = phone;
-        this.email = email;
-        this.cardNumber = cardNumber;
-        this.cardExpDate = cardExpDate;
-        this.cardType = cardType;
-        this.cardName = cardName;
+        this.setPassword(password);
+        this.setName(name);
+        this.setPhone(phone);
+        this.setEmail(email);
+        this.setAddress(address);
+        this.setCardNumber(cardNumber);
+        this.setCardHolder(cardHolder);
     }
 
-    public String getCustomerName() {
-        return customerName;
+    // Getters and setter methods for Object's instance data.
+    //-------------------------------------------------------
+    public String getName() {
+        return name;
     }
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+    public void setName(String name) {
+        this.name = (name.isEmpty()? "UNKNOWN":name);
+    }
+    //-------------------------------------------------------
+    public String getPhone() {
+        return phone;
     }
 
+    public void setPhone(String phone) {
+        this.phone = (phone.isEmpty()? "UNKNOWN":phone);
+    }
+    //-------------------------------------------------------
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) throws IllegalArgumentException {
+        if(!(email.isEmpty() || email.equals(""))) { // Checks if passed in data is not empty...
+            if(Utilities.emailIsValid(email)) { // If passed in email passes check...
+                this.email = email; // Assign passed in data to instance's attribute.
+            } else {
+                throw new IllegalArgumentException("Invalid email"); // Throw exception if does not satisfy pattern.
+            }
+        } else {
+            this.email = "UNKNOWN"; 
+        }
+    }
+    //-------------------------------------------------------
     public String getAddress() {
         return address;
     }
 
     public void setAddress(String address) {
-        this.address = address;
+        this.address = (address.isEmpty()? "UNKNOWN":address);
     }
-
-    public int getPhone() {
-        return phone;
-    }
-
-    public void setPhone(int phone) {
-        this.phone = phone;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public int getCardNumber() {
+    //-------------------------------------------------------
+    public String getCardNumber() {
         return cardNumber;
     }
 
-    public void setCardNumber(int cardNumber) {
-        this.cardNumber = cardNumber;
+    public void setCardNumber(String cardNumber) throws IllegalArgumentException {
+        if(!(cardNumber.isEmpty() || cardNumber.equals(""))) { // Checks if passed in data is not empty...
+            if(Utilities.cardIsValid(cardNumber.trim())) { // If passed in card number passes check...
+                this.cardNumber = cardNumber.trim(); // Assign passed in data to instance's attribute.
+            } else {
+                throw new IllegalArgumentException("Invalid card number"); // Throw exception if card does not pass the Luhn's algorithm.
+            }
+        } else {
+            this.cardNumber = "UNKNOWN";
+        }
+    }
+    //-------------------------------------------------------
+    public String getCardHolder() {
+        return cardHolder;
     }
 
-    public int getCardExpDate() {
-        return cardExpDate;
+    public void setCardHolder(String cardHolder) {
+        this.cardHolder = (cardHolder.isEmpty()? "UNKNOWN":cardHolder);
     }
-
-    public void setCardExpDate(int cardExpDate) {
-        this.cardExpDate = cardExpDate;
-    }
-
-    public String getCardType() {
-        return cardType;
-    }
-
-    public void setCardType(String cardType) {
-        this.cardType = cardType;
-    }
-
-    public String getCardName() {
-        return cardName;
-    }
-
-    public void setCardName(String cardName) {
-        this.cardName = cardName;
-    }
-
+    //-------------------------------------------------------
+    
+    /**
+     * Overridden method from superclass (User). Users that are Customers
+     * are required to have a password length of at least 8 characters.
+     * 
+     * <p>In addition, the password must also meet general password requirements   
+     * (At least: 1 Uppercase, 1 Lowercase, 1 Number, and 1 Symbol).</p>
+     * 
+     * @param password : User defined password.
+     * @throws IllegalArgumentException 
+     **/
     @Override
-    public boolean setPassword(String password) {
-        return false;
+    public void setPassword(String password) throws IllegalArgumentException {
+        // Check if password length is at least 8 characters and if its secure...
+        if(password.length() >= 8 && Utilities.passIsSecure(password)) {
+            this.password = password; // Saves user-defined password.
+        } else {
+            throw new IllegalArgumentException("Weak password."); // Throw an exception.
+        }
     }
 }
