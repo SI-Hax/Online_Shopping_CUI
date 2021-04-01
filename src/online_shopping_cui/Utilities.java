@@ -157,8 +157,8 @@ public class Utilities
             
             // Encode cipherText to prevent data loss.
             cipherText = Base64.getEncoder().encodeToString(encrypted);
-        } catch(Exception e) { // Catch any encryption relation errors.
-            System.err.println("Error during encryption initialisation."); 
+        } catch(Exception e) { // Catch any encryptor initialisation errors
+            System.err.println("Error initialising encryptor."); 
         }
         
         return cipherText;
@@ -191,8 +191,8 @@ public class Utilities
             cipher.init(Cipher.DECRYPT_MODE, aesKey);
             byte[] encrypted = Base64.getDecoder().decode(cipheredText);
             decryptedText = new String(cipher.doFinal(encrypted));
-        } catch(Exception e) { // Catch any decryption relation errors.
-            System.err.println("Error during decryption initialisation."); 
+        } catch(Exception e) { // Catch any decryptor initialisation errors.
+            System.err.println("Error initialising decryptor."); 
         }
         
         return decryptedText;
