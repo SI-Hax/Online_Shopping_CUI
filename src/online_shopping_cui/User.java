@@ -27,7 +27,7 @@ package online_shopping_cui;
  * @author Miguel Emmara - 18022146
  * @author Amos Foong - 18044418
  * @author Roxy Dao - 1073633
- * @version 1.01
+ * @version 1.02
  * @since 29/03/2021
  **/
 public abstract class User 
@@ -56,19 +56,14 @@ public abstract class User
     }
 
     public void setLoginID(String loginID) {
-        // Checks if user selected id has any spaces...        
-        if(loginID.contains(" ")) { 
-            this.loginID = loginID.trim(); // Trim any whitespace...
-        } else {
-            this.loginID = loginID;
-        }
+        this.loginID = loginID.trim(); // Trim any whitespace...
     }
     //-------------------------------------------------------
     public String getPassword() {
         return password;
     }
 
-    public abstract void setPassword(String password); 
+    public abstract void setPassword(String password) throws IllegalArgumentException; 
     //-------------------------------------------------------
     public State getState() {
         return state;
