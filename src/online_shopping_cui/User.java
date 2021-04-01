@@ -75,7 +75,7 @@ public abstract class User
      * Method to resets password to a null value.
      **/
     public void resetPassword() {
-        this.password = null; 
+        this.password = "password"; 
     }
     
     // Overridden methods for the purpose of hashing.
