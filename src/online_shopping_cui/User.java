@@ -84,8 +84,8 @@ public abstract class User
     public boolean equals(Object o) 
     {
         // Check for duplicate login ids (case insensitive).
-        return (o != null && o instanceof User && 
-                ((User)o).getLoginID().equalsIgnoreCase(this.getLoginID()));
+        return (o instanceof User &&
+                ((User) o).getLoginID().equalsIgnoreCase(this.getLoginID()));
     }
     
     @Override

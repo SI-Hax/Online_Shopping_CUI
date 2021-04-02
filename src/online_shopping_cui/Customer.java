@@ -101,7 +101,7 @@ public class Customer extends User
     }
 
     public void setEmail(String email) throws IllegalArgumentException {
-        if(!(email.isEmpty() || email.equals(""))) { // Checks if passed in data is not empty...
+        if(!(email.isEmpty() || email.equals(" "))) { // Checks if passed in data is not empty...
             if(Utilities.emailIsValid(email)) { // If passed in email passes check...
                 this.email = email; // Assign passed in data to instance's attribute.
             } else {
@@ -125,7 +125,7 @@ public class Customer extends User
     }
 
     public void setCardNumber(String cardNumber) throws IllegalArgumentException {
-        if(!(cardNumber.isEmpty() || cardNumber.equals(""))) { // Checks if passed in data is not empty...
+        if(!(cardNumber.isEmpty() || cardNumber.equals(" "))) { // Checks if passed in data is not empty...
             if(Utilities.cardIsValid(cardNumber.trim())) { // If passed in card number passes check...
                 this.cardNumber = cardNumber.trim(); // Assign passed in data to instance's attribute.
             } else {
@@ -161,6 +161,7 @@ public class Customer extends User
         if(password.length() >= 8 && Utilities.passIsSecure(password)) {
             this.password = password; // Saves user-defined password.
         } else {
+            System.err.println("Password is weak, password length should be at least 14 characters");
             throw new IllegalArgumentException("Weak password."); // Throw an exception.
         }
     }

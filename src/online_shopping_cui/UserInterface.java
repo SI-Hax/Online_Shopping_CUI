@@ -4,10 +4,11 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class UserInterface {
-    static void menuSelections() {
+    public void menuSelections() {
         Scanner scanner = new Scanner(System.in);
         boolean stop = true;
         boolean stop2 = true;
+        boolean stop3 = true;
         mainMenu();
 
         do {
@@ -16,20 +17,39 @@ public class UserInterface {
                 int uAnswer = scanner.nextInt();
                 scanner.nextLine();
                 switch (uAnswer) {
+                    // Choose To Login As Administrator Or Customer
                     case 1:
-                        System.out.print("\n\tUser Name: ");
-                        String loginID = scanner.nextLine();
-                        System.out.print("\tPassword: ");
-                        String password = scanner.nextLine();
-                        // TODO login user , should we have an options to login as either customer or admin or using if else to determine
-                        // TODO if it is a customer or admin by using login id?
-                        User user = new User(loginID) {
-                            @Override
-                            public boolean setPassword(String password) {
-                                return false;
+                        do {
+                            try {
+                                System.out.println("\n\t1. Login As Customer");
+                                System.out.println("\t2. Login As Administrator");
+                                System.out.print("\nPlease Choose Your Option: ");
+                                uAnswer = scanner.nextInt();
+                                scanner.nextLine();
+
+                                switch (uAnswer) {
+                                    case 1:
+                                        customerLogin(scanner);
+                                        stop3 = false;
+                                        break;
+                                    case 2:
+                                        adminLogin(scanner);
+                                        stop3 = false;
+                                        break;
+                                    default:
+                                        throw new IndexOutOfBoundsException();
+                                }
+                            } catch (IndexOutOfBoundsException e) {
+                                System.err.println("Please Enter The Correct Options, 1 - 2");
+                                System.err.flush();
+                            } catch (InputMismatchException | IllegalArgumentException e) {
+                                System.err.println("Please Enter The Correct Options, 1 - 2");
+                                System.err.flush();
+                                scanner.nextLine();
                             }
-                        };
+                        } while (stop3);
                         break;
+                    // Choose To Register As Administrator Or Customer
                     case 2:
                         do {
                             try {
@@ -42,7 +62,7 @@ public class UserInterface {
                                 switch (uAnswer) {
                                     case 1:
                                         System.out.print("\nUser Name: ");
-                                        loginID = scanner.nextLine();
+                                        String loginID = scanner.nextLine();
                                         System.out.print("Full Name: ");
                                         String customerName = scanner.nextLine();
                                         System.out.print("address: ");
@@ -63,7 +83,7 @@ public class UserInterface {
                                         stop2 = false;
                                         break;
                                     case 2:
-                                        System.out.print("\nName Of The Company");
+                                        System.out.print("\nName Of The Company: ");
                                         String companyName = scanner.nextLine();
                                         System.out.print("User Name: ");
                                         loginID = scanner.nextLine();
@@ -89,15 +109,14 @@ public class UserInterface {
                                         throw new IndexOutOfBoundsException();
                                 }
                             } catch (IndexOutOfBoundsException e) {
-                                System.err.println("Please Enter The Correct Options, 1 - 3");
+                                System.err.println("Please Enter The Correct Options, 1 - 2");
                                 System.err.flush();
                             } catch (InputMismatchException | IllegalArgumentException e) {
-                                System.err.println("Please Enter The Correct Options, 1 - 3");
+                                System.err.println("Please Enter The Correct Options, 1 - 2");
                                 System.err.flush();
                                 scanner.nextLine();
                             }
                         } while (stop2);
-
                         break;
                     case 3:
                         System.out.println("\nGood Bye");
@@ -117,11 +136,40 @@ public class UserInterface {
         } while (stop);
     }
 
-    private static void mainMenu() {
+    private void mainMenu() {
         System.out.println("Welcome To Shop & Run Online Shopping");
         System.out.println("\n\t1. Login");
         System.out.println("\t2. Create Account");
         // TODO view product without login or register?
         System.out.println("\t3. Exit");
+    }
+
+    private void customerLogin(Scanner scanner) {
+        System.out.print("\n\tUser Name: ");
+        String loginID = scanner.nextLine();
+        System.out.print("\tPassword: ");
+        String password = scanner.nextLine();
+
+        /*if(password.length() >= 8 && Utilities.passIsSecure(password)) {
+            Customer customer = new Customer(loginID, password);
+        } else {
+            System.err.println("Password is weak, password length should be at least 14 characters");
+            throw new IllegalArgumentException("Weak password."); // Throw an exception.
+        }*/
+
+        Customer customer = new Customer(loginID, password);
+    }
+
+    private void adminLogin(Scanner scanner) {
+        System.out.print("\n\tUser Name: ");
+        String loginID = scanner.nextLine();
+        System.out.print("\tPassword: ");
+        String password = scanner.nextLine();
+        System.out.print("\tAdmin Name: ");
+        String adminName = scanner.nextLine();
+        System.out.print("\tAdmin Email: ");
+        String adminEmail = scanner.nextLine();
+
+        Administrator administrator = new Administrator(loginID,password,adminName,adminEmail);
     }
 }
