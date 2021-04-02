@@ -10,7 +10,6 @@ import java.util.Scanner;
 public class UserInterface {
     public static final String filePath = "./resources/customers.txt";
     public static LinkedHashMap < String, String > data = new LinkedHashMap < > ();
-
     public void menuSelections() {
         Scanner scanner = new Scanner(System.in);
         boolean stop = true;
