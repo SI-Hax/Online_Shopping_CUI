@@ -1,9 +1,15 @@
 package online_shopping_cui;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.InputMismatchException;
+import java.util.LinkedHashMap;
 import java.util.Scanner;
 
 public class UserInterface {
+    public static final String filePath = "./resources/customers.txt";
+    public static LinkedHashMap < String, String > data = new LinkedHashMap < > ();
     public void menuSelections() {
         Scanner scanner = new Scanner(System.in);
         boolean stop = true;
@@ -21,6 +27,7 @@ public class UserInterface {
                     case 1:
                         do {
                             try {
+                                readFile(data);
                                 System.out.println("\n\t1. Login As Customer");
                                 System.out.println("\t2. Login As Administrator");
                                 System.out.print("\nPlease Choose Your Option: ");
@@ -46,6 +53,8 @@ public class UserInterface {
                                 System.err.println("Please Enter The Correct Options, 1 - 2");
                                 System.err.flush();
                                 scanner.nextLine();
+                            } catch (FileNotFoundException e) {
+                                e.printStackTrace();
                             }
                         } while (stop3);
                         break;
@@ -147,17 +156,21 @@ public class UserInterface {
     private void customerLogin(Scanner scanner) {
         System.out.print("\n\tUser Name: ");
         String loginID = scanner.nextLine();
-        System.out.print("\tPassword: ");
-        String password = scanner.nextLine();
 
-        /*if(password.length() >= 8 && Utilities.passIsSecure(password)) {
+        while (loginID.isEmpty() || loginID.contains(" ")) {
+            System.out.println("Please enter a valid name!");
+            System.out.print("What Is Your User Name: ");
+            loginID = scanner.nextLine();
+        }
+
+        if (data.containsKey(loginID)) {
+            System.out.print("\tPassword: ");
+            String password = scanner.nextLine();
             Customer customer = new Customer(loginID, password);
+            System.out.println("Login Successful, Welcome Back " + customer.getName());
         } else {
-            System.err.println("Password is weak, password length should be at least 14 characters");
-            throw new IllegalArgumentException("Weak password."); // Throw an exception.
-        }*/
-
-        Customer customer = new Customer(loginID, password);
+            System.out.println("Sorry, " + loginID + " is not a registered user!");
+        }
     }
 
     private void adminLogin(Scanner scanner) {
@@ -170,6 +183,20 @@ public class UserInterface {
         System.out.print("\tAdmin Email: ");
         String adminEmail = scanner.nextLine();
 
-        Administrator administrator = new Administrator(loginID,password,adminName,adminEmail);
+        Administrator administrator = new Administrator(loginID, password, adminName, adminEmail);
+    }
+
+    private void readFile(LinkedHashMap < String, String > data) throws FileNotFoundException {
+        String password;
+        String loginID;
+        Scanner scanner2 = new Scanner(new BufferedReader(new FileReader(filePath)));
+
+        while (scanner2.hasNext()) {
+            loginID = scanner2.next();
+            password = scanner2.next();
+
+            data.put(loginID, password);
+        }
+        scanner2.close();
     }
 }

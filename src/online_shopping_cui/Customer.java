@@ -151,7 +151,11 @@ public class Customer extends User
      * 
      * <p>In addition, the password must also meet general password requirements   
      * (At least: 1 Uppercase, 1 Lowercase, 1 Number, and 1 Symbol).</p>
-     * 
+     * Input: GeeksForGeeks
+     * Output: Invalid Password!
+     *
+     * Input: Geek$ForGeeks7
+     * Output: Valid Password
      * @param password : User defined password.
      * @throws IllegalArgumentException 
      **/
@@ -161,7 +165,6 @@ public class Customer extends User
         if(password.length() >= 8 && Utilities.passIsSecure(password)) {
             this.password = password; // Saves user-defined password.
         } else {
-            System.err.println("Password is weak, password length should be at least 14 characters");
             throw new IllegalArgumentException("Weak password."); // Throw an exception.
         }
     }
