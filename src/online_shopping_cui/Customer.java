@@ -1,5 +1,11 @@
 package online_shopping_cui;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * This class holds information about a Customer.
  * It is an extension of User class. Behaviours include
@@ -37,6 +43,8 @@ public class Customer extends User
     private String address;
     private String cardNumber;
     private String cardHolder;
+    private List<List<String>> row;
+    public static final String filePath = "./resources/customer database.csv";
 
     /**
      * 2-parameter constructor for Customer class. This is the most basic
@@ -166,6 +174,32 @@ public class Customer extends User
             this.password = password; // Saves user-defined password.
         } else {
             throw new IllegalArgumentException("Weak password."); // Throw an exception.
+        }
+    }
+
+    public void writeCSV() {
+        try {
+            FileWriter writer = new FileWriter(filePath,true);
+            row = Collections.singletonList(Arrays.asList(
+                    getLoginID(),
+                    password,
+                    getName(),
+                    getAddress(),
+                    getPhone(),
+                    getEmail(),
+                    getCardNumber(),
+                    getCardHolder()));
+
+            for (List<String> rowData : row) {
+                writer.append(String.join(",", rowData));
+                writer.append("\n");
+            }
+            writer.flush();
+            writer.close();
+
+            System.out.println("\nAccount Created Successfully!");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

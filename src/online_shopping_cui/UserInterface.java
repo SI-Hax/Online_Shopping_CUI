@@ -8,7 +8,6 @@ import java.util.LinkedHashMap;
 import java.util.Scanner;
 
 public class UserInterface {
-    
     public static final String filePath = "./resources/customers.txt";
     public static LinkedHashMap < String, String > data = new LinkedHashMap < > ();
 
@@ -17,10 +16,11 @@ public class UserInterface {
         boolean stop = true;
         boolean stop2 = true;
         boolean stop3 = true;
-        mainMenu();
+
 
         do {
             try {
+                mainMenu();
                 System.out.print("\nPlease Choose Your Option: ");
                 int uAnswer = scanner.nextInt();
                 scanner.nextLine();
@@ -72,49 +72,10 @@ public class UserInterface {
 
                                 switch (uAnswer) {
                                     case 1:
-                                        System.out.print("\nUser Name: ");
-                                        String loginID = scanner.nextLine();
-                                        System.out.print("Full Name: ");
-                                        String customerName = scanner.nextLine();
-                                        System.out.print("address: ");
-                                        String address = scanner.nextLine();
-                                        System.out.print("Phone Number: ");
-                                        String phoneNumber = scanner.nextLine();
-                                        System.out.print("Email: ");
-                                        String email = scanner.nextLine();
-                                        System.out.print("Card Number: ");
-                                        String cardNumber = scanner.nextLine();
-                                        System.out.print("Card Expire Date: ");
-                                        String cardExpDate = scanner.nextLine();
-                                        System.out.print("Card Type: ");
-                                        String cardType = scanner.nextLine();
-                                        System.out.print("Card Name: ");
-                                        String cardName = scanner.nextLine();
-                                        // TODO create customer
-                                        stop2 = false;
+                                        stop2 = createCustomerAccount(scanner);
                                         break;
                                     case 2:
-                                        System.out.print("\nName Of The Company: ");
-                                        String companyName = scanner.nextLine();
-                                        System.out.print("User Name: ");
-                                        loginID = scanner.nextLine();
-                                        System.out.print("Full Name: ");
-                                        customerName = scanner.nextLine();
-                                        System.out.print("address: ");
-                                        address = scanner.nextLine();
-                                        System.out.print("Phone Number: ");
-                                        phoneNumber = scanner.nextLine();
-                                        System.out.print("Email: ");
-                                        email = scanner.nextLine();
-                                        System.out.println("Card Number: ");
-                                        cardNumber = scanner.nextLine();
-                                        System.out.print("Card Expire Date: ");
-                                        cardExpDate = scanner.nextLine();
-                                        cardType = scanner.nextLine();
-                                        System.out.print("Card Name: ");
-                                        cardName = scanner.nextLine();
-                                        // TODO create administrator
-                                        stop2 = false;
+                                        stop2 = createAdministratorAccount(scanner);
                                         break;
                                     default:
                                         throw new IndexOutOfBoundsException();
@@ -147,8 +108,69 @@ public class UserInterface {
         } while (stop);
     }
 
+    private boolean createCustomerAccount(Scanner scanner) {
+        System.out.print("\nUser Name: ");
+        String loginID = scanner.nextLine();
+
+        while (loginID.isEmpty() || loginID.contains(" ")) {
+            System.out.println("Please enter a valid name!");
+            System.out.print("What Is Your User Name: ");
+            loginID = scanner.nextLine();
+        }
+
+        System.out.print("Password: ");
+        String password = scanner.nextLine();
+        String encryptedPassword = Utilities.encrypt(password);
+        System.out.print("Full Name: ");
+        String customerName = scanner.nextLine();
+        System.out.print("address: ");
+        String address = scanner.nextLine();
+        System.out.print("Phone Number: ");
+        String phoneNumber = scanner.nextLine();
+        System.out.print("Email: ");
+        String email = scanner.nextLine();
+        System.out.print("Card Number: ");
+        String cardNumber = scanner.nextLine();
+        System.out.print("Card Name: ");
+        String cardName = scanner.nextLine();
+        // TODO create customer
+        Customer customer = new Customer(loginID,encryptedPassword,customerName,phoneNumber,email,address,cardNumber,cardName);
+        customer.writeCSV();
+        return false;
+    }
+
+    private boolean createAdministratorAccount(Scanner scanner) {
+        System.out.print("\nName Of The Company: ");
+        String companyName = scanner.nextLine();
+        System.out.print("\nUser Name: ");
+        String loginID = scanner.nextLine();
+
+        while (loginID.isEmpty() || loginID.contains(" ")) {
+            System.out.println("Please enter a valid name!");
+            System.out.print("What Is Your User Name: ");
+            loginID = scanner.nextLine();
+        }
+
+        System.out.print("Password: ");
+        String password = scanner.nextLine();
+        String encryptedPassword = Utilities.encrypt(password);
+        System.out.print("Full Name: ");
+        String customerName = scanner.nextLine();
+        System.out.print("address: ");
+        String address = scanner.nextLine();
+        System.out.print("Phone Number: ");
+        String phoneNumber = scanner.nextLine();
+        System.out.print("Email: ");
+        String email = scanner.nextLine();
+        System.out.print("Card Number: ");
+        String cardNumber = scanner.nextLine();
+        System.out.print("Card Name: ");
+        String cardName = scanner.nextLine();
+        // TODO create administrator
+        return false;
+    }
+
     private void mainMenu() {
-        System.out.println("Welcome To Shop & Run Online Shopping");
         System.out.println("\n\t1. Login");
         System.out.println("\t2. Create Account");
         // TODO view product without login or register?
@@ -168,8 +190,12 @@ public class UserInterface {
         if (data.containsKey(loginID)) {
             System.out.print("\tPassword: ");
             String password = scanner.nextLine();
-            Customer customer = new Customer(loginID, password);
-            System.out.println("Login Successful, Welcome Back " + customer.getName());
+            if (data.containsValue(password)) {
+                Customer customer = new Customer(loginID, password);
+                System.out.println("\nLogin Successful, Welcome Back " + customer.getName());
+            } else {
+                System.out.println("\nWrong Password");
+            }
         } else {
             System.out.println("Sorry, " + loginID + " is not a registered user!");
         }
