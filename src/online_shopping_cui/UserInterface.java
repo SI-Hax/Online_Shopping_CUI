@@ -11,6 +11,13 @@ public class UserInterface {
     public static final String filePath = "./resources/customers.txt";
     public static LinkedHashMap < String, String > data = new LinkedHashMap < > ();
 
+    private void mainMenu() {
+        System.out.println("\n\t1. Login");
+        System.out.println("\t2. Create Account");
+        // TODO view product without login or register?
+        System.out.println("\t3. Exit");
+    }
+
     public void menuSelections() {
         Scanner scanner = new Scanner(System.in);
         boolean stop = true;
@@ -109,6 +116,7 @@ public class UserInterface {
     }
 
     private boolean createCustomerAccount(Scanner scanner) {
+        // TODO data validation in each prompt
         System.out.print("\nUser Name: ");
         String loginID = scanner.nextLine();
 
@@ -133,13 +141,13 @@ public class UserInterface {
         String cardNumber = scanner.nextLine();
         System.out.print("Card Name: ");
         String cardName = scanner.nextLine();
-        // TODO create customer
         Customer customer = new Customer(loginID,encryptedPassword,customerName,phoneNumber,email,address,cardNumber,cardName);
         customer.writeCSV();
         return false;
     }
 
     private boolean createAdministratorAccount(Scanner scanner) {
+        // TODO create admin database
         System.out.print("\nName Of The Company: ");
         String companyName = scanner.nextLine();
         System.out.print("\nUser Name: ");
@@ -166,18 +174,11 @@ public class UserInterface {
         String cardNumber = scanner.nextLine();
         System.out.print("Card Name: ");
         String cardName = scanner.nextLine();
-        // TODO create administrator
         return false;
     }
 
-    private void mainMenu() {
-        System.out.println("\n\t1. Login");
-        System.out.println("\t2. Create Account");
-        // TODO view product without login or register?
-        System.out.println("\t3. Exit");
-    }
-
     private void customerLogin(Scanner scanner) {
+        // TOOD Login data from customer database.csv
         System.out.print("\n\tUser Name: ");
         String loginID = scanner.nextLine();
 
