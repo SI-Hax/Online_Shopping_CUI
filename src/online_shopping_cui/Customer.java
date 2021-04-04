@@ -1,7 +1,6 @@
 package online_shopping_cui;
 
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -35,7 +34,7 @@ import java.util.List;
  * @version 1.01
  * @since 30/03/2021
  **/
-public class Customer extends User 
+public class Customer extends User implements InputOutput
 {
     private String name;
     private String phone;
@@ -43,7 +42,6 @@ public class Customer extends User
     private String address;
     private String cardNumber;
     private String cardHolder;
-    private List<List<String>> row;
     public static final String filePath = "./resources/customer database.csv";
 
     /**
@@ -177,10 +175,16 @@ public class Customer extends User
         }
     }
 
+    /**
+     * This method is Overridden method from Interface InputOutput.
+     * This method used after user sign up to add user new data to customer database.csv
+     */
+    @Override
     public void writeCSV() {
         try {
             FileWriter writer = new FileWriter(filePath,true);
-            row = Collections.singletonList(Arrays.asList(
+            List<List<String>> rows;
+            rows = Collections.singletonList(Arrays.asList(
                     getLoginID(),
                     password,
                     getName(),
@@ -190,7 +194,7 @@ public class Customer extends User
                     getCardNumber(),
                     getCardHolder()));
 
-            for (List<String> rowData : row) {
+            for (List<String> rowData : rows) {
                 writer.append(String.join(",", rowData));
                 writer.append("\n");
             }
@@ -201,5 +205,58 @@ public class Customer extends User
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * This method is Overridden method from Interface InputOutput.
+     * This method is used to read a CSV file and store in an array
+     */
+    @Override
+    public void readCSV() throws IOException {
+        BufferedReader reader =new BufferedReader(new FileReader(filePath));
+        String line = "";
+        String[] data = new String[0];
+        while((line = reader.readLine()) != null){
+            data = line.trim().split(",");
+        }
+        reader.close();
+    }
+
+    public boolean checkLoginID(String loginID) throws IOException {
+        BufferedReader csvReader = new BufferedReader(new FileReader(filePath));
+        boolean isCorrect = false;
+        String line = "";
+        while ((line = csvReader.readLine()) != null) {
+            String[] data = line.trim().split(",");
+
+            for (String element : data) {
+                if (element.equals(loginID) ) {
+                    isCorrect = true;
+                    break;
+                }
+            }
+        }
+        csvReader.close();
+
+        return isCorrect;
+    }
+
+    public boolean checkPassword(String password) throws IOException {
+        BufferedReader csvReader = new BufferedReader(new FileReader(filePath));
+        boolean isCorrect = false;
+        String line = "";
+        while ((line = csvReader.readLine()) != null) {
+            String[] data = line.trim().split(",");
+
+            for (String element : data) {
+                if (element.equals(password) ) {
+                    isCorrect = true;
+                    break;
+                }
+            }
+        }
+        csvReader.close();
+
+        return isCorrect;
     }
 }
