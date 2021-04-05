@@ -1,16 +1,14 @@
 package online_shopping_cui;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.InputMismatchException;
 import java.util.LinkedHashMap;
 import java.util.Scanner;
 
 public class UserInterface {
-    public static final String filePath = "./resources/customers.txt";
+    //public static final String filePath = "./resources/customers.txt";
     //public static LinkedHashMap < String, String > data = new LinkedHashMap < > ();
+    public static final String filePath = "./resources/customer database.csvx";
 
     private void mainMenu() {
         System.out.println("\n\t1. Login");
@@ -24,7 +22,6 @@ public class UserInterface {
         boolean stop = true;
         boolean stop2 = true;
         boolean stop3 = true;
-
 
         do {
             try {
@@ -161,7 +158,7 @@ public class UserInterface {
         System.out.print("\nName Of The Company: ");
         String companyName = scanner.nextLine();
 
-        System.out.print("\nUser Name: ");
+        System.out.print("\nLogin ID: ");
         String loginID = scanner.nextLine();
 
         while (loginID.isEmpty() || loginID.contains(" ")) {
@@ -209,20 +206,27 @@ public class UserInterface {
                     loginID = scanner.nextLine();
                 }
 
+                // TODO Decrypt Password
                 System.out.print("\tPassword: ");
                 String password = scanner.nextLine();
 
                 Customer customer = new Customer(loginID,password);
 
-                if (customer.checkLoginID(loginID)) {
-                    if (customer.checkPassword(password)) {
-                        System.out.println("\nLogin Successful, Welcome Back " + customer.getName());
-                        stop = false;
+                File csvFile =  new File(filePath);
+                if (csvFile.isFile()) {
+                    if (customer.checkLoginID(loginID)) {
+                        if (customer.checkPassword(password)) {
+                            System.out.println("\nLogin Successful, Welcome Back " + customer.getName());
+                            stop = false;
+                        } else {
+                            System.out.println("\nWrong Password");
+                        }
                     } else {
-                        System.out.println("\nWrong Password");
+                        System.out.println("Sorry, " + loginID + " is not a registered user!");
                     }
                 } else {
-                    System.out.println("Sorry, " + loginID + " is not a registered user!");
+                    System.err.println("File did not exist!");
+                    break;
                 }
             } catch (InputMismatchException | IllegalArgumentException e) {
                 System.err.println("Please Enter The Correct Options, 1 - 3");
@@ -234,7 +238,7 @@ public class UserInterface {
     }
 
     private void adminLogin(Scanner scanner) {
-        System.out.print("\n\tUser Name: ");
+        System.out.print("\n\tLogin ID: ");
         String loginID = scanner.nextLine();
 
         System.out.print("\tPassword: ");

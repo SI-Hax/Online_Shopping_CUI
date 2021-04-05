@@ -213,49 +213,72 @@ public class Customer extends User implements InputOutput
      */
     @Override
     public void readCSV() throws IOException {
-        BufferedReader reader =new BufferedReader(new FileReader(filePath));
-        String line = "";
-        String[] data = new String[0];
-        while((line = reader.readLine()) != null){
-            data = line.trim().split(",");
+        try {
+            File csvFile = new File(filePath);
+            if (csvFile.isFile()) {
+                BufferedReader reader = new BufferedReader(new FileReader(filePath));
+                String line = "";
+                String[] data = new String[0];
+                while((line = reader.readLine()) != null){
+                    data = line.trim().split(",");
+                }
+                reader.close();
+            } else {
+                System.out.println("File did not exist!");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        reader.close();
     }
 
     public boolean checkLoginID(String loginID) throws IOException {
-        BufferedReader csvReader = new BufferedReader(new FileReader(filePath));
         boolean isCorrect = false;
-        String line = "";
-        while ((line = csvReader.readLine()) != null) {
-            String[] data = line.trim().split(",");
+        try {
+            File csvFile =  new File(filePath);
+            if (csvFile.isFile()) {
+                BufferedReader csvReader = new BufferedReader(new FileReader(filePath));
+                String line = "";
+                while ((line = csvReader.readLine()) != null) {
+                    String[] data = line.trim().split(",");
 
-            for (String element : data) {
-                if (element.equals(loginID) ) {
-                    isCorrect = true;
-                    break;
+                    for (String element : data) {
+                        if (element.equals(loginID) ) {
+                            isCorrect = true;
+                            break;
+                        }
+                    }
                 }
+                csvReader.close();
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        csvReader.close();
 
         return isCorrect;
     }
 
     public boolean checkPassword(String password) throws IOException {
-        BufferedReader csvReader = new BufferedReader(new FileReader(filePath));
         boolean isCorrect = false;
-        String line = "";
-        while ((line = csvReader.readLine()) != null) {
-            String[] data = line.trim().split(",");
+        try {
+            File csvFile = new File(filePath);
+            if (csvFile.isFile()) {
+                BufferedReader csvReader = new BufferedReader(new FileReader(filePath));
+                String line = "";
+                while ((line = csvReader.readLine()) != null) {
+                    String[] data = line.trim().split(",");
 
-            for (String element : data) {
-                if (element.equals(password) ) {
-                    isCorrect = true;
-                    break;
+                    for (String element : data) {
+                        if (element.equals(password) ) {
+                            isCorrect = true;
+                            break;
+                        }
+                    }
                 }
+                csvReader.close();
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        csvReader.close();
 
         return isCorrect;
     }
