@@ -30,9 +30,9 @@ public class ProductList {
     }
     
     /*
-    Core function: Adds a Product object into the entry list by Category
-    
-    @param newProductEntry
+    * Core function: Adds a Product object into the entry list by Category
+    *
+    * @param newProductEntry
     */
     public void addSingleProduct(Product newProductEntry){
         ArrayList<Product> tempList = new ArrayList<Product>();
@@ -42,5 +42,30 @@ public class ProductList {
         
         tempList.add(newProductEntry);
         singleProductList.put(newProductEntry.getCategory(), tempList);
+    }
+    
+    /**
+     * Core function: Get all product entries
+     * 
+     * @return allProducts
+     */
+    public ArrayList<Product> getProductList(){
+        ArrayList<Product> allProducts = new ArrayList<Product>();
+        
+        for(Category category : singleProductList.keySet()){
+            ArrayList<Product> tempList = singleProductList.get(category);
+            allProducts.addAll(tempList);
+        }
+        
+        return allProducts;
+    }
+    
+    //Getters and Setters-------------------------------------------------------
+     public HashMap<Category, ArrayList<Product>> getSingleProductList() {
+        return singleProductList;
+    }
+
+    public void setSingleProductList(HashMap<Category, ArrayList<Product>> singleProductList) {
+        this.singleProductList = singleProductList;
     }
 }
