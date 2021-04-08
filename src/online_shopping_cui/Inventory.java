@@ -11,17 +11,17 @@ package online_shopping_cui;
 import java.util.HashMap;
 
 public class Inventory {
-    private HashMap<String, Inventory> quantity;
+    private HashMap<String, Integer> quantity;
 
-    public Inventory(HashMap<String, Inventory> quantity) {
+    public Inventory(HashMap<String, Integer> quantity) {
         this.quantity = quantity;
     }
 
-    public HashMap<String, Inventory> getQuantity() {
+    public HashMap<String, Integer> getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(HashMap<String, Inventory> quantity) {
+    public void setQuantity(HashMap<String, Integer> quantity) {
         this.quantity = quantity;
     }
 }
