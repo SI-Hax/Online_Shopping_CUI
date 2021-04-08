@@ -1,6 +1,6 @@
 /*
 * This class contains the State Enumeration which maintains constant variables
-* for the shoppping categories
+* for the shopping categories
 * 
 * @author  Miguel Emmara - 18022146
 * @author  Amos Foong - 18044418
