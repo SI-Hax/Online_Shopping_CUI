@@ -11,5 +11,5 @@
 package online_shopping_cui;
 
 public enum State {
-    NEW, ACTIVE, SUSPENDED, BANNED
+    ACTIVE, SUSPENDED, BANNED
 }
