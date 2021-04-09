@@ -8,6 +8,7 @@ package online_shopping_cui;
  *  <li>Empty Constructor</li>
  *  <li>Five-parameter Constructor</li>
  *  <li>Getters and Setters</li>
+ *  <li>To String Method</li>
  * </ul>
  *
  * @author Miguel Emmara - 18022146
