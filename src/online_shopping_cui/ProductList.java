@@ -32,7 +32,7 @@ public class ProductList {
         addSingleProduct(newProduct);
     }
 
-    /*
+    /**
      * Core function: Adds a Product object into the entry list by Category
      *
      * @param newProductEntry
