@@ -14,7 +14,7 @@ package online_shopping_cui;
  * @author Miguel Emmara - 18022146
  * @author Amos Foong - 18044418
  * @author Roxy Dao - 1073633
- * @version 1.01
+ * @version 1.02
  * @since 15/03/2021
  **/
 public class Product {
@@ -25,7 +25,11 @@ public class Product {
     private Integer stock;
 
     public Product() {
-
+        this.productName = "";
+        this.productID = 0;
+        this.price = 0D;
+        this.category = Category.MISCELLANEOUS;
+        this.stock = 0;
     }
 
     public Product(String productName, int productID, double price, Category category, Integer stock) {
@@ -88,7 +92,7 @@ public class Product {
      * attributes, which are separated by commas.
      *
      * @return A String containing Product's name, ID, price, category,
-     * and stock number, all separated by commas.
+     *              and stock number, all separated by commas.
      **/
     @Override
     public String toString() {
