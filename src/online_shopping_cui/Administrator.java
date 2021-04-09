@@ -121,7 +121,7 @@ public class Administrator extends User {
      **/
     @Override
     public String toString() {
-        String comma = ", ";
+        String comma = ",";
         String details = "";
 
         // Admins login credentials and details.
