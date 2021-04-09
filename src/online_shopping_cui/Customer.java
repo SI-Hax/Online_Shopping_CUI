@@ -181,6 +181,35 @@ public class Customer extends User implements InputOutput {
     }
 
     /**
+     * To String method to serialise object. Stringifies Object's
+     * attributes, which are separated by commas.
+     *
+     * @return A String containing the User's type, Customer's login
+     *           credentials and details, all separated by commas.
+     **/
+    @Override
+    public String toString()
+    {
+        String comma = ", ";
+        String details = "";
+        
+        details += "CUSTOMER, "; // User type.
+
+        // Customer's login credentials and details.
+        details += this.getLoginID() + comma;
+        details += Utilities.encrypt(this.getPassword()) + comma; // Encrypted version of User's password.
+        details += this.getName() + comma;
+        details += this.getPhone() + comma;
+        details += this.getEmail() + comma;
+        details += this.getAddress().replaceAll(",", ";") + comma; // Replaces the commas in address to semi-colon to retain csv format.
+        details += Utilities.encrypt(this.getCardNumber()) + comma; // Encrypted version of User's card number.
+        details += this.getCardHolder();
+        details += "\n";
+
+        return details;  
+    }
+    
+    /**
      * This method is Overridden method from Interface InputOutput.
      * This method used after user sign up to add user new data to customer database.csv
      */
