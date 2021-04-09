@@ -1,10 +1,10 @@
 package online_shopping_cui;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * This Interface class maintains a set of tools.
- *
  *
  * @author Miguel Emmara - 18022146
  * @author Amos Foong - 18044418
@@ -15,5 +15,6 @@ import java.io.IOException;
 
 public interface InputOutput {
     void writeCSV();
-    void readCSV() throws IOException;
+
+    List<List<String>> readCSV() throws IOException;
 }

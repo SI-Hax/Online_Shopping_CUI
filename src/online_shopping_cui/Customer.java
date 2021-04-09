@@ -1,6 +1,7 @@
 package online_shopping_cui;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -8,9 +9,9 @@ import java.util.List;
 /**
  * This class holds information about a Customer.
  * It is an extension of User class. Behaviours include
- * getters and setters that uses externally-sourced 
+ * getters and setters that uses externally-sourced
  * validation methods (from Utilities class).
- * 
+ *
  * <p>Attributes:</p>
  * <ul>
  *  <li>Customer's Name</li>
@@ -20,7 +21,7 @@ import java.util.List;
  *  <li>Card Number</li>
  *  <li>Card Holder</li>
  * </ul>
- * 
+ * <p>
  * Behaviours:
  * <ul>
  *  <li>2-Parameter Constructor</li>
@@ -34,46 +35,44 @@ import java.util.List;
  * @version 1.01
  * @since 30/03/2021
  **/
-public class Customer extends User implements InputOutput
-{
+public class Customer extends User implements InputOutput {
+    public static final String FILE_PATH = "./resources/customer database.csv";
     private String name;
     private String phone;
     private String email;
     private String address;
     private String cardNumber;
     private String cardHolder;
-    public static final String filePath = "./resources/customer database.csv";
 
     /**
      * 2-parameter constructor for Customer class. This is the most basic
      * constructor. User must have at least a loginID and password to sign up.
      *
-     * @param loginID : User's login identifier.
+     * @param loginID  : User's login identifier.
      * @param password : User-defined password.
      **/
     public Customer(String loginID, String password) {
         super(loginID);
         this.setPassword(password);
     }
-    
+
     /**
      * 8-parameter constructor for Customer class. This constructor
      * accounts for essential and non-essential details of a shopper.
      * Calls relevant set methods to perform checks (for data validity),
      * if data passes checks, it is then stored into the Object's attribute.
-     * 
-     * @param loginID : User's login identifier.
-     * @param password : User-defined password.
-     * @param name : Customer's name.
-     * @param phone : Contact phone number.
-     * @param email : User's email address.
-     * @param address : Shipping/billing address.
+     *
+     * @param loginID    : User's login identifier.
+     * @param password   : User-defined password.
+     * @param name       : Customer's name.
+     * @param phone      : Contact phone number.
+     * @param email      : User's email address.
+     * @param address    : Shipping/billing address.
      * @param cardNumber : Card number.
      * @param cardHolder : Card holder's name.
      **/
-    public Customer(String loginID, String password, String name, String phone, 
-                    String email, String address, String cardNumber, String cardHolder) 
-    {
+    public Customer(String loginID, String password, String name, String phone,
+                    String email, String address, String cardNumber, String cardHolder) {
         super(loginID);
         this.setPassword(password);
         this.setName(name);
@@ -91,48 +90,52 @@ public class Customer extends User implements InputOutput
     }
 
     public void setName(String name) {
-        this.name = (name.isEmpty()? "UNKNOWN":name);
+        this.name = (name.isEmpty() ? "UNKNOWN" : name);
     }
+
     //-------------------------------------------------------
     public String getPhone() {
         return phone;
     }
 
     public void setPhone(String phone) {
-        this.phone = (phone.isEmpty()? "UNKNOWN":phone);
+        this.phone = (phone.isEmpty() ? "UNKNOWN" : phone);
     }
+
     //-------------------------------------------------------
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) throws IllegalArgumentException {
-        if(!(email.isEmpty() || email.equals(" "))) { // Checks if passed in data is not empty...
-            if(Utilities.emailIsValid(email)) { // If passed in email passes check...
+        if (!(email.isEmpty() || email.equals(" "))) { // Checks if passed in data is not empty...
+            if (Utilities.emailIsValid(email)) { // If passed in email passes check...
                 this.email = email; // Assign passed in data to instance's attribute.
             } else {
                 throw new IllegalArgumentException("Invalid email"); // Throw exception if does not satisfy pattern.
             }
         } else {
-            this.email = "UNKNOWN"; 
+            this.email = "UNKNOWN";
         }
     }
+
     //-------------------------------------------------------
     public String getAddress() {
         return address;
     }
 
     public void setAddress(String address) {
-        this.address = (address.isEmpty()? "UNKNOWN":address);
+        this.address = (address.isEmpty() ? "UNKNOWN" : address);
     }
+
     //-------------------------------------------------------
     public String getCardNumber() {
         return cardNumber;
     }
 
     public void setCardNumber(String cardNumber) throws IllegalArgumentException {
-        if(!(cardNumber.isEmpty() || cardNumber.equals(" "))) { // Checks if passed in data is not empty...
-            if(Utilities.cardIsValid(cardNumber.trim())) { // If passed in card number passes check...
+        if (!(cardNumber.isEmpty() || cardNumber.equals(" "))) { // Checks if passed in data is not empty...
+            if (Utilities.cardIsValid(cardNumber.trim())) { // If passed in card number passes check...
                 this.cardNumber = cardNumber.trim(); // Assign passed in data to instance's attribute.
             } else {
                 throw new IllegalArgumentException("Invalid card number"); // Throw exception if card does not pass the Luhn's algorithm.
@@ -141,34 +144,36 @@ public class Customer extends User implements InputOutput
             this.cardNumber = "UNKNOWN";
         }
     }
+
     //-------------------------------------------------------
     public String getCardHolder() {
         return cardHolder;
     }
 
     public void setCardHolder(String cardHolder) {
-        this.cardHolder = (cardHolder.isEmpty()? "UNKNOWN":cardHolder);
+        this.cardHolder = (cardHolder.isEmpty() ? "UNKNOWN" : cardHolder);
     }
     //-------------------------------------------------------
-    
+
     /**
      * Overridden method from superclass (User). Users that are Customers
      * are required to have a password length of at least 8 characters.
-     * 
-     * <p>In addition, the password must also meet general password requirements   
+     *
+     * <p>In addition, the password must also meet general password requirements
      * (At least: 1 Uppercase, 1 Lowercase, 1 Number, and 1 Symbol).</p>
      * Input: GeeksForGeeks
      * Output: Invalid Password!
-     *
+     * <p>
      * Input: Geek$ForGeeks7
      * Output: Valid Password
+     *
      * @param password : User defined password.
-     * @throws IllegalArgumentException 
+     * @throws IllegalArgumentException
      **/
     @Override
     public void setPassword(String password) throws IllegalArgumentException {
         // Check if password length is at least 8 characters and if its secure...
-        if(password.length() >= 8 && Utilities.passIsSecure(password)) {
+        if (password.length() >= 8 && Utilities.passIsSecure(password)) {
             this.password = password; // Saves user-defined password.
         } else {
             throw new IllegalArgumentException("Weak password."); // Throw an exception.
@@ -182,8 +187,8 @@ public class Customer extends User implements InputOutput
     @Override
     public void writeCSV() {
         try {
-            FileWriter writer = new FileWriter(filePath,true);
-            List<List<String>> rows;
+            FileWriter writer = new FileWriter(FILE_PATH, true);
+            List < List < String >> rows;
             rows = Collections.singletonList(Arrays.asList(
                     getLoginID(),
                     password,
@@ -194,7 +199,7 @@ public class Customer extends User implements InputOutput
                     getCardNumber(),
                     getCardHolder()));
 
-            for (List<String> rowData : rows) {
+            for (List < String > rowData: rows) {
                 writer.append(String.join(",", rowData));
                 writer.append("\n");
             }
@@ -210,74 +215,39 @@ public class Customer extends User implements InputOutput
     /**
      * This method is Overridden method from Interface InputOutput.
      * This method is used to read a CSV file and store in an array
+     * @return
      */
     @Override
-    public void readCSV() throws IOException {
-        try {
-            File csvFile = new File(filePath);
-            if (csvFile.isFile()) {
-                BufferedReader reader = new BufferedReader(new FileReader(filePath));
-                String line = "";
-                String[] data = new String[0];
-                while((line = reader.readLine()) != null){
-                    data = line.trim().split(",");
-                }
-                reader.close();
-            } else {
-                System.out.println("File did not exist!");
+    public List<List<String>> readCSV() {
+        List<List<String>> records = new ArrayList<List<String>>();
+        try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH))) {
+            String line = "";
+            while ((line = br.readLine()) != null) {
+                String[] values = line.split(",");
+                records.add(Arrays.asList(values));
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
+
+        return records;
     }
 
-    public boolean checkLoginID(String loginID) throws IOException {
+    public boolean checkLoginID(String loginID) {
         boolean isCorrect = false;
-        try {
-            File csvFile =  new File(filePath);
-            if (csvFile.isFile()) {
-                BufferedReader csvReader = new BufferedReader(new FileReader(filePath));
-                String line = "";
-                while ((line = csvReader.readLine()) != null) {
-                    String[] data = line.trim().split(",");
-
-                    for (String element : data) {
-                        if (element.equals(loginID) ) {
-                            isCorrect = true;
-                            break;
-                        }
-                    }
-                }
-                csvReader.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        for (int i = 0; i < readCSV().size(); i++) {
+            if (readCSV().get(i).contains(loginID))
+                isCorrect = true;
         }
 
         return isCorrect;
     }
 
-    public boolean checkPassword(String password) throws IOException {
+    public boolean checkPassword(String password) {
         boolean isCorrect = false;
-        try {
-            File csvFile = new File(filePath);
-            if (csvFile.isFile()) {
-                BufferedReader csvReader = new BufferedReader(new FileReader(filePath));
-                String line = "";
-                while ((line = csvReader.readLine()) != null) {
-                    String[] data = line.trim().split(",");
-
-                    for (String element : data) {
-                        if (element.equals(password) ) {
-                            isCorrect = true;
-                            break;
-                        }
-                    }
-                }
-                csvReader.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        for (int i = 0; i < readCSV().size(); i++) {
+            if (readCSV().get(i).contains(password))
+                isCorrect = true;
         }
 
         return isCorrect;

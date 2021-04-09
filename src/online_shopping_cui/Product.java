@@ -2,22 +2,21 @@ package online_shopping_cui;
 
 /**
  * This class contains the Product Class which encapsulates the following methods:
- * 
+ *
  * <p>Methods:</p>
  * <ul>
  *  <li>Empty Constructor</li>
  *  <li>Five-parameter Constructor</li>
  *  <li>Getters and Setters</li>
  * </ul>
- * 
- * @author  Miguel Emmara - 18022146
- * @author  Amos Foong - 18044418
- * @author  Roxy Dao - 1073633
- * @version 1.01 
- * @since   15/03/2021
+ *
+ * @author Miguel Emmara - 18022146
+ * @author Amos Foong - 18044418
+ * @author Roxy Dao - 1073633
+ * @version 1.01
+ * @since 15/03/2021
  **/
-public class Product 
-{
+public class Product {
     private String productName;
     private int productID;
     private double price;
@@ -45,6 +44,7 @@ public class Product
     public void setProductName(String productName) {
         this.productName = productName;
     }
+
     //-------------------------------------------------------
     public int getProductID() {
         return productID;
@@ -53,6 +53,7 @@ public class Product
     public void setProductID(int productID) {
         this.productID = productID;
     }
+
     //-------------------------------------------------------
     public double getPrice() {
         return price;
@@ -61,6 +62,7 @@ public class Product
     public void setPrice(double price) {
         this.price = price;
     }
+
     //-------------------------------------------------------
     public Category getCategory() {
         return category;
@@ -69,6 +71,7 @@ public class Product
     public void setCategory(Category category) {
         this.category = category;
     }
+
     //-------------------------------------------------------
     public Integer getStock() {
         return stock;
@@ -78,20 +81,19 @@ public class Product
         this.stock = stock;
     }
     //-------------------------------------------------------
-    
+
     /**
-     * To String method to serialise object. Stringifies Object's 
+     * To String method to serialise object. Stringifies Object's
      * attributes, which are separated by commas.
-     * 
-     * @return A String containing Product's name, ID, price, category, 
-     *          and stock number, all separated by commas.
+     *
+     * @return A String containing Product's name, ID, price, category,
+     * and stock number, all separated by commas.
      **/
-    @Override 
-    public String toString()
-    {
+    @Override
+    public String toString() {
         String comma = ", ";
         String pData = "";
-        
+
         // Product details separated by commas.
         pData += this.getProductName() + comma;
         pData += this.getProductID() + comma;
@@ -99,7 +101,7 @@ public class Product
         pData += this.getCategory().toString() + comma;
         pData += this.getStock();
         pData += "\n";
-        
+
         return pData;
     }
 }

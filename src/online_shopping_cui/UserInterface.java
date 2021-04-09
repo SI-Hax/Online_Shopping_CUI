@@ -8,12 +8,12 @@ import java.util.Scanner;
 public class UserInterface {
     //public static final String filePath = "./resources/customers.txt";
     //public static LinkedHashMap < String, String > data = new LinkedHashMap < > ();
-    public static final String filePath = "./resources/customer database.csvx";
+    public static final String FILE_PATH = "./resources/customer database.csv";
 
     private void mainMenu() {
         System.out.println("\n\t1. Login");
         System.out.println("\t2. Create Account");
-        // TODO view product without login or register?
+        // TODO add Guest Options
         System.out.println("\t3. Exit");
     }
 
@@ -140,14 +140,13 @@ public class UserInterface {
         System.out.print("address: ");
         String address = scanner.nextLine();
 
-
         System.out.print("Card Number: ");
         String cardNumber = scanner.nextLine();
 
         System.out.print("Card Holder Name: ");
         String cardHolder = scanner.nextLine();
 
-        Customer customer = new Customer(loginID,encryptedPassword,name,phone,email,address,cardNumber,cardHolder);
+        Customer customer = new Customer(loginID, encryptedPassword, name, phone, email, address, cardNumber, cardHolder);
         customer.writeCSV();
 
         return false;
@@ -210,9 +209,9 @@ public class UserInterface {
                 System.out.print("\tPassword: ");
                 String password = scanner.nextLine();
 
-                Customer customer = new Customer(loginID,password);
+                Customer customer = new Customer(loginID, password);
 
-                File csvFile =  new File(filePath);
+                File csvFile = new File(FILE_PATH);
                 if (csvFile.isFile()) {
                     if (customer.checkLoginID(loginID)) {
                         if (customer.checkPassword(password)) {
@@ -254,10 +253,10 @@ public class UserInterface {
     }
 
     // Old method to read form txt file to validate user login
-    private void readFile(LinkedHashMap < String, String > data) throws FileNotFoundException {
+    private void readFile(LinkedHashMap<String, String> data) throws FileNotFoundException {
         String password;
         String loginID;
-        Scanner scanner2 = new Scanner(new BufferedReader(new FileReader(filePath)));
+        Scanner scanner2 = new Scanner(new BufferedReader(new FileReader(FILE_PATH)));
 
         while (scanner2.hasNext()) {
             loginID = scanner2.next();
