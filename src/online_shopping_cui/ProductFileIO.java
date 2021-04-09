@@ -54,18 +54,21 @@ public final class ProductFileIO
             
             br.readLine(); // Skips the column headers.
             
-            while((line = br.readLine()) != null)
+            while(br.ready()) // While there are more data to be read....
             {
-                // Splits each line into individual values and store them in the String array.
-                data = line.split(","); 
+                line = br.readLine(); // Read next line and save it to local String.
                 
-                // Stores imported Product data onto a local ProductList.
-                productData.addSingleProduct(new Product(data[0],    // Product Name
-                                        Integer.parseInt(data[1]),   // ID
-                                        Double.parseDouble(data[2]), // Price 
-                                        Category.valueOf(data[3]),   // Category
-                                        Integer.parseInt(data[4]))); // Stock
+                if(!line.isEmpty()) { // Check if read line is not empty...
+                    // Splits each line into individual values and store them in the String array.
+                    data = line.split(","); 
 
+                    // Stores imported Product data onto a local ProductList.
+                    productData.addSingleProduct(new Product(data[0],    // Product Name
+                                            Integer.parseInt(data[1]),   // ID
+                                            Double.parseDouble(data[2]), // Price 
+                                            Category.valueOf(data[3]),   // Category
+                                            Integer.parseInt(data[4]))); // Stock
+                }
             }
         } catch (IOException e) {
             System.err.println("Error reading from file.");
@@ -111,7 +114,7 @@ public final class ProductFileIO
             pw = new PrintWriter(new BufferedWriter(new FileWriter(ProductFileIO.productFilepath, false)));
             
             // Prints out column headers.
-            pw.println("Product Name, Product ID, Price, Category, Stock");
+            pw.println("Product Name,Product ID,Price,Category,Stock");
            
             // Gets all the products that are in the ProductList as an ArrayList.
             ArrayList<Product> temp = products.getProductList(); 
