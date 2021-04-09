@@ -34,7 +34,7 @@ package online_shopping_cui;
 public abstract class User 
 {
     private String loginID;
-    protected String password;
+    private String password;
     private State state;
 
     /**
@@ -60,6 +60,10 @@ public abstract class User
         this.loginID = loginID.trim(); // Trim any whitespace...
     }
     //-------------------------------------------------------
+    public String getPassword() {
+        return password;
+    }
+    
     public abstract void setPassword(String password) throws IllegalArgumentException; 
     //-------------------------------------------------------
     public State getState() {
