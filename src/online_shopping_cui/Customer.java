@@ -192,8 +192,6 @@ public class Customer extends User implements InputOutput {
     {
         String comma = ", ";
         String details = "";
-        
-        details += "CUSTOMER, "; // User type.
 
         // Customer's login credentials and details.
         details += this.getLoginID() + comma;
