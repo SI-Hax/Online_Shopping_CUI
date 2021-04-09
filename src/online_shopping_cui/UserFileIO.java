@@ -160,9 +160,9 @@ public final class UserFileIO
             for (Map.Entry<String, User> user : users.entrySet()) 
             {
                 if(user.getValue() instanceof Customer) { // Check if user is an instance of a Customer...
-                    pw.println(((Customer) user.getValue()).toString()); // Write data to customer_database.csv.
+                    pw.println(user.getValue().toString()); // Write data to customer_database.csv.
                 } else if(user.getValue() instanceof Administrator) { // Check if user is an instance of an Administrator...
-                    pw2.println(((Administrator)user.getValue()).toString()); // Write data to admin_database.csv
+                    pw2.println(user.getValue().toString()); // Write data to admin_database.csv
                 }
             }
         } catch (FileNotFoundException fe) { 
