@@ -56,20 +56,24 @@ public final class UserFileIO
             
             br.readLine(); // Skips the column headers.
             
-            while((line = br.readLine()) != null)
+            while(br.ready()) // While there are more data to be read....
             {
-                // Splits each line into individual values and store them in the String array.
-                data = line.split(","); 
+                line = br.readLine(); // Read next line and save it to local String.
                 
-                // Stores imported Customer data onto a local HashMap.
-                usersData.put(data[0], new Customer(data[0], // LoginID
-                        Utilities.decrypt(data[1]),          // Password
-                        data[2],                             // Name 
-                        data[3],                             // Phone
-                        data[4],                             // Email
-                        data[5].replaceAll(";", ","),        // Address
-                        Utilities.decrypt(data[6]),          // Card number
-                        data[7]));                           // Card holder
+                if(!line.isEmpty()) { // Check if read line is not empty...
+                    // Splits each line into individual values and store them in the String array.
+                    data = line.split(","); 
+
+                    // Stores imported Customer data onto a local HashMap.
+                    usersData.put(data[0], new Customer(data[0], // LoginID
+                            Utilities.decrypt(data[1]),          // Password
+                            data[2],                             // Name 
+                            data[3],                             // Phone
+                            data[4],                             // Email
+                            data[5].replaceAll(";", ","),        // Address
+                            Utilities.decrypt(data[6]),          // Card number
+                            data[7]));                           // Card holder
+                }
             }
         } catch (IOException e) {
             System.err.println("Error reading from file.");
@@ -94,17 +98,20 @@ public final class UserFileIO
             
             br2.readLine(); // Skips the column headers.
             
-            while((line = br2.readLine()) != null)
+            while(br2.ready()) // While there are more data to be read....
             {
-                // Splits each line into individual values and store them in the String array.
-                data = line.split(","); 
+                line = br2.readLine(); // Read next line and save it to local String.
                 
-                // Stores imported Administrator data onto a local HashMap.
-                usersData.put(data[0], new Administrator(data[0], // LoginID
-                        Utilities.decrypt(data[1]),               // Password
-                        data[2],                                  // Name
-                        data[3]));                                // Email
-                                                
+                if(!line.isEmpty()) { // Check if read line is not empty...
+                    // Splits each line into individual values and store them in the String array.
+                    data = line.split(","); 
+
+                    // Stores imported Administrator data onto a local HashMap.
+                    usersData.put(data[0], new Administrator(data[0], // LoginID
+                            Utilities.decrypt(data[1]),               // Password
+                            data[2],                                  // Name
+                            data[3]));                                // Email                                                
+                }
             }
         } catch (IOException e) {
             System.err.println("Error reading from file.");
@@ -153,8 +160,8 @@ public final class UserFileIO
             pw2 = new PrintWriter(new BufferedWriter(new FileWriter(UserFileIO.adminFilepath, false)));
             
             // Prints out column headers.
-            pw.println("LoginID, Password, Name, Phone, Email, Address, Card Number, Card Holder");
-            pw2.println("LoginID, Password, Name, Email");
+            pw.println("LoginID,Password,Name,Phone,Email,Address,Card Number,Card Holder");
+            pw2.println("LoginID,Password,Name,Email");
            
             // Writes data from the passed in Hash Map onto the file specified.          
             for (Map.Entry<String, User> user : users.entrySet()) 
