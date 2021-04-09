@@ -39,7 +39,8 @@ public final class UserFileIO
      * information onto the HashMap by calling the appropriate constructor,
      * passing in the processed data.</p>
      * 
-     * @return A HashMap containing all the Users in the .csv files. 
+     * @return A HashMap containing all the Users in the .csv files. Returns 
+     *           a fresh HashMap if there are errors when reading from file.
      **/
     public static HashMap<String, User> importUserData()
     {
