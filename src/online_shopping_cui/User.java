@@ -34,7 +34,7 @@ package online_shopping_cui;
 public abstract class User 
 {
     private String loginID;
-    private String password;
+    protected String password;
     private State state;
 
     /**
