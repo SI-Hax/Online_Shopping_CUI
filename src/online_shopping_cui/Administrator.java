@@ -115,7 +115,7 @@ public class Administrator extends User {
      * attributes, which are separated by commas.
      *
      * @return A String containing User type, Admin's login
-     * credentials and details, all separated by commas.
+     *          credentials and details, all separated by commas.
      **/
     @Override
     public String toString() {
