@@ -201,7 +201,7 @@ public class Customer extends User implements InputOutput {
     @Override
     public String toString()
     {
-        String comma = ", ";
+        String comma = ",";
         String details = "";
 
         // Customer's login credentials and details.
