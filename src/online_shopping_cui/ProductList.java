@@ -1,20 +1,22 @@
-/*
- * This class contains the ProductList Class which encapsulates the following methods:
- * Methods:
- *- Empty Constructor
- *- Getters and Setters
- *
- * @author  Miguel Emmara - 18022146
- * @author  Amos Foong - 18044418
- * @author  Roxy Dao - 1073633
- * @version 1.0
- * @since   15/03/2021
- */
 package online_shopping_cui;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * This class contains the ProductList Class which encapsulates the following methods:
+ * <p>Methods:</p>
+ * <ul>
+ *  <li>Empty Constructor</li>
+ *  <li>Getters and Setters</li>
+ * </ul>
+ *
+ * @author  Miguel Emmara - 18022146
+ * @author  Amos Foong - 18044418
+ * @author  Roxy Dao - 1073633
+ * @version 1.0 
+ * @since   15/03/2021
+ **/
 public class ProductList {
     //Variables-----------------------------------------------------------------
     private HashMap<Category, ArrayList<Product>> singleProductList;
