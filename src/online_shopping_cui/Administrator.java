@@ -39,7 +39,8 @@ public class Administrator extends User
      * @param adminName : Name of the administrator.
      * @param adminEmail : Email address of the admin.
      */
-    public Administrator(String loginID, String password, String adminName, String adminEmail) {
+    public Administrator(String loginID, String password, String adminName, String adminEmail) throws IllegalArgumentException 
+    {
         super(loginID);
         this.setPassword(password);
         this.setAdminName(adminName);
@@ -91,5 +92,30 @@ public class Administrator extends User
         } else {
             throw new IllegalArgumentException("Weak password."); // Throw an exception.
         }
+    }
+    
+    /**
+     * To String method to serialise object. Stringifies Object's 
+     * attributes, which are separated by commas.
+     * 
+     * @return A String containing User type, Admin's login 
+     *          credentials and details, all separated by commas.
+     **/
+    @Override
+    public String toString()
+    {
+        String comma = ", ";
+        String details = "";
+        
+        details += "ADMIN, "; // User type.
+        
+        // Admins login credentials and details.
+        details += this.getLoginID() + comma;
+        details += Utilities.encrypt(this.getPassword()) + comma;
+        details += this.getAdminName() + comma;
+        details += this.getAdminEmail() + comma;
+        details += "\n";
+        
+        return details;
     }
 }
