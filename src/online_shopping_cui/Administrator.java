@@ -105,8 +105,6 @@ public class Administrator extends User {
         String comma = ", ";
         String details = "";
 
-        details += "ADMIN, "; // User type.
-
         // Admins login credentials and details.
         details += this.getLoginID() + comma;
         details += Utilities.encrypt(this.getPassword()) + comma;
