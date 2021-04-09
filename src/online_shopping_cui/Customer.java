@@ -243,10 +243,10 @@ public class Customer extends User implements InputOutput {
         return isCorrect;
     }
 
-    public boolean checkPassword(String password) {
+    public boolean checkPassword(String encryptedPassword) {
         boolean isCorrect = false;
         for (int i = 0; i < readCSV().size(); i++) {
-            if (readCSV().get(i).contains(password))
+            if (readCSV().get(i).contains(encryptedPassword))
                 isCorrect = true;
         }
 

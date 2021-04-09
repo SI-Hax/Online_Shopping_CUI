@@ -2,12 +2,9 @@ package online_shopping_cui;
 
 import java.io.*;
 import java.util.InputMismatchException;
-import java.util.LinkedHashMap;
 import java.util.Scanner;
 
 public class UserInterface {
-    //public static final String filePath = "./resources/customers.txt";
-    //public static LinkedHashMap < String, String > data = new LinkedHashMap < > ();
     public static final String FILE_PATH = "./resources/customer database.csv";
 
     private void mainMenu() {
@@ -34,7 +31,6 @@ public class UserInterface {
                     case 1:
                         do {
                             try {
-                                //readFile(data);
                                 System.out.println("\n\t1. Login As Customer");
                                 System.out.println("\t2. Login As Administrator");
                                 System.out.print("\nPlease Choose Your Option: ");
@@ -205,26 +201,26 @@ public class UserInterface {
                     loginID = scanner.nextLine();
                 }
 
-                // TODO Decrypt Password
                 System.out.print("\tPassword: ");
-                String password = scanner.nextLine();
+                String decryptedPassword = scanner.nextLine();
+                String encryptedPassword = Utilities.encrypt(decryptedPassword);
 
-                Customer customer = new Customer(loginID, password);
+                Customer customer = new Customer(loginID, encryptedPassword);
 
                 File csvFile = new File(FILE_PATH);
                 if (csvFile.isFile()) {
                     if (customer.checkLoginID(loginID)) {
-                        if (customer.checkPassword(password)) {
+                        if (customer.checkPassword(encryptedPassword)) {
                             System.out.println("\nLogin Successful, Welcome Back " + customer.getName());
                             stop = false;
                         } else {
                             System.out.println("\nWrong Password");
                         }
                     } else {
-                        System.out.println("Sorry, " + loginID + " is not a registered user!");
+                        System.out.println("\nSorry, " + loginID + " is not a registered user!");
                     }
                 } else {
-                    System.err.println("File did not exist!");
+                    System.err.println("\nFile did not exist!");
                     break;
                 }
             } catch (InputMismatchException | IllegalArgumentException e) {
@@ -252,18 +248,4 @@ public class UserInterface {
         Administrator administrator = new Administrator(loginID, password, adminName, adminEmail);
     }
 
-    // Old method to read form txt file to validate user login
-    private void readFile(LinkedHashMap<String, String> data) throws FileNotFoundException {
-        String password;
-        String loginID;
-        Scanner scanner2 = new Scanner(new BufferedReader(new FileReader(FILE_PATH)));
-
-        while (scanner2.hasNext()) {
-            loginID = scanner2.next();
-            password = scanner2.next();
-
-            data.put(loginID, password);
-        }
-        scanner2.close();
-    }
 }
