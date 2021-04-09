@@ -96,7 +96,7 @@ public class Product {
      **/
     @Override
     public String toString() {
-        String comma = ", ";
+        String comma = ",";
         String pData = "";
 
         // Product details separated by commas.
