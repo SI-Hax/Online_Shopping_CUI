@@ -12,9 +12,7 @@ import java.util.List;
  * @version 1.0
  * @since 04/04/2021
  **/
-
 public interface InputOutput {
-    void writeCSV();
-
-    List<List<String>> readCSV() throws IOException;
+    public void writeCSV();
+    public List<List<String>> readCSV() throws IOException;
 }
