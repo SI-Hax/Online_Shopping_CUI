@@ -1,22 +1,24 @@
-/*
-* This class contains the Product Class which encapsulates the following methods:
-* Methods:
-*- Empty Constructor
-*- Five parameter Constructor
-*- Getters and Setters
-*
-* @author  Miguel Emmara - 18022146
-* @author  Amos Foong - 18044418
-* @author  Roxy Dao - 1073633
-* @version 1.0 
-* @since   15/03/2021
- */
 package online_shopping_cui;
 
-public class Product {
-
+/**
+ * This class contains the Product Class which encapsulates the following methods:
+ * 
+ * <p>Methods:</p>
+ * <ul>
+ *  <li>Empty Constructor</li>
+ *  <li>Five-parameter Constructor</li>
+ *  <li>Getters and Setters</li>
+ * </ul>
+ * 
+ * @author  Miguel Emmara - 18022146
+ * @author  Amos Foong - 18044418
+ * @author  Roxy Dao - 1073633
+ * @version 1.01 
+ * @since   15/03/2021
+ **/
+public class Product 
+{
     private String productName;
-    private String description;
     private int productID;
     private double price;
     private Category category;
@@ -26,15 +28,16 @@ public class Product {
 
     }
 
-    public Product(String productName, int productID, double price, Category category, String description, Integer stock) {
+    public Product(String productName, int productID, double price, Category category, Integer stock) {
         this.productName = productName;
         this.productID = productID;
         this.price = price;
         this.category = category;
-        this.description = description;
         this.stock = stock;
     }
 
+    // Getters and setter methods for Object's instance data.
+    //-------------------------------------------------------
     public String getProductName() {
         return productName;
     }
@@ -42,7 +45,7 @@ public class Product {
     public void setProductName(String productName) {
         this.productName = productName;
     }
-
+    //-------------------------------------------------------
     public int getProductID() {
         return productID;
     }
@@ -50,7 +53,7 @@ public class Product {
     public void setProductID(int productID) {
         this.productID = productID;
     }
-
+    //-------------------------------------------------------
     public double getPrice() {
         return price;
     }
@@ -58,7 +61,7 @@ public class Product {
     public void setPrice(double price) {
         this.price = price;
     }
-
+    //-------------------------------------------------------
     public Category getCategory() {
         return category;
     }
@@ -66,20 +69,37 @@ public class Product {
     public void setCategory(Category category) {
         this.category = category;
     }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
+    //-------------------------------------------------------
     public Integer getStock() {
         return stock;
     }
 
     public void setStock(Integer stock) {
         this.stock = stock;
+    }
+    //-------------------------------------------------------
+    
+    /**
+     * To String method to serialise object. Stringifies Object's 
+     * attributes, which are separated by commas.
+     * 
+     * @return A String containing Product's name, ID, price, category, 
+     *          and stock number, all separated by commas.
+     **/
+    @Override 
+    public String toString()
+    {
+        String comma = ", ";
+        String pData = "";
+        
+        // Product details separated by commas.
+        pData += this.getProductName() + comma;
+        pData += this.getProductID() + comma;
+        pData += this.getPrice() + comma;
+        pData += this.getCategory().toString() + comma;
+        pData += this.getStock();
+        pData += "\n";
+        
+        return pData;
     }
 }
