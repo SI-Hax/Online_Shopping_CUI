@@ -14,14 +14,16 @@ package online_shopping_cui;
  * <p>
  * Behaviours:
  * <ul>
- *  <li>3-Parameter Constructor</li>
+ *  <li>2-Parameter Constructor</li>
+ *  <li>4-Parameter Constructor</li>
  *  <li>Getters and Setters</li>
+ *  <li>To String Method</li>
  * </ul>
  *
  * @author Miguel Emmara - 18022146
  * @author Amos Foong - 18044418
  * @author Roxy Dao - 1073633
- * @version 1.01
+ * @version 1.02
  * @since 30/03/2021
  **/
 public class Administrator extends User {
@@ -29,15 +31,30 @@ public class Administrator extends User {
     private String adminEmail;
 
     /**
-     * 3-parameter constructor for Administrator class. This is the only
-     * constructor for Administrator class. Admins must have a loginID,
-     * password, name and email.
+     * 2-parameter constructor for Administrator class. This is a
+     * constructor for Administrator class. Admins must have at least
+     * a loginID and a password. The rest will be computer-assigned.
      *
      * @param loginID    : Login identifier for admins.
-     * @param password:  Password defined by the admin.
+     * @param password   : Password defined by the admin.
+     **/
+    public Administrator(String loginID, String password) {
+        super(loginID);
+        this.setPassword(password);
+        this.setAdminName("Admin");
+        this.setAdminEmail("");
+    }
+    
+    /**
+     * 4-parameter constructor for Administrator class. This is a
+     * constructor for Administrator class. Admins can have a loginID,
+     * password, name, and email.
+     *
+     * @param loginID    : Login identifier for admins.
+     * @param password   : Password defined by the admin.
      * @param adminName  : Name of the administrator.
      * @param adminEmail : Email address of the admin.
-     */
+     **/
     public Administrator(String loginID, String password, String adminName, String adminEmail) throws IllegalArgumentException {
         super(loginID);
         this.setPassword(password);
