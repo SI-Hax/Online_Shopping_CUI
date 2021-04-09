@@ -26,13 +26,13 @@ import java.util.List;
  * <ul>
  *  <li>2-Parameter Constructor</li>
  *  <li>8-Parameter Constructor</li>
- *  <li>Getters and Setters</li>
+ *  <li>To String Method</li>
  * </ul>
  *
  * @author Miguel Emmara - 18022146
  * @author Amos Foong - 18044418
  * @author Roxy Dao - 1073633
- * @version 1.01
+ * @version 1.03
  * @since 30/03/2021
  **/
 public class Customer extends User implements InputOutput {
@@ -54,6 +54,12 @@ public class Customer extends User implements InputOutput {
     public Customer(String loginID, String password) {
         super(loginID);
         this.setPassword(password);
+        this.setName("");
+        this.setPhone("");
+        this.setEmail("");
+        this.setAddress("");
+        this.setCardNumber("");
+        this.setCardHolder("");
     }
 
     /**
@@ -161,11 +167,12 @@ public class Customer extends User implements InputOutput {
      *
      * <p>In addition, the password must also meet general password requirements
      * (At least: 1 Uppercase, 1 Lowercase, 1 Number, and 1 Symbol).</p>
-     * Input: GeeksForGeeks
-     * Output: Invalid Password!
-     * <p>
-     * Input: Geek$ForGeeks7
-     * Output: Valid Password
+     * 
+     * <p>Examples:</p>
+     * <ul>
+     *  <li>Invalid Password : GeeksForGeeks</li>
+     *  <li>Valid Password   : Geek$ForGeeks7</li>
+     * </ul>
      *
      * @param password : User defined password.
      * @throws IllegalArgumentException
