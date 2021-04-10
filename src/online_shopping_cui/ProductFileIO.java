@@ -26,7 +26,7 @@ import java.util.*;
  **/
 public final class ProductFileIO 
 {
-    public static String productFilepath = "./resources/product_database.csv";
+    public static final String PRODUCT_FILEPATH = "./resources/product_database.csv";
     
     /**
      * This method reads Products' information from a .csv file 
@@ -48,7 +48,7 @@ public final class ProductFileIO
         BufferedReader br = null;
         try
         {
-            br = new BufferedReader(new FileReader(ProductFileIO.productFilepath));
+            br = new BufferedReader(new FileReader(ProductFileIO.PRODUCT_FILEPATH));
             String line = null;
             String[] data = new String[5];
             
@@ -73,7 +73,7 @@ public final class ProductFileIO
         } catch (IOException e) {
             System.err.println("Error reading from file.");
         } finally {
-            // Close BufferedReader at last.
+            // Close BufferedReader and its wrapped objects at last.
             if (br != null) {
                 try {
                     br.close();
@@ -107,11 +107,11 @@ public final class ProductFileIO
         boolean writeSuccess = false;
         
         PrintWriter pw = null;
-        
+      
         try 
         {
             // Buffered PrintWriter which overwrites existing files with new data.
-            pw = new PrintWriter(new BufferedWriter(new FileWriter(ProductFileIO.productFilepath, false)));
+            pw = new PrintWriter(new BufferedWriter(new FileWriter(ProductFileIO.PRODUCT_FILEPATH, false)));
             
             // Prints out column headers.
             pw.println("Product Name,Product ID,Price,Category,Stock");
@@ -133,7 +133,7 @@ public final class ProductFileIO
             writeSuccess = false;
         } finally {
             if (pw != null) {
-                // Flushes then closes the PrintWriter objects.
+                // Flushes then closes the PrintWriter object and its wrapped objects.
                 pw.close();
                 writeSuccess = true;
             }    
