@@ -27,8 +27,8 @@ import java.util.*;
  **/
 public final class UserFileIO 
 {
-    public static String customerFilepath = "./resources/customer_database.csv";
-    public static String adminFilepath = "./resources/admin_database.csv";
+    public static final String CUSTOMER_FILEPATH = "./resources/customer_database.csv";
+    public static final String ADMIN_FILEPATH = "./resources/admin_database.csv";
     
     /**
      * This method reads Users' information from multiple .csv files 
@@ -50,7 +50,7 @@ public final class UserFileIO
         BufferedReader br = null;
         try
         {
-            br = new BufferedReader(new FileReader(UserFileIO.customerFilepath));
+            br = new BufferedReader(new FileReader(UserFileIO.CUSTOMER_FILEPATH));
             String line = null;
             String[] data = new String[8];
             
@@ -77,22 +77,13 @@ public final class UserFileIO
             }
         } catch (IOException e) {
             System.err.println("Error reading from file.");
-        } finally {
-            // Close BufferedReader at last.
-            if (br != null) {
-                try {
-                    br.close();
-                } catch (IOException ex) {
-                    System.err.println("Error closing buffered reader.");
-                }
-            }
-        }
+        } 
         
         // Block to import data from admin_database.csv
         BufferedReader br2 = null;
         try 
         {
-            br2 = new BufferedReader(new FileReader(UserFileIO.adminFilepath));
+            br2 = new BufferedReader(new FileReader(UserFileIO.ADMIN_FILEPATH));
             String line = null;
             String[] data = new String[4];
             
@@ -116,9 +107,10 @@ public final class UserFileIO
         } catch (IOException e) {
             System.err.println("Error reading from file.");
         } finally {
-            // Close BufferedReader at last.
-            if (br2 != null) {
+            // Close the BufferedReaders and their wrapped objects last.
+            if (br != null && br2 != null) {
                 try {
+                    br.close();
                     br2.close();
                 } catch (IOException ex) {
                     System.err.println("Error closing buffered reader.");
@@ -156,8 +148,8 @@ public final class UserFileIO
         try 
         {
             // Buffered PrintWriter which overwrites existing files with new data.
-            pw = new PrintWriter(new BufferedWriter(new FileWriter(UserFileIO.customerFilepath, false)));
-            pw2 = new PrintWriter(new BufferedWriter(new FileWriter(UserFileIO.adminFilepath, false)));
+            pw = new PrintWriter(new BufferedWriter(new FileWriter(UserFileIO.CUSTOMER_FILEPATH, false)));
+            pw2 = new PrintWriter(new BufferedWriter(new FileWriter(UserFileIO.ADMIN_FILEPATH, false)));
             
             // Prints out column headers.
             pw.println("LoginID,Password,Name,Phone,Email,Address,Card Number,Card Holder");
@@ -180,7 +172,7 @@ public final class UserFileIO
             writeSuccess = false;
         } finally {
             if (pw != null && pw2 != null) {
-                // Flushes then closes the PrintWriter objects.
+                // Flushes then closes the PrintWriters and their wrapped objects.
                 pw.close();
                 pw2.close();
                 writeSuccess = true;
