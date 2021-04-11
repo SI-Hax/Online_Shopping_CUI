@@ -68,11 +68,9 @@ public class ProductList {
      * 
      * @return string of products
      */
-    public String searchProduct(Category category){
-        HashMap<Category, ArrayList<Product>> productByCategory = new HashMap<Category, ArrayList<Product>>();
-        
-        if(productByCategory.containsKey(category)){
-            return "The Products in " + category + "is " + productByCategory.get(category);
+    public String searchProduct(Category category){        
+        if(singleProductList.containsKey(category)){
+            return "The Products in " + category + "is " + singleProductList.get(category);
         }
         return "No products under this category";
     }
