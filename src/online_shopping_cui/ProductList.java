@@ -46,7 +46,7 @@ public class ProductList {
         tempList.add(newProductEntry);
         singleProductList.put(newProductEntry.getCategory(), tempList);
     }
-
+    
     /**
      * Core function: Get all product entries
      *
@@ -61,6 +61,33 @@ public class ProductList {
         }
 
         return allProducts;
+    }
+    
+    /**
+     * Search for a product by key.
+     * 
+     * @return string of products
+     */
+    public String searchProduct(Category category){
+        HashMap<Category, ArrayList<Product>> productByCategory = new HashMap<Category, ArrayList<Product>>();
+        
+        if(productByCategory.containsKey(category)){
+            return "The Products in " + category + "is " + productByCategory.get(category);
+        }
+        return "No products under this category";
+    }
+    
+    /**
+     * Checks if Category has the product
+     * 
+     * @return true if it does
+     * @return false otherwise
+     */
+    public boolean categoryHasProduct(Category category){
+        if(singleProductList.containsKey(category)){
+            return true;
+        }
+        return false;
     }
 
     //Getters and Setters-------------------------------------------------------
