@@ -3,6 +3,7 @@ package online_shopping_cui;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * This class contains the ProductList Class which encapsulates the following methods:
@@ -77,7 +78,15 @@ public class ProductList {
         return "No products under this category";
     }
     
-  
+    /**
+     * Remove product from singleProductList
+     * 
+     * @param category
+     * @param index 
+     */
+    public void removeProduct(Category category, int index){       
+        this.singleProductList.get(category).remove(index); 
+    }
     
     /**
      * Checks if Category has the product
