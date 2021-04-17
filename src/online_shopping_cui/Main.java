@@ -23,8 +23,11 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        System.out.println("Welcome To Shop & Run Online Shopping");
+        System.out.println("Welcome To Shop & Run Online Shopping");           
         UserInterface userInterface = new UserInterface();
+        userInterface.mainMenu();
         userInterface.menuSelections();
+        userInterface.displayProducts();
+        userInterface.addToCart();
     }
 }
