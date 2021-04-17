@@ -25,9 +25,9 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("Welcome To Shop & Run Online Shopping");           
         UserInterface userInterface = new UserInterface();
-        userInterface.mainMenu();
         userInterface.menuSelections();
         userInterface.displayProducts();
         userInterface.addToCart();
+        
     }
 }
