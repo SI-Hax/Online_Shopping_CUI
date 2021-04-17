@@ -27,6 +27,7 @@ package online_shopping_cui;
  * @since 30/03/2021
  **/
 public class Administrator extends User {
+    //Veriables----------------------------------------------------------------
     private String adminName;
     private String adminEmail;
 
@@ -45,6 +46,7 @@ public class Administrator extends User {
         this.setAdminEmail("");
     }
     
+    //Constructors-------------------------------------------------------------
     /**
      * 4-parameter constructor for Administrator class. This is a
      * constructor for Administrator class. Admins can have a loginID,
@@ -62,8 +64,7 @@ public class Administrator extends User {
         this.setAdminEmail(adminEmail);
     }
 
-    // Getters and setter methods for Object's instance data.
-    //-------------------------------------------------------
+    // Getters and Setters-----------------------------------------------------
     public String getAdminName() {
         return adminName;
     }
@@ -72,7 +73,6 @@ public class Administrator extends User {
         this.adminName = (adminName.isEmpty() ? "UNKNOWN" : adminName);
     }
 
-    //-------------------------------------------------------
     public String getAdminEmail() {
         return adminEmail;
     }
@@ -90,7 +90,6 @@ public class Administrator extends User {
             this.adminEmail = "UNKNOWN";
         }
     }
-    //-------------------------------------------------------
 
     /**
      * Overridden method from superclass (User). Users that are Administrators
