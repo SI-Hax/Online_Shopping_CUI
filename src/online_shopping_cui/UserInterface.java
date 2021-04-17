@@ -1,26 +1,25 @@
 package online_shopping_cui;
 
-import java.io.*;
 import java.util.*;
 
 public class UserInterface {
-    public static final String FILE_PATH = "./resources/customer database.csv";
-    public static Scanner scanner;
-    public HashMap<String, User> users;
-    public User currentUser;
-    public boolean mainMenuLoop, accountCreationSuccess, loginSuccess;
+    protected static Scanner scanner;
+    protected HashMap<String, User> users;
+    protected ProductList products;
+    protected User currentUser;
+    protected boolean mainMenuLoop, accountCreationSuccess, loginSuccess;
     
     public UserInterface()
     {
         this.scanner = new Scanner(System.in);
         this.users = UserFileIO.importUserData();
+        this.products = ProductFileIO.importProductData();
         this.mainMenuLoop = true;
         this.accountCreationSuccess = false;
         this.loginSuccess = false;
-        
     }
 
-    private void mainMenu() 
+    public void mainMenu() 
     {
         System.out.println("\n\t1. Login");
         System.out.println("\t2. Create Account");
@@ -29,13 +28,8 @@ public class UserInterface {
 
     public void menuSelections() 
     {
-        boolean stop = true;
-        boolean stop2 = true;
-
-
         do {
             try {
-                mainMenu();
                 System.out.print("\nPlease Choose Your Option: ");
                 int uAnswer = scanner.nextInt();
                 scanner.nextLine();
@@ -44,7 +38,9 @@ public class UserInterface {
                     case 1: // User selects login in level 1 menu...
                         do {
                             loginSuccess = loginSelection();
+                            //break;
                         } while (!loginSuccess);
+                        mainMenuLoop = false;
                         break;
                     // Choose To Register As Administrator Or Customer
                     case 2:
@@ -101,7 +97,6 @@ public class UserInterface {
         System.out.println("\n\t1. Login As Customer");
         System.out.println("\t2. Login As Administrator");
         System.out.println("\t3. Continue as Guest");
-        System.out.println("\t");
         System.out.print("\nPlease Choose Your Option: ");
         
         try 
@@ -111,14 +106,14 @@ public class UserInterface {
 
             switch (userSelection) {
                 case 1:
-                    customerLogin();
-                    return false;
+                    customerLogin(); // Login for customer.
+                    return true;
                 case 2:
-                    adminLogin();
-                    return false;
+                    adminLogin(); // Login for admins.
+                    return true;
                 case 3:
                     // TODO: Something...
-                    return false;
+                    return true;
                 default:
                     throw new IndexOutOfBoundsException();
             }
@@ -131,7 +126,7 @@ public class UserInterface {
             scanner.nextLine();
         } 
         
-        return true;
+        return false;
     }
     
     private boolean customerLogin() 
@@ -275,5 +270,26 @@ public class UserInterface {
         
         return false;
     }
-
+    
+    public void displayProducts(){
+        int counter = 1;
+        
+        for(Map.Entry<Category, ArrayList<Product>> category : products.getSingleProductList().entrySet()) {
+            for(Product product: category.getValue()) {
+                System.out.println("");
+                System.out.println("\t" + (counter++) + ". " + "Product Name: " + product.getProductName() + " Stock: " + product.getStock() + 
+                       " Price: " + product.getPrice());
+            }
+        }
+    }
+    
+    public void addToCart() {
+        System.out.print("\nPlease select a product to add to cart: ");
+        int productSelection = scanner.nextInt();
+        
+        for(int i = 1; i <= productSelection; i++) {
+            
+        }
+        
+    }
 }
