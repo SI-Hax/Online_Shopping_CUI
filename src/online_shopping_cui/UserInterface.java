@@ -6,6 +6,7 @@ public class UserInterface {
     protected static Scanner scanner;
     protected HashMap<String, User> users;
     protected ProductList products;
+    protected ShoppingCart cart;
     protected User currentUser;
     protected boolean mainMenuLoop, accountCreationSuccess, loginSuccess;
     
@@ -14,6 +15,7 @@ public class UserInterface {
         this.scanner = new Scanner(System.in);
         this.users = UserFileIO.importUserData();
         this.products = ProductFileIO.importProductData();
+        this.cart = new ShoppingCart(this.currentUser);
         this.mainMenuLoop = true;
         this.accountCreationSuccess = false;
         this.loginSuccess = false;
@@ -287,9 +289,19 @@ public class UserInterface {
         System.out.print("\nPlease select a product to add to cart: ");
         int productSelection = scanner.nextInt();
         
-        for(int i = 1; i <= productSelection; i++) {
-            
-        }
+        System.out.print("Quantity: ");
+        int quantity = scanner.nextInt();
         
+        int counter = 1;
+        
+        for(Map.Entry<Category, ArrayList<Product>> category : products.getSingleProductList().entrySet()) {
+            for(Product product: category.getValue()) {
+                if(counter == productSelection) { // If the counter reaches user-specified index...
+                    cart.addToCart(product, quantity); // Add the product to cart.
+                    break;
+                }
+                counter++; // Increment counter until user-selected product is found.
+            }
+        }  
     }
 }
