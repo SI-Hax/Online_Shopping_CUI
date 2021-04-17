@@ -81,8 +81,8 @@ public class ProductList {
     /**
      * Remove product from singleProductList
      * 
-     * @param category
-     * @param index 
+     * @param category : Product category
+     * @param index : Index of product within that category
      */
     public void removeProduct(Category category, int index){       
         this.singleProductList.get(category).remove(index); 
