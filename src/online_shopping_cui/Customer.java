@@ -35,7 +35,7 @@ import java.util.List;
  * @version 1.03
  * @since 30/03/2021
  **/
-public class Customer extends User implements InputOutput {
+public class Customer extends User {
     public static final String FILE_PATH = "./resources/customer database.csv";
     private String name;
     private String phone;
