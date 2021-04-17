@@ -2,6 +2,7 @@ package online_shopping_cui;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * This class contains the ProductList Class which encapsulates the following methods:
@@ -19,19 +20,20 @@ import java.util.HashMap;
  **/
 public class ProductList {
     //Variables-----------------------------------------------------------------
-    private HashMap<Category, ArrayList<Product>> singleProductList;
+    private LinkedHashMap<Category, ArrayList<Product>> singleProductList;
 
     //Constructors--------------------------------------------------------------
     public ProductList() {
-        singleProductList = new HashMap<Category, ArrayList<Product>>();
+        singleProductList = new LinkedHashMap<Category, ArrayList<Product>>();
     }
 
     public ProductList(Product newProduct) {
-        singleProductList = new HashMap<Category, ArrayList<Product>>();
+        singleProductList = new LinkedHashMap<Category, ArrayList<Product>>();
 
         addSingleProduct(newProduct);
     }
 
+   
     /**
      * Core function: Adds a Product object into the entry list by Category
      *
@@ -68,12 +70,14 @@ public class ProductList {
      * 
      * @return string of products
      */
-    public String searchProduct(Category category){        
+    public String searchProduct(Category category){
         if(singleProductList.containsKey(category)){
             return "The Products in " + category + "is " + singleProductList.get(category);
         }
         return "No products under this category";
     }
+    
+  
     
     /**
      * Checks if Category has the product
@@ -89,11 +93,11 @@ public class ProductList {
     }
 
     //Getters and Setters-------------------------------------------------------
-    public HashMap<Category, ArrayList<Product>> getSingleProductList() {
+    public LinkedHashMap<Category, ArrayList<Product>> getSingleProductList() {
         return singleProductList;
     }
 
-    public void setSingleProductList(HashMap<Category, ArrayList<Product>> singleProductList) {
+    public void setSingleProductList(LinkedHashMap<Category, ArrayList<Product>> singleProductList) {
         this.singleProductList = singleProductList;
     }
 }
