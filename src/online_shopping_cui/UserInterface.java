@@ -6,7 +6,7 @@ public class UserInterface {
     protected static Scanner scanner;
     protected HashMap<String, User> users;
     protected ProductList products;
-    protected ShoppingCart cart;
+    
     protected User currentUser;
     protected boolean mainMenuLoop, accountCreationSuccess, loginSuccess;
     
@@ -14,8 +14,7 @@ public class UserInterface {
     {
         this.scanner = new Scanner(System.in);
         this.users = UserFileIO.importUserData();
-        this.products = ProductFileIO.importProductData();
-        this.cart = new ShoppingCart(this.currentUser);
+        this.products = ProductFileIO.importProductData(); 
         this.mainMenuLoop = true;
         this.accountCreationSuccess = false;
         this.loginSuccess = false;
@@ -32,6 +31,7 @@ public class UserInterface {
     {
         do {
             try {
+                this.mainMenu();
                 System.out.print("\nPlease Choose Your Option: ");
                 int uAnswer = scanner.nextInt();
                 scanner.nextLine();
@@ -56,7 +56,7 @@ public class UserInterface {
 
                                 switch (uAnswer) {
                                     case 1:
-                                        accountCreationSuccess = createCustomerAccount();
+                                        accountCreationSuccess = createCustomerAccount();                                        
                                         break;
                                     case 2:
                                         accountCreationSuccess = createAdministratorAccount();
@@ -65,10 +65,10 @@ public class UserInterface {
                                         throw new IndexOutOfBoundsException();
                                 }
                             } catch (IndexOutOfBoundsException e) {
-                                System.err.println("Please Enter The Correct Options, 1 - 2");
+                                System.err.println("Please Enter The Correct Options, 1 - 3");
                                 System.err.flush();
                             } catch (InputMismatchException | IllegalArgumentException e) {
-                                System.err.println("Please Enter The Correct Options, 1 - 2");
+                                System.err.println(e.getMessage());
                                 System.err.flush();
                                 scanner.nextLine();
                             }
@@ -84,10 +84,12 @@ public class UserInterface {
             } catch (IndexOutOfBoundsException e) {
                 System.err.println("Please Enter The Correct Options, 1 - 3");
                 System.err.flush();
-            } catch (InputMismatchException | IllegalArgumentException e) {
+            } catch (InputMismatchException e) {
                 System.err.println("Please Enter The Correct Options, 1 - 3");
                 System.err.flush();
                 scanner.nextLine();
+            } catch (IllegalArgumentException e) {
+                System.err.println(e.getMessage());
             }
         } while (mainMenuLoop);
     }
@@ -245,7 +247,7 @@ public class UserInterface {
 
         this.users.put(loginID, new Customer(loginID, password, name, phone, email, address, cardNumber, cardHolder));
 
-        return false;
+        return true;
     }
 
     private boolean createAdministratorAccount() 
@@ -270,7 +272,7 @@ public class UserInterface {
 
         this.users.put(loginID, new Administrator(loginID, password, name, email));
         
-        return false;
+        return true;
     }
     
     public void displayProducts(){
@@ -288,14 +290,15 @@ public class UserInterface {
     }
     
     public void addToCart() {
-     boolean run = true;
+        ShoppingCart cart = new ShoppingCart(this.currentUser);
+        boolean run = true;
      
         while(run){
             System.out.print("\nPlease select a product to add to cart (0 to stop): ");
             int productSelection = scanner.nextInt();
 
-            if(productSelection == 0){
-                run = false;
+            if(productSelection == 0){ // If user selects to stop adding products...
+                run = false; // 
                 continue;
             }
             
@@ -304,18 +307,20 @@ public class UserInterface {
 
             int counter = 1;
             
-
+            // For each loop to traverse through each key (Category) of the LinkedHashMap.
             for(Map.Entry<Category, ArrayList<Product>> category : products.getSingleProductList().entrySet()) {
+                // For each loop to traverse through each value (ArrayList of Products for a specific Category) of the LinkedHashMap.
                 for(Product product: category.getValue()) {
                     if(counter == productSelection) { // If the counter reaches user-specified index...
-                        this.cart.addToCart(product, quantity); // Add the product to cart.
-                        break;
+                       cart.addToCart(product, quantity); // Add the product to cart.
+                       //break; // Exit loop.
                     }
                     counter++; // Increment counter until user-selected product is found.
                 }
             }        
         }
         
-        System.out.println(this.cart.cartList());
+        System.out.println(cart.cartList());
+        System.out.println(cart.generateInvoice(this.currentUser));
     }
 }
