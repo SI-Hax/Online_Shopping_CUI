@@ -275,33 +275,47 @@ public class UserInterface {
     
     public void displayProducts(){
         int counter = 1;
+        System.out.println("");
         
+        // For each loop to traverse through each key (Category) of the LinkedHashMap.
         for(Map.Entry<Category, ArrayList<Product>> category : products.getSingleProductList().entrySet()) {
+            // For each loop to traverse through each value (ArrayList of Products for a specific Category) of the LinkedHashMap.
             for(Product product: category.getValue()) {
-                System.out.println("");
                 System.out.println("\t" + (counter++) + ". " + "Product Name: " + product.getProductName() + " Stock: " + product.getStock() + 
-                       " Price: " + product.getPrice());
+                       " Price: $" + product.getPrice());
             }
         }
     }
     
     public void addToCart() {
-        System.out.print("\nPlease select a product to add to cart: ");
-        int productSelection = scanner.nextInt();
-        
-        System.out.print("Quantity: ");
-        int quantity = scanner.nextInt();
-        
-        int counter = 1;
-        
-        for(Map.Entry<Category, ArrayList<Product>> category : products.getSingleProductList().entrySet()) {
-            for(Product product: category.getValue()) {
-                if(counter == productSelection) { // If the counter reaches user-specified index...
-                    cart.addToCart(product, quantity); // Add the product to cart.
-                    break;
-                }
-                counter++; // Increment counter until user-selected product is found.
+     boolean run = true;
+     
+        while(run){
+            System.out.print("\nPlease select a product to add to cart (0 to stop): ");
+            int productSelection = scanner.nextInt();
+
+            if(productSelection == 0){
+                run = false;
+                continue;
             }
-        }  
+            
+            System.out.print("Quantity: ");
+            int quantity = scanner.nextInt();
+
+            int counter = 1;
+            
+
+            for(Map.Entry<Category, ArrayList<Product>> category : products.getSingleProductList().entrySet()) {
+                for(Product product: category.getValue()) {
+                    if(counter == productSelection) { // If the counter reaches user-specified index...
+                        this.cart.addToCart(product, quantity); // Add the product to cart.
+                        break;
+                    }
+                    counter++; // Increment counter until user-selected product is found.
+                }
+            }        
+        }
+        
+        System.out.println(this.cart.cartList());
     }
 }
