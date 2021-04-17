@@ -36,6 +36,7 @@ import java.util.List;
  * @since 30/03/2021
  **/
 public class Customer extends User {
+    //Variables----------------------------------------------------------------
     public static final String FILE_PATH = "./resources/customer database.csv";
     private String name;
     private String phone;
@@ -44,6 +45,7 @@ public class Customer extends User {
     private String cardNumber;
     private String cardHolder;
 
+    //Constructors-------------------------------------------------------------
     /**
      * 2-parameter constructor for Customer class. This is the most basic
      * constructor. User must have at least a loginID and password to sign up.
@@ -90,7 +92,6 @@ public class Customer extends User {
     }
 
     // Getters and setter methods for Object's instance data.
-    //-------------------------------------------------------
     public String getName() {
         return name;
     }
@@ -99,7 +100,6 @@ public class Customer extends User {
         this.name = (name.isEmpty() ? "UNKNOWN" : name);
     }
 
-    //-------------------------------------------------------
     public String getPhone() {
         return phone;
     }
@@ -108,7 +108,6 @@ public class Customer extends User {
         this.phone = (phone.isEmpty() ? "UNKNOWN" : phone);
     }
 
-    //-------------------------------------------------------
     public String getEmail() {
         return email;
     }
@@ -127,7 +126,6 @@ public class Customer extends User {
         }
     }
 
-    //-------------------------------------------------------
     public String getAddress() {
         return address;
     }
@@ -136,7 +134,6 @@ public class Customer extends User {
         this.address = (address.isEmpty() ? "UNKNOWN" : address);
     }
 
-    //-------------------------------------------------------
     public String getCardNumber() {
         return cardNumber;
     }
@@ -155,7 +152,6 @@ public class Customer extends User {
         }
     }
 
-    //-------------------------------------------------------
     public String getCardHolder() {
         return cardHolder;
     }
@@ -163,7 +159,6 @@ public class Customer extends User {
     public void setCardHolder(String cardHolder) {
         this.cardHolder = (cardHolder.isEmpty() ? "UNKNOWN" : cardHolder);
     }
-    //-------------------------------------------------------
 
     /**
      * Overridden method from superclass (User). Users that are Customers
