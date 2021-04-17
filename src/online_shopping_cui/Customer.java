@@ -91,7 +91,7 @@ public class Customer extends User {
         this.setCardHolder(cardHolder);
     }
 
-    // Getters and setter methods for Object's instance data.
+    //Getter and Setters----------------------------------------------------------------
     public String getName() {
         return name;
     }
