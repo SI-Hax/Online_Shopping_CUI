@@ -225,9 +225,17 @@ public class UserInterface {
 
     public boolean createCustomerAccount()
     {
-        // TODO data validation in each prompt
+        String loginID;
+        String password;
+        String name;
+        String phone;
+        String email;
+        String address;
+        String cardNumber;
+        String cardHolder;
+
         System.out.print("\nLogin ID: ");
-        String loginID = scanner.nextLine();
+        loginID = scanner.nextLine();
 
         // While user-defined login ID is empty or exists within collection...
         while (loginID.isEmpty() || users.containsKey(loginID)) {
@@ -236,55 +244,131 @@ public class UserInterface {
             loginID = scanner.nextLine();
         }
 
-        System.out.print("Password: ");
-        String password = scanner.nextLine();
+        do {
+            System.out.print("Password: ");
+            password = scanner.nextLine();
 
-        System.out.print("Full Name: ");
-        String name = scanner.nextLine();
+            if (!test.Utilities.passIsSecure(password)) {
+                System.out.print("Password is not strong enough, try another: ");
+            }
+            // While user-defined password is not secure
+        } while(!test.Utilities.passIsSecure(password));
 
-        System.out.print("Phone Number: ");
-        String phone = scanner.nextLine();
+        do {
+            System.out.print("Full Name: ");
+            name = scanner.nextLine();
 
-        System.out.print("Email: ");
-        String email = scanner.nextLine();
+            if (name.isEmpty()) {
+                System.out.print("Full Name cannot be empty: ");
+            }
+            // While user-defined name is empty
+        } while(name.isEmpty());
 
-        System.out.print("Address: ");
-        String address = scanner.nextLine();
+        do {
+            System.out.print("Phone Number: ");
+            phone = scanner.nextLine();
 
-        System.out.print("Card Number: ");
-        String cardNumber = scanner.nextLine();
+            if (phone.isEmpty()) {
+                System.out.print("Phone Number cannot be empty: ");
+            }
+            // While user-defined phone is empty
+        } while(phone.isEmpty());
 
-        System.out.print("Card Holder Name: ");
-        String cardHolder = scanner.nextLine();
+        do {
+            System.out.print("Email: ");
+            email = scanner.nextLine();
+
+            if (!Utilities.emailIsValid(email)) {
+                System.out.print("Please enter a valid email address: ");
+            }
+            // While user-defined email is invalid
+        } while(!Utilities.emailIsValid(email));
+
+        do {
+            System.out.print("Address: ");
+            address = scanner.nextLine();
+
+            if (address.isEmpty()) {
+                System.out.print("Address cannot be empty: ");
+            }
+            // While user-defined address is empty
+        } while(address.isEmpty());
+
+        do {
+            System.out.print("Card Number: ");
+            cardNumber = scanner.nextLine();
+
+            if (!Utilities.cardIsValid(cardNumber) || cardNumber.isEmpty()) {
+                System.out.print("Please enter a valid card number: ");
+            }
+            // While user-defined cardNumber invalid
+        } while(!Utilities.cardIsValid(cardNumber) || cardNumber.isEmpty());
+
+        do {
+            System.out.print("Card Holder Name: ");
+            cardHolder = scanner.nextLine();
+
+            if (cardHolder.isEmpty()) {
+                System.out.print("Card Holder Name cannot be empty: ");
+            }
+            // While user-defined cardHolder is empty
+        } while(cardHolder.isEmpty());
 
         this.users.put(loginID, new Customer(loginID, password, name, phone, email, address, cardNumber, cardHolder));
 
-        return true;
+        return false;
     }
 
     private boolean createAdministratorAccount()
     {
-        System.out.print("\nLogin ID: ");
-        String loginID = scanner.nextLine();
+        String loginID;
+        String password;
+        String name;
+        String email;
 
+        System.out.print("\nLogin ID: ");
+        loginID = scanner.nextLine();
+
+        // While user-defined login ID is empty or exists within collection...
         while (loginID.isEmpty() || users.containsKey(loginID)) {
             // Promp user for another login id.
             System.out.print("Please choose another login ID:");
             loginID = scanner.nextLine();
         }
 
-        System.out.print("Password: ");
-        String password = scanner.nextLine();
+        do {
+            System.out.print("Password: ");
+            password = scanner.nextLine();
 
-        System.out.print("Name: ");
-        String name = scanner.nextLine();
+            if (!test.Utilities.passIsSecure(password)) {
+                System.out.print("Password is not strong enough, try another: ");
+            }
+            // While user-defined password is not secure
+        } while(!test.Utilities.passIsSecure(password));
 
-        System.out.print("Email: ");
-        String email = scanner.nextLine();
+        do {
+            System.out.print("Full Name: ");
+            name = scanner.nextLine();
+
+            if (name.isEmpty()) {
+                System.out.print("Full Name cannot be empty: ");
+            }
+            // While user-defined name is empty
+        } while(name.isEmpty());
+
+        do {
+            System.out.print("Email: ");
+            email = scanner.nextLine();
+
+            if (!Utilities.emailIsValid(email)) {
+                System.out.print("Please enter a valid email address: ");
+            }
+            // While user-defined email is invalid
+        } while(!Utilities.emailIsValid(email));
 
         this.users.put(loginID, new Administrator(loginID, password, name, email));
 
-        return true;
+        return false;
     }
 
     public void displayProducts()
