@@ -1,9 +1,7 @@
 package online_shopping_cui;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * This class contains the ProductList Class which encapsulates the following methods:
@@ -72,7 +70,7 @@ public class ProductList {
      * @return string of products
      */
     public String searchProduct(Category category){
-        if(singleProductList.containsKey(category)){
+        if (singleProductList.containsKey(category)) {
             return "The Products in " + category + "is " + singleProductList.get(category);
         }
         return "No products under this category";
@@ -95,10 +93,7 @@ public class ProductList {
      * @return false otherwise
      */
     public boolean categoryHasProduct(Category category){
-        if(singleProductList.containsKey(category)){
-            return true;
-        }
-        return false;
+        return singleProductList.containsKey(category);
     }
 
     //Getters and Setters-------------------------------------------------------

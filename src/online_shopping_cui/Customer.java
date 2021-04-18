@@ -1,11 +1,5 @@
 package online_shopping_cui;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 /**
  * This class holds information about a Customer.
  * It is an extension of User class. Behaviours include
@@ -36,8 +30,6 @@ import java.util.List;
  * @since 30/03/2021
  **/
 public class Customer extends User {
-    //Variables----------------------------------------------------------------
-    public static final String FILE_PATH = "./resources/customer database.csv";
     private String name;
     private String phone;
     private String email;
