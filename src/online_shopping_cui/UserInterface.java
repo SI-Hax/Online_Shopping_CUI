@@ -2,37 +2,45 @@ package online_shopping_cui;
 
 import java.util.*;
 
+/**
+ * User Interface Class
+ *
+ * @author Miguel Emmara - 18022146
+ * @author Amos Foong - 18044418
+ * @author Roxy Dao - 1073633
+ * @version 1.0
+ * @since 18/04/2021
+ **/
 public class UserInterface {
     protected static Scanner scanner;
     protected HashMap<String, User> users;
     protected ProductList products;
-    protected ShoppingCart cart;
+
     protected User currentUser;
     protected boolean mainMenuLoop, accountCreationSuccess, loginSuccess;
-    
+
     public UserInterface()
     {
         this.scanner = new Scanner(System.in);
         this.users = UserFileIO.importUserData();
         this.products = ProductFileIO.importProductData();
-        this.cart = new ShoppingCart(this.currentUser);
         this.mainMenuLoop = true;
         this.accountCreationSuccess = false;
         this.loginSuccess = false;
     }
 
-    public void mainMenu() 
+    public void mainMenu()
     {
         System.out.println("\n\t1. Login");
         System.out.println("\t2. Create Account");
         System.out.println("\t3. Exit");
     }
 
-    public void menuSelections() 
+    public void menuSelections()
     {
         do {
             try {
-                mainMenu();
+                this.mainMenu();
                 System.out.print("\nPlease Choose Your Option: ");
                 int uAnswer = scanner.nextInt();
                 scanner.nextLine();
@@ -66,10 +74,10 @@ public class UserInterface {
                                         throw new IndexOutOfBoundsException();
                                 }
                             } catch (IndexOutOfBoundsException e) {
-                                System.err.println("Please Enter The Correct Options, 1 - 2");
+                                System.err.println("Please Enter The Correct Options, 1 - 3");
                                 System.err.flush();
                             } catch (InputMismatchException | IllegalArgumentException e) {
-                                System.err.println("Please Enter The Correct Options, 1 - 2");
+                                System.err.println(e.getMessage());
                                 System.err.flush();
                                 scanner.nextLine();
                             }
@@ -85,24 +93,26 @@ public class UserInterface {
             } catch (IndexOutOfBoundsException e) {
                 System.err.println("Please Enter The Correct Options, 1 - 3");
                 System.err.flush();
-            } catch (InputMismatchException | IllegalArgumentException e) {
+            } catch (InputMismatchException e) {
                 System.err.println("Please Enter The Correct Options, 1 - 3");
                 System.err.flush();
                 scanner.nextLine();
+            } catch (IllegalArgumentException e) {
+                System.err.println(e.getMessage());
             }
         } while (mainMenuLoop);
     }
-    
+
     public boolean loginSelection()
     {
         int userSelection = -1;
-        
+
         System.out.println("\n\t1. Login As Customer");
         System.out.println("\t2. Login As Administrator");
         System.out.println("\t3. Continue as Guest");
         System.out.print("\nPlease Choose Your Option: ");
-        
-        try 
+
+        try
         {
             userSelection = scanner.nextInt();
             scanner.nextLine();
@@ -127,15 +137,15 @@ public class UserInterface {
             System.err.println("Please Enter The Correct Options, 1 - 3");
             System.err.flush();
             scanner.nextLine();
-        } 
-        
+        }
+
         return false;
     }
-    
-    private boolean customerLogin() 
+
+    private boolean customerLogin()
     {
         boolean promptLogin = true;
-        do 
+        do
         {
             System.out.print("\n\tLogin ID: ");
             String loginID = scanner.nextLine();
@@ -160,7 +170,7 @@ public class UserInterface {
                         return false; // Exits method and returns false to caller to go back up a level for menu.
                     } else { // Otherwise....
                         System.out.println("Passwords do not match!");
-                        promptPassword = true; 
+                        promptPassword = true;
                     }
                 } while(promptPassword);
             } else { // If user-specified login ID is non-existent...
@@ -168,14 +178,14 @@ public class UserInterface {
                 promptLogin = true;
             }
         } while(promptLogin);
-        
+
         return false;
     }
 
     private boolean adminLogin()
     {
         boolean promptLogin = true;
-        do 
+        do
         {
             System.out.print("\n\tLogin ID: ");
             String loginID = scanner.nextLine();
@@ -195,13 +205,13 @@ public class UserInterface {
                         System.out.println("\nLogin Successful, Welcome Back " + ((Administrator)currentUser).getAdminName()); // Welcomes user.
                         promptLogin = false;
                         promptPassword = false;
-                        adminPanel();
+                        adminPanel(); // Enter Admin Privileges
                         return true; // Exits method and returns true to caller.
                     } else if (password.equalsIgnoreCase("b")) { // If user wishes to go back up a level...
                         return false; // Exits method and returns false to caller to go back up a level for menu.
                     } else { // Otherwise....
                         System.out.println("Passwords do not match!");
-                        promptPassword = true; 
+                        promptPassword = true;
                     }
                 } while(promptPassword);
             } else { // If user-specified login ID is non-existent...
@@ -209,12 +219,13 @@ public class UserInterface {
                 promptLogin = true;
             }
         } while(promptLogin);
-        
+
         return false;
     }
 
     public boolean createCustomerAccount()
     {
+        // TODO data validation in each prompt
         System.out.print("\nLogin ID: ");
         String loginID = scanner.nextLine();
 
@@ -228,77 +239,34 @@ public class UserInterface {
         System.out.print("Password: ");
         String password = scanner.nextLine();
 
-        // While user-defined password is not secure
-        while(!test.Utilities.passIsSecure(password)) {
-            System.out.print("Password is not strong enough, try another: ");
-            password = scanner.nextLine();
-        }
-
         System.out.print("Full Name: ");
         String name = scanner.nextLine();
-
-        // While user-defined name is empty
-        while (name.isEmpty()) {
-            System.out.print("Full Name cannot be empty: ");
-            name = scanner.nextLine();
-        }
 
         System.out.print("Phone Number: ");
         String phone = scanner.nextLine();
 
-        // While user-defined phone is empty
-        while (phone.isEmpty()) {
-            System.out.print("Phone Number cannot be empty: ");
-            phone = scanner.nextLine();
-        }
-
         System.out.print("Email: ");
         String email = scanner.nextLine();
-
-        // While user-defined email is invalid
-        while (!test.Utilities.emailIsValid(email)) {
-            System.out.print("Please enter a valid email address: ");
-            email = scanner.nextLine();
-        }
 
         System.out.print("Address: ");
         String address = scanner.nextLine();
 
-        // While user-defined address is empty
-        while (address.isEmpty()) {
-            System.out.print("Address cannot be empty: ");
-            address = scanner.nextLine();
-        }
-
         System.out.print("Card Number: ");
         String cardNumber = scanner.nextLine();
-
-        // While user-defined cardNumber invalid
-        while (!Utilities.cardIsValid(cardNumber) || cardNumber.isEmpty()) {
-            System.out.print("Please enter a valid card number: ");
-            cardNumber = scanner.nextLine();
-        }
 
         System.out.print("Card Holder Name: ");
         String cardHolder = scanner.nextLine();
 
-        // While user-defined cardHolder is empty
-        while (cardHolder.isEmpty()) {
-            System.out.print("Card Holder Name cannot be empty: ");
-            cardHolder = scanner.nextLine();
-        }
-
         this.users.put(loginID, new Customer(loginID, password, name, phone, email, address, cardNumber, cardHolder));
 
-        return false;
+        return true;
     }
 
-    private boolean createAdministratorAccount() 
+    private boolean createAdministratorAccount()
     {
         System.out.print("\nLogin ID: ");
         String loginID = scanner.nextLine();
 
-        // While user-defined login ID is empty or exists within collection...
         while (loginID.isEmpty() || users.containsKey(loginID)) {
             // Promp user for another login id.
             System.out.print("Please choose another login ID:");
@@ -308,80 +276,66 @@ public class UserInterface {
         System.out.print("Password: ");
         String password = scanner.nextLine();
 
-        // While user-defined password is not secure
-        while(!Utilities.passIsSecure(password)) {
-            System.out.print("Password is not strong enough, try another: ");
-            password = scanner.nextLine();
-        }
-
-        System.out.print("Full Name: ");
+        System.out.print("Name: ");
         String name = scanner.nextLine();
-
-        // While user-defined name is empty
-        while (name.isEmpty()) {
-            System.out.print("Full Name cannot be empty: ");
-            name = scanner.nextLine();
-        }
 
         System.out.print("Email: ");
         String email = scanner.nextLine();
 
-        // While user-defined email is invalid
-        while (!Utilities.emailIsValid(email)) {
-            System.out.print("Please enter a valid email address: ");
-            email = scanner.nextLine();
-        }
-
         this.users.put(loginID, new Administrator(loginID, password, name, email));
 
-        return false;
+        return true;
     }
-    
+
     public void displayProducts()
     {
         int counter = 1;
-        System.out.println();
-        
+        System.out.println("");
+
         // For each loop to traverse through each key (Category) of the LinkedHashMap.
         for(Map.Entry<Category, ArrayList<Product>> category : products.getSingleProductList().entrySet()) {
             // For each loop to traverse through each value (ArrayList of Products for a specific Category) of the LinkedHashMap.
             for(Product product: category.getValue()) {
-                System.out.println("\t" + (counter++) + ". " + "Product Name: " + product.getProductName() + " Stock: " + product.getStock() + 
-                       " Price: $" + product.getPrice());
+                System.out.println("\t" + (counter++) + ". " + "Product Name: " + product.getProductName() + " Stock: " + product.getStock() +
+                        " Price: $" + product.getPrice());
             }
         }
     }
-    
+
     public void addToCart()
     {
-     boolean run = true;
-     
+        ShoppingCart cart = new ShoppingCart(this.currentUser);
+        boolean run = true;
+
         while(run){
             System.out.print("\nPlease select a product to add to cart (0 to stop): ");
             int productSelection = scanner.nextInt();
 
-            if(productSelection == 0){
-                run = false;
+            if(productSelection == 0){ // If user selects to stop adding products...
+                run = false; //
                 continue;
             }
-            
+
             System.out.print("Quantity: ");
             int quantity = scanner.nextInt();
 
             int counter = 1;
 
+            // For each loop to traverse through each key (Category) of the LinkedHashMap.
             for(Map.Entry<Category, ArrayList<Product>> category : products.getSingleProductList().entrySet()) {
+                // For each loop to traverse through each value (ArrayList of Products for a specific Category) of the LinkedHashMap.
                 for(Product product: category.getValue()) {
                     if(counter == productSelection) { // If the counter reaches user-specified index...
-                        this.cart.addToCart(product, quantity); // Add the product to cart.
-                        break;
+                        cart.addToCart(product, quantity); // Add the product to cart.
+                        //break; // Exit loop.
                     }
                     counter++; // Increment counter until user-selected product is found.
                 }
-            }        
+            }
         }
-        
-        System.out.println(this.cart.cartList());
+
+        System.out.println(cart.cartList());
+        System.out.println(cart.generateInvoice(this.currentUser));
     }
 
     public void adminPanel()
