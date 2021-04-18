@@ -1,7 +1,7 @@
 package online_shopping_cui;
 
 import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
 
 /**
  * This class maintains a set of tools (static methods) essential
@@ -111,19 +111,19 @@ public final class ProductFileIO
         try 
         {
             // Buffered PrintWriter which overwrites existing files with new data.
-            pw = new PrintWriter(new BufferedWriter(new FileWriter(ProductFileIO.PRODUCT_FILEPATH, false)));
+            pw = new PrintWriter(new BufferedWriter(new FileWriter(ProductFileIO.PRODUCT_FILEPATH, true)));
             
             // Prints out column headers.
-            pw.println("Product Name,Product ID,Price,Category,Stock");
+            //pw.println("Product Name,Product ID,Price,Category,Stock");
            
             // Gets all the products that are in the ProductList as an ArrayList.
-            ArrayList<Product> temp = products.getProductList(); 
+            ArrayList<Product> temp = products.getProductList();
             
             // For each loop to traverse through the ArrayList.         
-            for (Product product : temp) 
+            for (Product product : temp)
             {
                 // Writes data from the ArrayList onto the file specified. 
-                pw.println(product.toString());
+                pw.println(product.toString().trim());
             }
         } catch (FileNotFoundException fe) { 
             System.err.println("File not found.");

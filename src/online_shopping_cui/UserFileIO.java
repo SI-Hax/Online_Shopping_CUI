@@ -1,7 +1,8 @@
 package online_shopping_cui;
 
 import java.io.*;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class maintains a set of tools (static methods) essential
@@ -156,12 +157,12 @@ public final class UserFileIO
             pw2.println("LoginID,Password,Name,Email");
            
             // Writes data from the passed in Hash Map onto the file specified.          
-            for (Map.Entry<String, User> user : users.entrySet()) 
+            for (Map.Entry<String, User> user : users.entrySet())
             {
                 if(user.getValue() instanceof Customer) { // Check if user is an instance of a Customer...
-                    pw.println(user.getValue().toString()); // Write data to customer_database.csv.
+                    pw.println(user.getValue().toString().trim()); // Write data to customer_database.csv.
                 } else if(user.getValue() instanceof Administrator) { // Check if user is an instance of an Administrator...
-                    pw2.println(user.getValue().toString()); // Write data to admin_database.csv
+                    pw2.println(user.getValue().toString().trim()); // Write data to admin_database.csv
                 }
             }
         } catch (FileNotFoundException fe) { 

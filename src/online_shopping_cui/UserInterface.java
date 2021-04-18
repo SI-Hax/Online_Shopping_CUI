@@ -240,7 +240,7 @@ public class UserInterface {
         // While user-defined login ID is empty or exists within collection...
         while (loginID.isEmpty() || users.containsKey(loginID)) {
             // Promp user for another login id.
-            System.out.print("Please choose another login ID:");
+            System.out.print("Please choose another login ID: ");
             loginID = scanner.nextLine();
         }
 
@@ -248,11 +248,11 @@ public class UserInterface {
             System.out.print("Password: ");
             password = scanner.nextLine();
 
-            if (!test.Utilities.passIsSecure(password)) {
+            if (!Utilities.passIsSecure(password)) {
                 System.out.print("Password is not strong enough, try another: ");
             }
             // While user-defined password is not secure
-        } while(!test.Utilities.passIsSecure(password));
+        } while(!Utilities.passIsSecure(password));
 
         do {
             System.out.print("Full Name: ");
@@ -315,8 +315,9 @@ public class UserInterface {
         } while(cardHolder.isEmpty());
 
         this.users.put(loginID, new Customer(loginID, password, name, phone, email, address, cardNumber, cardHolder));
+        UserFileIO.exportUserData(this.users);
 
-        return false;
+        return true;
     }
 
     private boolean createAdministratorAccount()
@@ -332,7 +333,7 @@ public class UserInterface {
         // While user-defined login ID is empty or exists within collection...
         while (loginID.isEmpty() || users.containsKey(loginID)) {
             // Promp user for another login id.
-            System.out.print("Please choose another login ID:");
+            System.out.print("Please choose another login ID: ");
             loginID = scanner.nextLine();
         }
 
@@ -340,11 +341,11 @@ public class UserInterface {
             System.out.print("Password: ");
             password = scanner.nextLine();
 
-            if (!test.Utilities.passIsSecure(password)) {
+            if (!Utilities.passIsSecure(password)) {
                 System.out.print("Password is not strong enough, try another: ");
             }
             // While user-defined password is not secure
-        } while(!test.Utilities.passIsSecure(password));
+        } while(!Utilities.passIsSecure(password));
 
         do {
             System.out.print("Full Name: ");
@@ -367,8 +368,9 @@ public class UserInterface {
         } while(!Utilities.emailIsValid(email));
 
         this.users.put(loginID, new Administrator(loginID, password, name, email));
+        UserFileIO.exportUserData(this.users);
 
-        return false;
+        return true;
     }
 
     public void displayProducts()
@@ -475,23 +477,23 @@ public class UserInterface {
         boolean success = false;
 
         do {
-            System.out.print("Product Name: ");
+            System.out.print("\nProduct Name: ");
             productName = scanner.nextLine();
 
             if (productName.isEmpty()) {
-                System.out.println("Error: Name can't be empty.");
+                System.out.println("\nError: Name can't be empty.");
             }
 
         } while(productName.isEmpty());
 
         do {
             try {
-                System.out.print("Product ID: ");
+                System.out.print("\nProduct ID: ");
                 productID = scanner.nextInt();
                 scanner.nextLine();
                 success = true;
             } catch (InputMismatchException | IllegalArgumentException e) {
-                System.out.println("Please Enter an Integer for Product ID");
+                System.out.println("\nPlease Enter an Integer for Product ID");
                 System.err.flush();
                 scanner.nextLine();
             }
@@ -500,19 +502,19 @@ public class UserInterface {
         success = false;
         do {
             try {
-                System.out.print("Price: ");
+                System.out.print("\nPrice: ");
                 price = scanner.nextDouble();
                 scanner.nextLine();
                 success = true;
             } catch (InputMismatchException | IllegalArgumentException e) {
-                System.out.println("Please Enter an integer for price");
+                System.out.println("\nPlease Enter an integer for price");
                 System.err.flush();
                 scanner.nextLine();
             }
         } while(!success);
 
         success = false;
-        System.out.println("Product Category? ");
+        System.out.println("\nProduct Category? ");
         do {
             try {
                 System.out.println("\n\t1. PC Parts");
@@ -548,10 +550,10 @@ public class UserInterface {
                         throw new IndexOutOfBoundsException();
                 }
             } catch (IndexOutOfBoundsException e) {
-                System.err.println("Please Enter The Correct Options, 1 - 5");
+                System.err.println("\nPlease Enter The Correct Options, 1 - 5");
                 System.err.flush(); }
             catch (InputMismatchException | IllegalArgumentException e) {
-                System.out.println("Please Enter an integer for price");
+                System.out.println("\nPlease Enter an integer for price");
                 System.err.flush();
                 scanner.nextLine();
             }
@@ -560,23 +562,23 @@ public class UserInterface {
         success = false;
         do {
             try {
-                System.out.print("Initial Stock: ");
+                System.out.print("\nInitial Stock: ");
                 stock = scanner.nextInt();
                 scanner.nextLine();
                 success = true;
             } catch (InputMismatchException | IllegalArgumentException e) {
-                System.out.println("Please Enter an Integer for the initial stock");
+                System.out.println("\nPlease Enter an Integer for the initial stock");
                 System.err.flush();
                 scanner.nextLine();
             }
         } while(!success);
 
-        new Product(productName, productID, price, category, stock);
+        this.products = new ProductList(new Product(productName, productID, price, category, stock));
 
-        if (ProductFileIO.exportProductData(products)) {
-            System.out.println("Product added to the database!");
+        if (ProductFileIO.exportProductData(this.products)) {
+            System.out.println("\nProduct added to the database!");
         } else {
-            System.out.println("Cannot add product to the database!");
+            System.out.println("\nCannot add product to the database!");
         }
     }
 
