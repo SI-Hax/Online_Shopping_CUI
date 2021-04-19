@@ -3,26 +3,28 @@ package com.online.shopping_cui.model;
 import com.online.shopping_cui.enumerations.State;
 
 /**
- * This is an abstract class that expresses characteristics
- * (such as login credentials) of a system user. Characteristics
- * which are used for authentication purposes during login.
+ * This is an abstract class that expresses characteristics (such as login
+ * credentials) of a system user. Characteristics which are used for
+ * authentication purposes during login.
  *
- * <p>Attributes:</p>
+ * <p>
+ * Attributes:</p>
  * <ul>
- *  <li>loginID : Unique identifier for individual users</li>
- *  <li>password : String representation of the account's password</li>
- *  <li>state : Enum specifying the state of the account</li>
+ * <li>loginID : Unique identifier for individual users</li>
+ * <li>password : String representation of the account's password</li>
+ * <li>state : Enum specifying the state of the account</li>
  * </ul>
  * <p>
  * Behaviours:
  * <ul>
- *  <li>1-Parameter Constructor</li>
- *  <li>Getters and Setters</li>
- *  <li>Reset Password</li>
- *  <li>Methods for hashing purposes(equals and hashcode)</li>
+ * <li>1-Parameter Constructor</li>
+ * <li>Getters and Setters</li>
+ * <li>Reset Password</li>
+ * <li>Methods for hashing purposes(equals and hashcode)</li>
  * </ul>
  *
- * <p>The setPassword method is abstract which must be overridden by User's
+ * <p>
+ * The setPassword method is abstract which must be overridden by User's
  * subclasses, as different types of User have different requirement (e.g. an
  * administrator will be required to have a longer, more complex password
  * compared to a regular user).</p>
@@ -32,26 +34,29 @@ import com.online.shopping_cui.enumerations.State;
  * @author Roxy Dao - 1073633
  * @version 1.03
  * @since 29/03/2021
- **/
+ *
+ */
 public abstract class User {
+
     protected String password;
     private String loginID;
     private State state;
 
     /**
-     * 1-parameter constructor for User class. Subclasses of User must
-     * call super() and pass in the loginID to initialise their account.
+     * 1-parameter constructor for User class. Subclasses of User must call
+     * super() and pass in the loginID to initialise their account.
      *
-     * <p>Newly created accounts have their state set to Active.</p>
+     * <p>
+     * Newly created accounts have their state set to Active.</p>
      *
      * @param loginID : user's login id.
-     **/
+     *
+     */
     public User(String loginID) {
         this.setLoginID(loginID);
         this.setState(State.ACTIVE);
     }
 
-    // Getters and setter methods for Object's instance data.
     //-------------------------------------------------------
     public String getLoginID() {
         return loginID;
@@ -67,6 +72,7 @@ public abstract class User {
     }
 
     public abstract void setPassword(String password) throws IllegalArgumentException;
+
     //-------------------------------------------------------
     public State getState() {
         return state;
@@ -79,7 +85,8 @@ public abstract class User {
 
     /**
      * Method to resets password to a null value.
-     **/
+     *
+     */
     public void resetPassword() {
         this.password = "password";
     }
@@ -89,8 +96,8 @@ public abstract class User {
     @Override
     public boolean equals(Object o) {
         // Check for duplicate login ids (case insensitive).
-        return (o instanceof User &&
-                ((User) o).getLoginID().equalsIgnoreCase(this.getLoginID()));
+        return (o instanceof User
+                && ((User) o).getLoginID().equalsIgnoreCase(this.getLoginID()));
     }
 
     @Override
