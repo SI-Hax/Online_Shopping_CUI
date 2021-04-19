@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
  * @author Miguel Emmara - 18022146
  * @author Amos Foong - 18044418
  * @author Roxy Dao - 1073633
- * @version 1.0
+ * @version 1.01
  * @since 30/03/2021
  **/
 public class Utilities {
@@ -33,32 +33,36 @@ public class Utilities {
     /**
      * Static method with an algorithm to check if the passed in
      * data satisfies password requirements (at least one uppercase,
-     * a lowercase, a number, and a special character).
+     * a lowercase, a number, meet minimum # characters, and a 
+     * special character).
      *
      * @param password : String containing the password to be checked.
+     * @param minCharacters : Minimum-required number of characters.
      * @return T/F whether the passed in String is considered secure.
      **/
-    public static boolean passIsSecure(String password) {
+    public static boolean passIsSecure(String password, int minCharacters) {
         boolean upperCase = false;
         boolean lowerCase = false;
         boolean number = false;
         boolean specialChar = false;
         boolean secure = false;
 
-        // For loop to iterate through the String.
-        for (int i = 0; i < password.length(); i++) {
-            char temp = password.charAt(i);
+        if(password.length() >= minCharacters) { // If passed in password satisfies the number of characters...
+            // For loop to iterate through the String.
+            for (int i = 0; i < password.length(); i++) {
+                char temp = password.charAt(i);
 
-            if (Character.isUpperCase(temp)) { // Check for upper case...
-                upperCase = true;
-            } else if (Character.isLowerCase(temp)) { // Check for lower case...
-                lowerCase = true;
-            } else if (Character.isDigit(temp)) { // Check for number...
-                number = true;
-            } else if ((temp >= 33 && temp <= 47) || (temp >= 58 && temp <= 64) ||
-                    (temp >= 91 && temp <= 96) || (temp >= 123 && temp <= 126)) { // Check for special characters (symbols only).
-                specialChar = true;
-            }
+                if (Character.isUpperCase(temp)) { // Check for upper case...
+                    upperCase = true;
+                } else if (Character.isLowerCase(temp)) { // Check for lower case...
+                    lowerCase = true;
+                } else if (Character.isDigit(temp)) { // Check for number...
+                    number = true;
+                } else if ((temp >= 33 && temp <= 47) || (temp >= 58 && temp <= 64) ||
+                        (temp >= 91 && temp <= 96) || (temp >= 123 && temp <= 126)) { // Check for special characters (symbols only).
+                    specialChar = true;
+                }
+            } 
         }
 
         if (upperCase && lowerCase && number && specialChar) { // If all checks are true....
