@@ -67,7 +67,6 @@ public abstract class User {
     }
 
     public abstract void setPassword(String password) throws IllegalArgumentException;
-
     //-------------------------------------------------------
     public State getState() {
         return state;
