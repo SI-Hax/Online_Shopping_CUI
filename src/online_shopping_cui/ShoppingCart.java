@@ -55,7 +55,7 @@ public class ShoppingCart {
     public String generateInvoice(User currentUser){
         String invoice = "";
         
-        invoice += "-----------------Invoice----------------\n";
+        invoice += "\n-----------------Invoice----------------\n";
         invoice += "Bill To: " + ((Customer)currentUser).getName() + "\n";
         invoice += "Billing Address: " + ((Customer)currentUser).getAddress() + "\n";
         invoice += "----------------------------------------\n";
@@ -66,7 +66,7 @@ public class ShoppingCart {
         }
         invoice += "----------------------------------------\n";
         invoice += String.format("%32s%7.2f\n", "Grand Total: $", this.getGrandTotal());
-        invoice += "----------------------------------------\n";
+        invoice += "----------------------------------------";
         return invoice; 
     }       
 }
