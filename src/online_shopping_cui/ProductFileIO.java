@@ -21,7 +21,7 @@ import java.util.ArrayList;
  * @author Miguel Emmara - 18022146
  * @author Amos Foong - 18044418
  * @author Roxy Dao - 1073633
- * @version 1.02
+ * @version 1.03
  * @since 10/04/2021
  **/
 public final class ProductFileIO 
@@ -44,11 +44,9 @@ public final class ProductFileIO
     {
         ProductList productData = new ProductList();
         
-        // Block to import data from customer_database.csv
-        BufferedReader br = null;
-        try
+        // Try-with-resources (Block to import data from product_database.csv).
+        try (BufferedReader br = new BufferedReader(new FileReader(ProductFileIO.PRODUCT_FILEPATH)))
         {
-            br = new BufferedReader(new FileReader(ProductFileIO.PRODUCT_FILEPATH));
             String line = null;
             String[] data = new String[5];
             
@@ -72,16 +70,7 @@ public final class ProductFileIO
             }
         } catch (IOException e) {
             System.err.println("Error reading from file.");
-        } finally {
-            // Close BufferedReader and its wrapped objects at last.
-            if (br != null) {
-                try {
-                    br.close();
-                } catch (IOException ex) {
-                    System.err.println("Error closing buffered reader.");
-                }
-            }
-        }
+        } 
 
         return productData;
     }
@@ -106,38 +95,29 @@ public final class ProductFileIO
     {
         boolean writeSuccess = false;
         
-        PrintWriter pw = null;
-      
-        try 
+        // Try-with-resources (Buffered PrintWriter which overwrites existing files with new data).
+        try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(ProductFileIO.PRODUCT_FILEPATH, false)))) 
         {
-            // Buffered PrintWriter which overwrites existing files with new data.
-            pw = new PrintWriter(new BufferedWriter(new FileWriter(ProductFileIO.PRODUCT_FILEPATH, true)));
-            
             // Prints out column headers.
-            //pw.println("Product Name,Product ID,Price,Category,Stock");
+            pw.println("Product Name,Product ID,Price,Category,Stock");
            
             // Gets all the products that are in the ProductList as an ArrayList.
             ArrayList<Product> temp = products.getProductList();
             
             // For each loop to traverse through the ArrayList.         
-            for (Product product : temp)
-            {
+            for (Product product : temp) {
                 // Writes data from the ArrayList onto the file specified. 
                 pw.println(product.toString().trim());
             }
+            
+            writeSuccess = true;
         } catch (FileNotFoundException fe) { 
             System.err.println("File not found.");
             writeSuccess = false;
         } catch (IOException e) {
             System.err.println("Error writing onto file.");
             writeSuccess = false;
-        } finally {
-            if (pw != null) {
-                // Flushes then closes the PrintWriter object and its wrapped objects.
-                pw.close();
-                writeSuccess = true;
-            }    
-        }
+        } 
         
         return writeSuccess;
     }
