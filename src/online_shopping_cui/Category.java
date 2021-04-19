@@ -11,5 +11,5 @@ package online_shopping_cui;
  * @since 15/03/2021
  **/
 public enum Category {
-    PCPARTS, LAPTOP, CAMERA, PRINTER, SMARTPHONE, MISCELLANEOUS
+    PCPARTS, LAPTOP, CAMERA, PRINTER, SMARTPHONE, MISC
 }
