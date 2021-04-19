@@ -84,7 +84,7 @@ public class Administrator extends User {
             if (Utilities.emailIsValid(adminEmail)) { // If passed in email passes check...
                 this.adminEmail = adminEmail; // Assign passed in data to instance's attribute.
             } else {
-                throw new IllegalArgumentException("Invalid email"); // Throw exception if does not satisfy pattern.
+                throw new IllegalArgumentException("Invalid email format"); // Throw exception if does not satisfy pattern.
             }
         } else {
             this.adminEmail = "UNKNOWN";
