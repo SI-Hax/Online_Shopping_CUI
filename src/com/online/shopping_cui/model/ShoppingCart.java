@@ -3,14 +3,43 @@ package com.online.shopping_cui.model;
 import java.util.ArrayList;
 
 /**
- * @author Amos Foong <18044418>
- */
+ * This class is a representation of a shopping cart, it has:
+ * <p>Attributes:</p>
+ * <ul>
+ *  <li>Products : List of products in the cart.</li>
+ *  <li>Quantity : Amount of a specific product the customer ordered.</li>
+ *  <li>GrandTotal: Total cost.</li>
+ *   <li>User: Logged in user who is using the cart.</li>
+ * <p>Methods:</p>
+ * <ul>
+ *  <li>1-Parameter Constructor</li>
+ *  <li>Getter</li>
+ *  <li>AddToCart<\li>
+ *  <li>RemoveFromCart<\li>
+ *  <li>ClearCart<\li>
+ *  <li>CartList<\li>
+ *  <li>GenerateInvoice<\li>
+ * </ul>
+ *
+ * @author  Miguel Emmara - 18022146
+ * @author  Amos Foong - 18044418
+ * @author  Roxy Dao - 1073633
+ * @version 1.03
+ * @since   01/04/2021
+ **/
 public class ShoppingCart {
     private ArrayList<Product> products;
     private ArrayList<Integer> quantity;
     private double grandTotal;
     private User user;
 
+    /**
+     * 1-Parameter constructor for ShoppingCart,
+     * prepares Object attributes so it can 
+     * be used.
+     * 
+     * @param user : Logged in user who will be using the cart.
+     **/
     public ShoppingCart(User user) {
         this.products = new ArrayList<Product>();
         this.quantity = new ArrayList<Integer>();
@@ -18,10 +47,21 @@ public class ShoppingCart {
         this.user = user;
     }
     
+    /**
+     * Returns the total summed value of the cart items.
+     * 
+     * @return Summed value of the cart items.
+     **/
     public double getGrandTotal() {
         return this.grandTotal;
     }
     
+    /**
+     * Adds a product to the cart.
+     * 
+     * @param product : Product to be added.
+     * @param amount : Quantity of the specific product.
+     **/
     public void addToCart(Product product, int amount) {
         this.products.add(product);
         this.quantity.add(amount);
@@ -29,6 +69,11 @@ public class ShoppingCart {
         this.grandTotal += (product.getPrice() * amount);
     }
 
+    /**
+     * Removes a specific item from the cart.
+     * 
+     * @param index : Index of item to be removed.
+     **/
     public void removeFromCart(int index) {
         this.grandTotal -= (this.products.get(index).getPrice() * this.quantity.get(index));
         this.products.get(index).setStock(this.products.get(index).getStock() + this.quantity.get(index)); // Increments product's stock.
@@ -36,12 +81,20 @@ public class ShoppingCart {
         this.quantity.remove(index);
     }
     
+    /**
+     * Removes everything from cart.
+     **/
     public void clearCart() {
         this.products.clear();
         this.quantity.clear();
         this.grandTotal = 0D;
     }
     
+    /**
+     * String representation of the current items in the cart.
+     * 
+     * @return String representation of the items in the cart.
+     **/
     public String cartList(){
         String cartList = "";
         
@@ -52,6 +105,13 @@ public class ShoppingCart {
         return cartList;
     }
     
+    /**
+     * Generates an invoice and returns a graphical
+     * representation of the invoice to caller.
+     * 
+     * @param currentUser : User who is logged on currently.
+     * @return String representation of the invoice.
+     **/
     public String generateInvoice(User currentUser){
         String invoice = "";
         
