@@ -65,15 +65,20 @@ public class ProductList {
     }
     
     /**
-     * Search for a product by key.
+     * Search for a product by name.
      * 
-     * @return string of products
+     * @return Product that matched keyword
      */
-    public String searchProduct(Category category){
-        if (singleProductList.containsKey(category)) {
-            return "The Products in " + category + "is " + singleProductList.get(category);
+    public Product searchProduct(String keyword){
+        ArrayList<Product> pList = this.getProductList();
+        
+        for(Product product: pList){
+            if(product.getProductName().contains(keyword)){ // If keyword partially matches an entry in pList...
+                return product; // Return found product.
+            }
         }
-        return "No products under this category";
+        
+        return null; // Return null if not found.
     }
     
     /**
@@ -82,8 +87,8 @@ public class ProductList {
      * @param category : Product category
      * @param index : Index of product within that category
      */
-    public void removeProduct(Category category, int index){       
-        this.singleProductList.get(category).remove(index); 
+    public void removeProduct(Category category, Product product){       
+        this.singleProductList.get(category).remove(product); 
     }
     
     /**
@@ -94,6 +99,24 @@ public class ProductList {
      */
     public boolean categoryHasProduct(Category category){
         return singleProductList.containsKey(category);
+    }
+    
+    /**
+     * Print all entries in the Product ArrayList.
+     * 
+     * @return String containing entries in the Product ArrayList.
+     */
+    @Override
+    public String toString(){
+        ArrayList<Product> pList = this.getProductList();
+        String pListStr = "\n";
+        
+        // For loop to traverse through the ArrayList-ed products.
+        for(int i = 0; i < pList.size(); i++){
+            pListStr += String.format("\t%d. Product Name: %s Stock: %d Price: $%.2f\n", (i + 1), pList.get(i).getProductName(), pList.get(i).getStock(), pList.get(i).getPrice());
+        }
+        
+        return pListStr;
     }
 
     //Getters and Setters-------------------------------------------------------
