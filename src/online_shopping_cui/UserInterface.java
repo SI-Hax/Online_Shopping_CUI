@@ -161,7 +161,7 @@ public class UserInterface {
                     String password = scanner.nextLine();
 
                     if (this.users.get(loginID).getPassword().equals(password)) { // If user-specified password match
-                        this.currentUser = this.users.get(loginID);
+                        this.currentUser = this.users.get(loginID); // Saves current logged-in user.
                         System.out.println("\nLogin Successful, Welcome Back " + ((Customer)currentUser).getName()); // Welcomes user.
                         promptLogin = false;
                         promptPassword = false;
@@ -225,16 +225,9 @@ public class UserInterface {
 
     public boolean createCustomerAccount()
     {
-        String loginID;
-        String password;
-        String name;
-        String phone;
-        String email;
-        String address;
-        String cardNumber;
-        String cardHolder;
+        String loginID, password, name, phone, email, address, cardNumber, cardHolder;
 
-        System.out.print("\nLogin ID: ");
+        System.out.print("\nLogin ID*: ");
         loginID = scanner.nextLine();
 
         // While user-defined login ID is empty or exists within collection...
@@ -245,7 +238,7 @@ public class UserInterface {
         }
 
         do {
-            System.out.print("Password: ");
+            System.out.print("Password*: ");
             password = scanner.nextLine();
 
             if (!Utilities.passIsSecure(password)) {
@@ -383,8 +376,9 @@ public class UserInterface {
         ShoppingCart cart = new ShoppingCart(this.currentUser);
         boolean run = true;
 
+        System.out.println("");
         while(run){
-            System.out.print("Please select a product to add to cart (0 to stop): ");
+            System.out.print("Please select a product to add to cart (0 to proceed to checkout): ");
             int productSelection = scanner.nextInt();
 
             if(productSelection == 0){ // If user selects to stop adding products...
@@ -394,19 +388,10 @@ public class UserInterface {
 
             System.out.print("Quantity: ");
             int quantity = scanner.nextInt();
-
-            int counter = 1;
-
-            // For each loop to traverse through each key (Category) of the LinkedHashMap.
-            for(Map.Entry<Category, ArrayList<Product>> category : products.getSingleProductList().entrySet()) {
-                // For each loop to traverse through each value (ArrayList of Products for a specific Category) of the LinkedHashMap.
-                for(Product product: category.getValue()) {
-                    if(counter == productSelection) { // If the counter reaches user-specified index...
-                        cart.addToCart(product, quantity); // Add the product to cart.
-                        //break; // Exit loop.
-                    }
-                    counter++; // Increment counter until user-selected product is found.
-                }
+            
+            if(quantity > 0) { // If user specifies 1 or more as quantity...
+                // Finds the product via indexing and adds it to the cart alongside user-specified quantity.
+                cart.addToCart(products.getProductList().get(productSelection - 1), quantity);
             }
         }
 
