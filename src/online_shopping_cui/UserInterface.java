@@ -116,18 +116,29 @@ public class UserInterface {
             switch (userSelection) {
                 case 1:
                     customerLogin(); // Login for customer.
-                    if(currentUser != null) {
-                        displayProducts();
-                        addToCart();  
+                    if(currentUser != null) { // If currentUser is not null...
+                        displayProducts(); // Displays available products.
+                        addToCart();  // Allows Customer-typed user to add items to cart and checkout.
+                    } else {
+                        return false; // Goes to login as page..
                     }
                     return true;
                 case 2:
                     adminLogin(); // Login for admins.
-                    adminPanel(); // Enter Admin Privileges
+                    if(currentUser != null) { // If currentUser is not null...
+                        adminPanel(); // Enter Admin Privileges 
+                    } else {
+                        return false; // Goes to login as page..
+                    }
                     return true;
                 case 3:
                     this.currentUser = (new Customer("Guest", "Guest123!", "Guest", "", "", "", "", ""));
-                    
+                    if(currentUser != null) { // If currentUser is not null...
+                        displayProducts(); // Displays available products.
+                        addToCart();  // Allows Customer-typed user to add items to cart and checkout.
+                    } else {
+                        return false; // Goes to login as page..
+                    }
                     return true;
                 default:
                     throw new IndexOutOfBoundsException();
@@ -209,7 +220,7 @@ public class UserInterface {
                     } else if (password.equalsIgnoreCase("b")) { // If user wishes to go back up a level...
                         return false; // Exits method and returns false to caller to go back up a level for menu.
                     } else { // Otherwise....
-                        System.out.println("Passwords do not match!");
+                        System.err.println("Passwords do not match!");
                         promptPassword = true;
                     }
                 } while(promptPassword);
@@ -366,7 +377,8 @@ public class UserInterface {
                         editProduct();
                         break;
                     case 4:
-                        System.out.println("Log out");
+                        System.out.println(((Administrator)currentUser).getAdminName() + " Logged out");
+                        this.currentUser = null;
                         done = true;
                 }
 
