@@ -13,7 +13,6 @@ import com.online.shopping_cui.utilities.Utilities;
  *  <li>Administrator's Name</li>
  *  <li>E-mail Address</li>
  * </ul>
- * <p>
  * Behaviours:
  * <ul>
  *  <li>2-Parameter Constructor</li>
