@@ -5,24 +5,26 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 /**
- * This class contains the ProductList Class which encapsulates the following methods:
- * <p>Methods:</p>
+ * This class contains the ProductList Class which encapsulates the following
+ * methods:
+ * <p>
+ * Methods:</p>
  * <ul>
- *  <li>Empty Constructor</li>
- *  <li>Getters and Setters</li>
+ * <li>Empty Constructor</li>
+ * <li>Getters and Setters</li>
  * </ul>
  *
- * @author  Miguel Emmara - 18022146
- * @author  Amos Foong - 18044418
- * @author  Roxy Dao - 1073633
+ * @author Miguel Emmara - 18022146
+ * @author Amos Foong - 18044418
+ * @author Roxy Dao - 1073633
  * @version 1.0
- * @since   15/03/2021
- **/
+ * @since 15/03/2021
+ *
+ */
 public class ProductList {
-    //Variables-----------------------------------------------------------------
+
     private LinkedHashMap<Category, ArrayList<Product>> singleProductList;
 
-    //Constructors--------------------------------------------------------------
     public ProductList() {
         singleProductList = new LinkedHashMap<Category, ArrayList<Product>>();
     }
@@ -33,7 +35,6 @@ public class ProductList {
         addSingleProduct(newProduct);
     }
 
-   
     /**
      * Core function: Adds a Product object into the entry list by Category
      *
@@ -48,7 +49,7 @@ public class ProductList {
         tempList.add(newProductEntry);
         singleProductList.put(newProductEntry.getCategory(), tempList);
     }
-    
+
     /**
      * Core function: Get all product entries
      *
@@ -64,65 +65,63 @@ public class ProductList {
 
         return allProducts;
     }
-    
+
     /**
      * Search for a product by name.
-     * 
+     *
      * @return Product that matched keyword
      */
-    public Product searchProduct(String keyword){
+    public Product searchProduct(String keyword) {
         ArrayList<Product> pList = this.getProductList();
-        
-        for(Product product: pList){
-            if(product.getProductName().contains(keyword)){ // If keyword partially matches an entry in pList...
+
+        for (Product product : pList) {
+            if (product.getProductName().contains(keyword)) { // If keyword partially matches an entry in pList...
                 return product; // Return found product.
             }
         }
-        
+
         return null; // Return null if not found.
     }
-    
+
     /**
      * Remove product from singleProductList
-     * 
+     *
      * @param category : Product category
      * @param index : Index of product within that category
      */
-    public void removeProduct(Category category, Product product){       
-        this.singleProductList.get(category).remove(product); 
+    public void removeProduct(Category category, Product product) {
+        this.singleProductList.get(category).remove(product);
     }
-    
+
     /**
      * Checks if Category has the product
-     * 
+     *
      * @return true if it does
      * @return false otherwise
      */
-    public boolean categoryHasProduct(Category category){
+    public boolean categoryHasProduct(Category category) {
         return singleProductList.containsKey(category);
     }
-    
+
     /**
      * Print all entries in the Product ArrayList.
-     * 
+     *
      * @return String containing entries in the Product ArrayList.
      */
     @Override
-    public String toString(){
+    public String toString() {
         ArrayList<Product> pList = this.getProductList();
         String pListStr = "\nAvailable Products:\n\n";
-        
-        // For loop to traverse through the ArrayList-ed products.
-        for(int i = 0; i < pList.size(); i++){
+
+        for (int i = 0; i < pList.size(); i++) {// For loop to traverse through the ArrayList-ed products.
             pListStr += String.format("\t%d. Product Name: %s Stock: %d Price: $%.2f\n", (i + 1), pList.get(i).getProductName(), pList.get(i).getStock(), pList.get(i).getPrice());
         }
-        
+
         pListStr += "\n";
-        
+
         return pListStr;
     }
 
-    //Getters and Setters-------------------------------------------------------
     public LinkedHashMap<Category, ArrayList<Product>> getSingleProductList() {
         return singleProductList;
     }
