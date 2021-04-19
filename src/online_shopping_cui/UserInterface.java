@@ -313,7 +313,7 @@ public class UserInterface {
         System.out.print(this.products.toString());
     }
 
-    public boolean addToCart()
+    public void addToCart()
     {
         ShoppingCart cart = new ShoppingCart(this.currentUser);
         boolean run = true;
