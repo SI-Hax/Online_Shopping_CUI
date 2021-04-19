@@ -28,5 +28,6 @@ public class Main {
         userInterface.menuSelections();
         userInterface.displayProducts();
         userInterface.addToCart();
+        
     }
 }
