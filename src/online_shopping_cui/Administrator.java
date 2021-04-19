@@ -104,7 +104,7 @@ public class Administrator extends User {
     @Override
     public void setPassword(String password) throws IllegalArgumentException {
         // Check if password length is at least 14 characters and if its secure...
-        if (password.length() >= 14 && Utilities.passIsSecure(password)) {
+        if (Utilities.passIsSecure(password, password.length())) {
             this.password = password; // Saves user-defined password.
         } else {
             throw new IllegalArgumentException("Weak password."); // Throw an exception.
