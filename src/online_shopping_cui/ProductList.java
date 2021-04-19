@@ -109,12 +109,14 @@ public class ProductList {
     @Override
     public String toString(){
         ArrayList<Product> pList = this.getProductList();
-        String pListStr = "\n";
+        String pListStr = "\nAvailable Products:\n";
         
         // For loop to traverse through the ArrayList-ed products.
         for(int i = 0; i < pList.size(); i++){
             pListStr += String.format("\t%d. Product Name: %s Stock: %d Price: $%.2f\n", (i + 1), pList.get(i).getProductName(), pList.get(i).getStock(), pList.get(i).getPrice());
         }
+        
+        pListStr += "\n";
         
         return pListStr;
     }
