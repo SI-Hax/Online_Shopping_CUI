@@ -8,7 +8,7 @@ import java.util.*;
  * @author Miguel Emmara - 18022146
  * @author Amos Foong - 18044418
  * @author Roxy Dao - 1073633
- * @version 1.02
+ * @version 1.03
  * @since 18/04/2021
  **/
 public class UserInterface {
@@ -90,10 +90,8 @@ public class UserInterface {
                 }
             } catch (IndexOutOfBoundsException e) {
                 System.err.println("Please Enter The Correct Options, 1 - 3");
-                System.err.flush();
             } catch (InputMismatchException e) {
                 System.err.println("Please Enter The Correct Options, 1 - 3");
-                System.err.flush();
                 scanner.nextLine();
             } catch (IllegalArgumentException e) {
                 System.err.println(e.getMessage());
@@ -389,19 +387,18 @@ public class UserInterface {
         Category category = null;
         int productCategorySelection;
         Integer stock = new Integer(0);
-        boolean success = false;
 
         do {
             System.out.print("\nProduct Name: ");
             productName = scanner.nextLine();
 
             if (productName.isEmpty()) {
-                System.out.println("\nError: Name can't be empty.");
+                System.err.println("\nError: Name can't be empty.");
             }
 
         } while(productName.isEmpty());
 
-        do {
+        while (true) {
             try {
                 System.out.print("Product ID: ");
                 productID = scanner.nextInt();
@@ -412,37 +409,33 @@ public class UserInterface {
                     }
                 }
                 scanner.nextLine();
-                success = true;
+                break;
             } catch (InputMismatchException e) {
                 System.err.println("\nPlease enter a valid Product ID");
-                System.err.flush();
                 scanner.nextLine();
             } catch (IllegalArgumentException e) {
                System.err.println(e.getMessage());
             }
-        } while(!success);
+        }
 
-        success = false;
-        do {
+        while(true) {
             try {
                 System.out.print("Price: ");
                 price = scanner.nextDouble();
-                scanner.nextLine();
-                success = true;
+                break;
             } catch (InputMismatchException e) {
                 System.err.println("\nPlease Enter a Valid Price");
                 scanner.nextLine();
             }
-        } while(!success);
+        }
 
-        success = false;
         System.out.println("Product Category: ");
-        do {
+        while (true) {
             try {
                 for(String cat: categories) {
                     System.out.print(cat);
                 }
-                System.out.println("Select: ");
+                System.out.println("\nSelect: ");
                 productCategorySelection = scanner.nextInt(); 
                 
                 category = Category.values()[productCategorySelection - 1];
@@ -450,7 +443,7 @@ public class UserInterface {
                 if(category == null) {
                     throw new IndexOutOfBoundsException("Selection Out of Bounds");
                 } else {
-                    success = true;
+                    break;
                 }
             } catch (IndexOutOfBoundsException e) {
                 System.err.println("Please Select From 1 - 6");
@@ -458,20 +451,18 @@ public class UserInterface {
                 System.err.println("Please Enter a Valid Number");
                 scanner.nextLine();
             }
-        } while(!success);
+        }
 
-        success = false;
-        do {
+        while(true) {
             try {
                 System.out.print("Initial Stock: ");
                 stock = scanner.nextInt();
-                scanner.nextLine();
-                success = true;
+                break;
             } catch (InputMismatchException e) {
                 System.err.println("\nPlease Enter a Valid Number");
                 scanner.nextLine();
             }
-        } while(!success);
+        } 
 
         // Adds the product to the instantiated ProductList object.
         this.products.addSingleProduct(new Product(productName, productID, price, category, stock));
@@ -576,6 +567,5 @@ public class UserInterface {
                 scanner.nextLine();
             }
         } while(!editSuccess);
-        
     }
 }
