@@ -13,7 +13,8 @@ import com.online.shopping_cui.utilities.UserFileIO;
 import java.util.*;
 
 /**
- * User Interface Class 
+ * User Interface Class - This class contains methods and attributes
+ * that allows user-computer interaction.
  *
  * @author Miguel Emmara - 18022146
  * @author Amos Foong - 18044418
@@ -205,7 +206,7 @@ public class UserInterface {
     /**
      * Level 4a menu.
      * 
-     * @return T/F whether to repeat loop.
+     * @return T/F whether login was a success.
      */
     private boolean customerLogin()
     {
@@ -251,7 +252,7 @@ public class UserInterface {
     /**
      * Level 4a menu.
      * 
-     * @return T/F whether to repeat loop.
+     * @return T/F whether login was a success.
      */
     private boolean adminLogin()
     {
@@ -297,7 +298,7 @@ public class UserInterface {
     /**
      * Level 4b menu.
      * 
-     * @return T/F whether to repeat loop.
+     * @return T/F whether account was created.
      */
     public boolean createCustomerAccount()
     {
@@ -356,7 +357,7 @@ public class UserInterface {
     /**
      * Level 4b menu.
      * 
-     * @return T/F whether to repeat loop.
+     * @return T/F whether account was created.
      */
     private boolean createAdministratorAccount()
     {
