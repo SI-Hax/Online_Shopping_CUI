@@ -1,4 +1,4 @@
-package online_shopping_cui;
+package com.online.shopping_cui.enumerations;
 
 /**
  * This class contains the State Enumeration which maintains constant variables

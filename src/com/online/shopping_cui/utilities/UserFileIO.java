@@ -1,5 +1,8 @@
-package online_shopping_cui;
+package com.online.shopping_cui.utilities;
 
+import com.online.shopping_cui.model.Administrator;
+import com.online.shopping_cui.model.Customer;
+import com.online.shopping_cui.model.User;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package online_shopping_cui;
+package com.online.shopping_cui.model;
 
 import java.util.ArrayList;
 

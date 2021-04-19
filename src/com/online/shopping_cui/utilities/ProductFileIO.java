@@ -1,5 +1,8 @@
-package online_shopping_cui;
+package com.online.shopping_cui.utilities;
 
+import com.online.shopping_cui.enumerations.Category;
+import com.online.shopping_cui.model.Product;
+import com.online.shopping_cui.model.ProductList;
 import java.io.*;
 import java.util.ArrayList;
 

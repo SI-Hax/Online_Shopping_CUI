@@ -1,4 +1,6 @@
-package online_shopping_cui;
+package com.online.shopping_cui.model;
+
+import com.online.shopping_cui.enumerations.Category;
 
 /**
  * This class contains the Product Class which encapsulates the following methods:

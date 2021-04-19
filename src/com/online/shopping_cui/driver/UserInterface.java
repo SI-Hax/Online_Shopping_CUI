@@ -1,14 +1,24 @@
-package online_shopping_cui;
+package com.online.shopping_cui.driver;
 
+import com.online.shopping_cui.enumerations.Category;
+import com.online.shopping_cui.model.Customer;
+import com.online.shopping_cui.model.ProductList;
+import com.online.shopping_cui.model.User;
+import com.online.shopping_cui.model.Administrator;
+import com.online.shopping_cui.model.ShoppingCart;
+import com.online.shopping_cui.model.Product;
+import com.online.shopping_cui.utilities.ProductFileIO;
+import com.online.shopping_cui.utilities.Utilities;
+import com.online.shopping_cui.utilities.UserFileIO;
 import java.util.*;
 
 /**
- * User Interface Class
+ * User Interface Class 
  *
  * @author Miguel Emmara - 18022146
  * @author Amos Foong - 18044418
  * @author Roxy Dao - 1073633
- * @version 1.03
+ * @version 1.07
  * @since 18/04/2021
  **/
 public class UserInterface {
@@ -29,6 +39,9 @@ public class UserInterface {
         this.loginSuccess = false;
     }
 
+    /**
+     * Level 1 menu.
+     */
     public void mainMenu()
     {
         System.out.println("\n\t1. Login");
@@ -36,29 +49,30 @@ public class UserInterface {
         System.out.println("\t3. Exit");
     }
 
+    /**
+     * Level 2 menu.
+     */
     public void menuSelections()
     {
         do {
             try {
-                this.mainMenu();
+                mainMenu();
                 System.out.print("\nPlease Choose Your Option: ");
                 int uAnswer = scanner.nextInt();
                 scanner.nextLine();
-                switch (uAnswer) {
-                    // Choose To Login As Administrator Or Customer
+                switch (uAnswer) { 
                     case 1: // User selects login in level 1 menu...
                         do {
-                            loginSuccess = loginSelection();
-                            //break;
+                            loginSuccess = loginSelection(); // Choose To Login As Administrator/Customer/Guest
                         } while (!loginSuccess);
-                        mainMenuLoop = false;
+                        mainMenuLoop = true; // Goes to the main menu.
                         break;
-                    // Choose To Register As Administrator Or Customer
-                    case 2:
+                    case 2: // Choose To Register As Administrator Or Customer
                         do {
                             try {
                                 System.out.println("\n\t1. Create Account For Customer");
                                 System.out.println("\t2. Create Account For Administrator");
+                                System.out.println("\t3. Go back");
                                 System.out.print("\nPlease Choose Your Option: ");
                                 uAnswer = scanner.nextInt();
                                 scanner.nextLine();
@@ -70,28 +84,36 @@ public class UserInterface {
                                     case 2:
                                         accountCreationSuccess = createAdministratorAccount();
                                         break;
+                                    case 3:
+                                        accountCreationSuccess = true;
+                                        break;
                                     default:
                                         throw new IndexOutOfBoundsException();
                                 }
                             } catch (IndexOutOfBoundsException e) {
-                                System.err.println("Please Enter The Correct Options, 1 - 3");
-                            } catch (InputMismatchException | IllegalArgumentException e) {
-                                System.err.println(e.getMessage());
+                                System.err.println("Please Enter The Correct Option, 1 - 3");
+                            } catch (InputMismatchException e) {
+                                System.err.println("Please Enter The Correct Option, 1 - 3");
                                 scanner.nextLine();
+                            }catch (IllegalArgumentException e) {
+                                System.err.println(e.getMessage());                                
                             }
                         } while (!accountCreationSuccess);
+                        mainMenuLoop = true; // Goes to the main menu.
                         break;
                     case 3:
-                        System.out.println("\nGood Bye");
-                        mainMenuLoop = false;
+                        System.out.println("\nGood Bye! Thank you for shopping with us =)");
+                        mainMenuLoop = false; // Exits the program.
+                        ProductFileIO.exportProductData(this.products); // Exports/backs-up products' data.
+                        UserFileIO.exportUserData(this.users); // Exports/backs-up users' data.
                         break;
                     default:
                         throw new IndexOutOfBoundsException();
                 }
             } catch (IndexOutOfBoundsException e) {
-                System.err.println("Please Enter The Correct Options, 1 - 3");
+                System.err.println("Please Enter The Correct Option, 1 - 3");
             } catch (InputMismatchException e) {
-                System.err.println("Please Enter The Correct Options, 1 - 3");
+                System.err.println("Please Enter The Correct Option, 1 - 3");
                 scanner.nextLine();
             } catch (IllegalArgumentException e) {
                 System.err.println(e.getMessage());
@@ -99,13 +121,20 @@ public class UserInterface {
         } while (mainMenuLoop);
     }
 
+    /**
+     * Level 3 menu.
+     * 
+     * @return T/F whether login is successful or not.
+     */
     public boolean loginSelection()
     {
         int userSelection = -1;
+        String continueShop = "";
 
         System.out.println("\n\t1. Login As Customer");
         System.out.println("\t2. Login As Administrator");
         System.out.println("\t3. Continue as Guest");
+        System.out.println("\t4. Go back");
         System.out.print("\nPlease Choose Your Option: ");
 
         try
@@ -117,8 +146,17 @@ public class UserInterface {
                 case 1:
                     customerLogin(); // Login for customer.
                     if(currentUser != null) { // If currentUser is not null...
-                        displayProducts(); // Displays available products.
-                        addToCart();  // Allows Customer-typed user to add items to cart and checkout.
+                        do{
+                            displayProducts(); // Displays available products.
+                            addToCart();  // Allows Customer-typed user to add items to cart and checkout.
+                            
+                            System.out.print("Continue shopping (y/n)? "); // Prompt user if they wish to continue shopping.
+                            continueShop = scanner.nextLine();
+                            if(continueShop.equalsIgnoreCase("n")){ // If user wishes to stop shopping...
+                                System.out.println("Goodbye " + ((Customer)currentUser).getName() + "! Logging out...");
+                                this.currentUser = null; // Log the user out.
+                            }
+                        } while(continueShop.equalsIgnoreCase("y"));
                     } else {
                         return false; // Goes to login as page..
                     }
@@ -134,31 +172,48 @@ public class UserInterface {
                 case 3:
                     this.currentUser = (new Customer("Guest", "Guest123!", "Guest", "", "", "", "", ""));
                     if(currentUser != null) { // If currentUser is not null...
-                        displayProducts(); // Displays available products.
-                        addToCart();  // Allows Customer-typed user to add items to cart and checkout.
+                        do{
+                            displayProducts(); // Displays available products.
+                            addToCart();  // Allows Customer(Guest)-typed user to add items to cart and checkout.
+                            
+                            System.out.print("Continue shopping (y/n)? "); // Prompt user if they wish to continue shopping.
+                            continueShop = scanner.nextLine();  
+                            if(continueShop.equalsIgnoreCase("n")){ // If user wishes to stop shopping...
+                                System.out.println("Goodbye " + ((Customer)currentUser).getName() + "! Logging out...");
+                                this.currentUser = null; // Log the user out.
+                            }
+                        } while(continueShop.equalsIgnoreCase("y"));
                     } else {
                         return false; // Goes to login as page..
                     }
                     return true;
+                case 4:
+                    return true; // Goes to login as page..
                 default:
                     throw new IndexOutOfBoundsException();
             }
         } catch (IndexOutOfBoundsException e) {
-            System.err.println("Please Enter The Correct Options, 1 - 3");
-        } catch (InputMismatchException | IllegalArgumentException e) {
-            System.err.println("Please Enter The Correct Options, 1 - 3");
+            System.err.println("Please Enter The Correct Option, 1 - 4");
+        } catch (InputMismatchException e) {
+            System.err.println("Please Enter The Correct Option, 1 - 4");
             scanner.nextLine();
         }
 
         return false;
     }
 
+    /**
+     * Level 4a menu.
+     * 
+     * @return T/F whether to repeat loop.
+     */
     private boolean customerLogin()
     {
         boolean promptLogin = true;
         do
         {
-            System.out.print("\n\tLogin ID: ");
+            System.out.println("\n\tPlease Enter Credentials (\"b\" to go back)");
+            System.out.print("\tLogin ID: ");
             String loginID = scanner.nextLine();
 
             if(loginID.equalsIgnoreCase("b")) { // If user wishes to go back...
@@ -193,12 +248,18 @@ public class UserInterface {
         return false;
     }
 
+    /**
+     * Level 4a menu.
+     * 
+     * @return T/F whether to repeat loop.
+     */
     private boolean adminLogin()
     {
         boolean promptLogin = true;
         do
         {
-            System.out.print("\n\tLogin ID: ");
+            System.out.println("\n\tPlease Enter Credentials (\"b\" to go back)");
+            System.out.print("\tLogin ID: ");
             String loginID = scanner.nextLine();
 
             if(loginID.equalsIgnoreCase("b")) { // If user wishes to go back...
@@ -233,23 +294,32 @@ public class UserInterface {
         return false;
     }
 
+    /**
+     * Level 4b menu.
+     * 
+     * @return T/F whether to repeat loop.
+     */
     public boolean createCustomerAccount()
     {
         String loginID, password, name, phone, email, address, cardNumber, cardHolder;
 
-        System.out.println("\n*Required Fields (Press enter to skip non-essential fields)");
-        System.out.print("Login ID*: ");
+        System.out.println("\n*Required Fields (\"b\" to go back or press \"enter\" to skip non-essential fields)");
+        System.out.print("\tLogin ID*: ");
         loginID = scanner.nextLine();
+        
+        if(loginID.equalsIgnoreCase("b")){ // If user wishes to go back...
+            return false;
+        }
 
         // While user-defined login ID is empty or exists within collection...
         while (loginID.isEmpty() || users.containsKey(loginID)) {
             // Promp user for another login id.
-            System.out.print("Please choose another login ID: ");
+            System.err.print("Please choose another login ID: ");
             loginID = scanner.nextLine();
         }
 
         do {
-            System.out.print("Password* : ");
+            System.out.print("\tPassword*: ");
             password = scanner.nextLine();
 
             if (!Utilities.passIsSecure(password, 8)) {
@@ -258,46 +328,57 @@ public class UserInterface {
             // While user-defined password is not secure
         } while(!Utilities.passIsSecure(password, 8));
 
-        System.out.print("Full Name: ");
+        System.out.print("\tFull Name: ");
         name = scanner.nextLine();
 
-        System.out.print("Phone Number: ");
+        System.out.print("\tPhone Number: ");
         phone = scanner.nextLine();
         
-        System.out.print("Email: ");
+        System.out.print("\tEmail: ");
         email = scanner.nextLine();
         
-        System.out.print("Address: ");
+        System.out.print("\tAddress: ");
         address = scanner.nextLine();
         
-        System.out.print("Card Number: ");
+        System.out.print("\tCard Number: ");
         cardNumber = scanner.nextLine();
         
-        System.out.print("Card Holder Name: ");
+        System.out.print("\tCard Holder Name: ");
         cardHolder = scanner.nextLine();
   
         this.users.put(loginID, new Customer(loginID, password, name, phone, email, address, cardNumber, cardHolder));
 
+        System.out.println("Account created. Please log in to start shopping =)");
+        
         return true;
     }
 
+    /**
+     * Level 4b menu.
+     * 
+     * @return T/F whether to repeat loop.
+     */
     private boolean createAdministratorAccount()
     {
         String loginID, password, name, email;
 
-        System.out.println("\n*Required Fields (Press enter to skip non-essential fields)");
-        System.out.print("Login ID*: ");
+        System.out.println("\n*Required Fields (\"b\" to go back or press \"enter\" to skip non-essential fields)");
+        System.out.print("\tLogin ID*: ");
         loginID = scanner.nextLine();
+        
+        if(loginID.equalsIgnoreCase("b")){ // If user wishes to go back...
+            return false;
+        }
 
         // While user-defined login ID is empty or exists within collection...
         while (loginID.isEmpty() || users.containsKey(loginID)) {
             // Promp user for another login id.
-            System.out.print("Please choose another login ID: ");
+            System.err.print("Please choose another login ID: ");
             loginID = scanner.nextLine();
         }
 
         do {
-            System.out.print("Password*: ");
+            System.out.print("\tPassword*: ");
             password = scanner.nextLine();
 
             if (!Utilities.passIsSecure(password, 14)) {
@@ -306,14 +387,15 @@ public class UserInterface {
             // While user-defined password is not secure
         } while(!Utilities.passIsSecure(password, 14));
 
-        System.out.print("Full Name: ");
+        System.out.print("\tFull Name: ");
         name = scanner.nextLine();
         
-        System.out.print("Email: ");
+        System.out.print("\tEmail: ");
         email = scanner.nextLine();
 
         this.users.put(loginID, new Administrator(loginID, password, name, email));
 
+        System.out.println("Account created. Please log in to commence administration =)");
         return true;
     }
 
@@ -322,15 +404,18 @@ public class UserInterface {
         System.out.print(this.products.toString());
     }
 
+    /**
+     * Level 5a menu (Shopping function for customer).
+     */
     public void addToCart()
     {
         ShoppingCart cart = new ShoppingCart(this.currentUser);
         boolean run = true;
 
-        System.out.println("");
         while(run){
             System.out.print("Please select a product to add to cart (0 to proceed to checkout): ");
             int productSelection = scanner.nextInt();
+            scanner.nextLine();
 
             if(productSelection == 0){ // If user selects to stop adding products...
                 run = false; //
@@ -339,6 +424,7 @@ public class UserInterface {
 
             System.out.print("Quantity: ");
             int quantity = scanner.nextInt();
+            scanner.nextLine();
             
             if(quantity > 0) { // If user specifies 1 or more as quantity...
                 // Finds the product via indexing and adds it to the cart alongside user-specified quantity.
@@ -346,10 +432,12 @@ public class UserInterface {
             }
         }
 
-        System.out.println(cart.cartList());
-        System.out.println(cart.generateInvoice(this.currentUser));
+        System.out.println(cart.generateInvoice(this.currentUser)); // Outputs invoice to user.
     }
 
+    /**
+     * Level 5b menu (Editing function for administrators).
+     */
     public void adminPanel()
     {
         int userSelection;
@@ -362,11 +450,10 @@ public class UserInterface {
                 System.out.println("\t3. Edit Product");
                 System.out.println("\t4. Log Out");
                 System.out.print("\nPlease Choose Your Option: ");
-
                 userSelection = scanner.nextInt();
                 scanner.nextLine();
-
-                switch (userSelection) {
+                
+                switch (userSelection) { // Edit type
                     case 1:
                         addProduct();
                         break;
@@ -377,11 +464,13 @@ public class UserInterface {
                         editProduct();
                         break;
                     case 4:
-                        System.out.println(((Administrator)currentUser).getAdminName() + " Logged out");
-                        this.currentUser = null;
+                        System.out.println("Goodbye " + ((Administrator)currentUser).getAdminName() + "! Logging out...");
+                        this.currentUser = null; // Log the user out.
                         done = true;
+                        break;
+                    default:
+                        throw new IndexOutOfBoundsException("Selection Out Of Bounds");
                 }
-
             } catch (IndexOutOfBoundsException e) {
                 System.err.println("Please Enter The Correct Options, 1 - 4");
             } catch (InputMismatchException e) {
@@ -391,6 +480,9 @@ public class UserInterface {
         } while(!done);
     }
 
+    /**
+     * Level 6a menu.
+     */
     public void addProduct()
     {
         String productName;
@@ -398,32 +490,34 @@ public class UserInterface {
         double price = 0D;
         Category category = null;
         int productCategorySelection;
-        Integer stock = new Integer(0);
+        Integer stock = 0;
 
+        System.out.println("\nProduct Details (\"b\" to go back)");
         do {
-            System.out.print("\nProduct Name: ");
+            System.out.print("\tProduct Name: ");
             productName = scanner.nextLine();
 
             if (productName.isEmpty()) {
-                System.err.println("\nError: Name can't be empty.");
+                System.err.println("Error: Name can't be empty.");
+            } else if(productName.equalsIgnoreCase("b")) { // If user wishes to go back...
+                return; // Exit method.
             }
-
         } while(productName.isEmpty());
 
         while (true) {
             try {
-                System.out.print("Product ID: ");
+                System.out.print("\tProduct ID: ");
                 productID = scanner.nextInt();
+                scanner.nextLine();
                 
                 for(Product product: this.products.getProductList()){ // Traverse through the list of products.
                     if(productID == product.getProductID()){ // If product ID is already existent...
                         throw new IllegalArgumentException("Existing Product ID Detected!");
                     }
                 }
-                scanner.nextLine();
                 break;
             } catch (InputMismatchException e) {
-                System.err.println("\nPlease enter a valid Product ID");
+                System.err.println("Please enter a valid Product ID");
                 scanner.nextLine();
             } catch (IllegalArgumentException e) {
                System.err.println(e.getMessage());
@@ -432,23 +526,25 @@ public class UserInterface {
 
         while(true) {
             try {
-                System.out.print("Price: ");
+                System.out.print("\tPrice: $");
                 price = scanner.nextDouble();
+                scanner.nextLine();
                 break;
             } catch (InputMismatchException e) {
-                System.err.println("\nPlease Enter a Valid Price");
+                System.err.println("Please Enter a Valid Price");
                 scanner.nextLine();
             }
         }
 
-        System.out.println("Product Category: ");
         while (true) {
             try {
+                System.out.println("\tProduct Category: ");
                 for(String cat: categories) {
-                    System.out.print(cat);
+                    System.out.print("\t" + cat); // Print out the categories.
                 }
-                System.out.println("\nSelect: ");
+                System.out.print("\n\tSelect: ");
                 productCategorySelection = scanner.nextInt(); 
+                scanner.nextLine();
                 
                 category = Category.values()[productCategorySelection - 1];
                 
@@ -458,7 +554,7 @@ public class UserInterface {
                     break;
                 }
             } catch (IndexOutOfBoundsException e) {
-                System.err.println("Please Select From 1 - 6");
+                System.err.println("Please Make a Valid Selection");
             } catch (InputMismatchException e) {
                 System.err.println("Please Enter a Valid Number");
                 scanner.nextLine();
@@ -467,19 +563,24 @@ public class UserInterface {
 
         while(true) {
             try {
-                System.out.print("Initial Stock: ");
+                System.out.print("\tInitial Stock: ");
                 stock = scanner.nextInt();
+                scanner.nextLine();
                 break;
             } catch (InputMismatchException e) {
-                System.err.println("\nPlease Enter a Valid Number");
+                System.err.println("Please Enter a Valid Number");
                 scanner.nextLine();
             }
         } 
 
         // Adds the product to the instantiated ProductList object.
         this.products.addSingleProduct(new Product(productName, productID, price, category, stock));
+        System.out.println("Product added!");
     }
 
+    /**
+     * Level 6b menu.
+     */
     public void removeProduct()
     {
         int pIndRmv = 0;
@@ -487,10 +588,16 @@ public class UserInterface {
         Product pToRmv = null;
         
         do {
-            System.out.println(this.products.toString());
-            System.out.print("Select: ");
+            System.out.print(this.products.toString());
+            System.out.print("Select (0 to go back): ");
             try {
-                pIndRmv = (scanner.nextInt() - 1); // Gets the user-selection and modify it to enable indexed access. 
+                pIndRmv = (scanner.nextInt() - 1); // Gets the user-selection and modify it to enable indexed access.
+                scanner.nextLine();
+                
+                if(pIndRmv == -1) { // If user wishes to go back (0 pressed)...
+                    return; // Exit this method.
+                } 
+                
                 pToRmv = this.products.getProductList().get(pIndRmv); // Gets the specific Product object that is to be removed.
                 this.products.removeProduct(pToRmv.getCategory(), pToRmv); // Removes the product from the ProductList Object.
                 
@@ -498,6 +605,7 @@ public class UserInterface {
                     throw new IndexOutOfBoundsException("Selection Out of Bounds");
                 } else { // Otherwise
                     success = true;
+                    System.out.println("Product removed!");
                 }
             } catch (IndexOutOfBoundsException e) {
                 System.err.println(e.getMessage());
@@ -508,28 +616,34 @@ public class UserInterface {
         } while(!success);
     }
 
+    /**
+     * Level 6c menu.
+     */
     private void editProduct()
     {
         ArrayList<Product> pList = this.products.getProductList();
         
-        int pIndEdit = 0;
+        int pIndEdit = -10;
         boolean editSuccess = false;
         Product pToEdit = null;
         do {
-            System.out.println(this.products.toString());
-            System.out.print("Select: ");
+            System.out.print(this.products.toString());
+            System.out.print("Select (0 to go back): ");
             try {
-                pIndEdit = (scanner.nextInt() - 1); // Gets the user-selection and modify it to enable indexed access. 
+                pIndEdit = (scanner.nextInt() - 1); // Gets the user-selection and modify it to enable indexed access.
+                scanner.nextLine();
 
-                if(pIndEdit < 0 || pIndEdit >  this.products.getProductList().size()) { // If user's selection is out of bounds...
+                if(pIndEdit == -1) { // If user wishes to go back (0 pressed)...
+                    return; // Exit this method.
+                } else if(pIndEdit < 0 || pIndEdit > this.products.getProductList().size()) { // If user's selection is out of bounds...
                     throw new IndexOutOfBoundsException("Selection Out of Bounds");
                 } else {
                     pToEdit = pList.get(pIndEdit); // Saves the reference of the product to be edited.
                 }
                 
                 boolean edit2Success = false;
-                System.out.println("\nWhich would you like to edit? (0 to exit)");
                 do{
+                    System.out.println("\nWhich would you like to edit? (0 to exit)");
                     System.out.println("\n\t1. Product Name");
                     System.out.println("\t2. Product ID");
                     System.out.println("\t3. Price");
@@ -537,6 +651,7 @@ public class UserInterface {
                     System.out.println("\t5. Stock");
                     System.out.print("> ");
                     int editType = scanner.nextInt();
+                    scanner.nextLine();
                     
                     switch(editType){
                         case 0:
@@ -549,29 +664,31 @@ public class UserInterface {
                         case 2:
                             System.out.print("New Product ID: ");
                             pToEdit.setProductID(scanner.nextInt()); // Modifies the Product ID.
+                            scanner.nextLine();
                             break;
                         case 3:
-                            System.out.print("\nNew Price: $");
+                            System.out.print("New Price: $");
                             pToEdit.setPrice(scanner.nextDouble()); // Modifies the price.
+                            scanner.nextLine();
                             break;
                         case 4:
-                            System.out.println("\nCategories: ");
+                            System.out.println("Categories: ");
                             for(String cat: categories) {
                                 System.out.print(cat);
                             }
                             System.out.print("> ");
                             pToEdit.setCategory(Category.values()[scanner.nextInt() - 1]); // Modifies the Category.
+                            scanner.nextLine();
                             break;
                         case 5:
-                            System.out.print("\nStock: ");
+                            System.out.print("Stock: ");
                             pToEdit.setStock(new Integer(scanner.nextInt())); // Modifies the stock.
+                            scanner.nextLine();
                             break;
                         default:
                             throw new IndexOutOfBoundsException("Selection Out of Bounds");
                     }                   
                 } while(!edit2Success);
-                
-                ProductFileIO.exportProductData(products);
             } catch (IndexOutOfBoundsException e) {
                 System.err.println(e.getMessage());
             } catch (InputMismatchException e) {
@@ -579,5 +696,7 @@ public class UserInterface {
                 scanner.nextLine();
             }
         } while(!editSuccess);
+        
+        System.out.println("Product edited!");
     }
 }

@@ -1,4 +1,6 @@
-package online_shopping_cui;
+package com.online.shopping_cui.model;
+
+import com.online.shopping_cui.utilities.Utilities;
 
 /**
  * This class holds information about an Administrator of the system.

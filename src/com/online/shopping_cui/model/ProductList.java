@@ -1,5 +1,6 @@
-package online_shopping_cui;
+package com.online.shopping_cui.model;
 
+import com.online.shopping_cui.enumerations.Category;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 

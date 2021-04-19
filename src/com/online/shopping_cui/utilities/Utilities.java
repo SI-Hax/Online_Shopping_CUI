@@ -1,4 +1,4 @@
-package online_shopping_cui;
+package com.online.shopping_cui.utilities;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
