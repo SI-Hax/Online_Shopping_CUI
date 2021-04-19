@@ -75,10 +75,8 @@ public class UserInterface {
                                 }
                             } catch (IndexOutOfBoundsException e) {
                                 System.err.println("Please Enter The Correct Options, 1 - 3");
-                                System.err.flush();
                             } catch (InputMismatchException | IllegalArgumentException e) {
                                 System.err.println(e.getMessage());
-                                System.err.flush();
                                 scanner.nextLine();
                             }
                         } while (!accountCreationSuccess);
@@ -120,22 +118,26 @@ public class UserInterface {
             switch (userSelection) {
                 case 1:
                     customerLogin(); // Login for customer.
+                    if(currentUser != null) {
+                        displayProducts();
+                        addToCart();  
+                    }
                     return true;
                 case 2:
                     adminLogin(); // Login for admins.
+                    adminPanel(); // Enter Admin Privileges
                     return true;
                 case 3:
-                    // TODO: Something...
+                    this.currentUser = (new Customer("Guest", "Guest123!", "Guest", "", "", "", "", ""));
+                    
                     return true;
                 default:
                     throw new IndexOutOfBoundsException();
             }
         } catch (IndexOutOfBoundsException e) {
             System.err.println("Please Enter The Correct Options, 1 - 3");
-            System.err.flush();
         } catch (InputMismatchException | IllegalArgumentException e) {
             System.err.println("Please Enter The Correct Options, 1 - 3");
-            System.err.flush();
             scanner.nextLine();
         }
 
@@ -205,7 +207,6 @@ public class UserInterface {
                         System.out.println("\nLogin Successful, Welcome Back " + ((Administrator)currentUser).getAdminName()); // Welcomes user.
                         promptLogin = false;
                         promptPassword = false;
-                        adminPanel(); // Enter Admin Privileges
                         return true; // Exits method and returns true to caller.
                     } else if (password.equalsIgnoreCase("b")) { // If user wishes to go back up a level...
                         return false; // Exits method and returns false to caller to go back up a level for menu.
@@ -227,7 +228,56 @@ public class UserInterface {
     {
         String loginID, password, name, phone, email, address, cardNumber, cardHolder;
 
-        System.out.print("\nLogin ID*: ");
+        System.out.println("\n*Required Fields (Press enter to skip non-essential fields)");
+        System.out.print("Login ID*: ");
+        loginID = scanner.nextLine();
+
+        // While user-defined login ID is empty or exists within collection...
+        while (loginID.isEmpty() || users.containsKey(loginID)) {
+            // Promp user for another login id.
+            System.out.print("Please choose another login ID: ");
+            loginID = scanner.nextLine();
+        }
+
+        do {
+            System.out.print("Password* : ");
+            password = scanner.nextLine();
+
+            if (!Utilities.passIsSecure(password, 8)) {
+                System.err.println("Password is not strong enough (Requirements: 8+ Characters with 1 Upper, 1 Lower, 1 Number, 1 Symbol), try another: ");
+            }
+            // While user-defined password is not secure
+        } while(!Utilities.passIsSecure(password, 8));
+
+        System.out.print("Full Name: ");
+        name = scanner.nextLine();
+
+        System.out.print("Phone Number: ");
+        phone = scanner.nextLine();
+        
+        System.out.print("Email: ");
+        email = scanner.nextLine();
+        
+        System.out.print("Address: ");
+        address = scanner.nextLine();
+        
+        System.out.print("Card Number: ");
+        cardNumber = scanner.nextLine();
+        
+        System.out.print("Card Holder Name: ");
+        cardHolder = scanner.nextLine();
+  
+        this.users.put(loginID, new Customer(loginID, password, name, phone, email, address, cardNumber, cardHolder));
+
+        return true;
+    }
+
+    private boolean createAdministratorAccount()
+    {
+        String loginID, password, name, email;
+
+        System.out.println("\n*Required Fields (Press enter to skip non-essential fields)");
+        System.out.print("Login ID*: ");
         loginID = scanner.nextLine();
 
         // While user-defined login ID is empty or exists within collection...
@@ -241,127 +291,19 @@ public class UserInterface {
             System.out.print("Password*: ");
             password = scanner.nextLine();
 
-            if (!Utilities.passIsSecure(password)) {
-                System.out.print("Password is not strong enough, try another: ");
+            if (!Utilities.passIsSecure(password, 14)) {
+                System.err.println("Password is not strong enough (Requirements: 14+ Character, 1 Upper, 1 Lower, 1 Number, 1 Symbol), try another: ");
             }
             // While user-defined password is not secure
-        } while(!Utilities.passIsSecure(password));
+        } while(!Utilities.passIsSecure(password, 14));
 
-        do {
-            System.out.print("Full Name: ");
-            name = scanner.nextLine();
-
-            if (name.isEmpty()) {
-                System.out.print("Full Name cannot be empty: ");
-            }
-            // While user-defined name is empty
-        } while(name.isEmpty());
-
-        do {
-            System.out.print("Phone Number: ");
-            phone = scanner.nextLine();
-
-            if (phone.isEmpty()) {
-                System.out.print("Phone Number cannot be empty: ");
-            }
-            // While user-defined phone is empty
-        } while(phone.isEmpty());
-
-        do {
-            System.out.print("Email: ");
-            email = scanner.nextLine();
-
-            if (!Utilities.emailIsValid(email)) {
-                System.out.print("Please enter a valid email address: ");
-            }
-            // While user-defined email is invalid
-        } while(!Utilities.emailIsValid(email));
-
-        do {
-            System.out.print("Address: ");
-            address = scanner.nextLine();
-
-            if (address.isEmpty()) {
-                System.out.print("Address cannot be empty: ");
-            }
-            // While user-defined address is empty
-        } while(address.isEmpty());
-
-        do {
-            System.out.print("Card Number: ");
-            cardNumber = scanner.nextLine();
-
-            if (!Utilities.cardIsValid(cardNumber) || cardNumber.isEmpty()) {
-                System.out.print("Please enter a valid card number: ");
-            }
-            // While user-defined cardNumber invalid
-        } while(!Utilities.cardIsValid(cardNumber) || cardNumber.isEmpty());
-
-        do {
-            System.out.print("Card Holder Name: ");
-            cardHolder = scanner.nextLine();
-
-            if (cardHolder.isEmpty()) {
-                System.out.print("Card Holder Name cannot be empty: ");
-            }
-            // While user-defined cardHolder is empty
-        } while(cardHolder.isEmpty());
-
-        this.users.put(loginID, new Customer(loginID, password, name, phone, email, address, cardNumber, cardHolder));
-        UserFileIO.exportUserData(this.users);
-
-        return true;
-    }
-
-    private boolean createAdministratorAccount()
-    {
-        String loginID;
-        String password;
-        String name;
-        String email;
-
-        System.out.print("\nLogin ID: ");
-        loginID = scanner.nextLine();
-
-        // While user-defined login ID is empty or exists within collection...
-        while (loginID.isEmpty() || users.containsKey(loginID)) {
-            // Promp user for another login id.
-            System.out.print("Please choose another login ID: ");
-            loginID = scanner.nextLine();
-        }
-
-        do {
-            System.out.print("Password: ");
-            password = scanner.nextLine();
-
-            if (!Utilities.passIsSecure(password)) {
-                System.out.print("Password is not strong enough, try another: ");
-            }
-            // While user-defined password is not secure
-        } while(!Utilities.passIsSecure(password));
-
-        do {
-            System.out.print("Full Name: ");
-            name = scanner.nextLine();
-
-            if (name.isEmpty()) {
-                System.out.print("Full Name cannot be empty: ");
-            }
-            // While user-defined name is empty
-        } while(name.isEmpty());
-
-        do {
-            System.out.print("Email: ");
-            email = scanner.nextLine();
-
-            if (!Utilities.emailIsValid(email)) {
-                System.out.print("Please enter a valid email address: ");
-            }
-            // While user-defined email is invalid
-        } while(!Utilities.emailIsValid(email));
+        System.out.print("Full Name: ");
+        name = scanner.nextLine();
+        
+        System.out.print("Email: ");
+        email = scanner.nextLine();
 
         this.users.put(loginID, new Administrator(loginID, password, name, email));
-        UserFileIO.exportUserData(this.users);
 
         return true;
     }
@@ -371,7 +313,7 @@ public class UserInterface {
         System.out.print(this.products.toString());
     }
 
-    public void addToCart()
+    public boolean addToCart()
     {
         ShoppingCart cart = new ShoppingCart(this.currentUser);
         boolean run = true;
