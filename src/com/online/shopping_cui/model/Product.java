@@ -3,14 +3,16 @@ package com.online.shopping_cui.model;
 import com.online.shopping_cui.enumerations.Category;
 
 /**
- * This class contains the Product Class which encapsulates the following methods:
+ * This class contains the Product Class which encapsulates the following
+ * methods:
  *
- * <p>Methods:</p>
+ * <p>
+ * Methods:</p>
  * <ul>
- *  <li>Empty Constructor</li>
- *  <li>Five-parameter Constructor</li>
- *  <li>Getters and Setters</li>
- *  <li>To String Method</li>
+ * <li>Empty Constructor</li>
+ * <li>Five-parameter Constructor</li>
+ * <li>Getters and Setters</li>
+ * <li>To String Method</li>
  * </ul>
  *
  * @author Miguel Emmara - 18022146
@@ -18,8 +20,10 @@ import com.online.shopping_cui.enumerations.Category;
  * @author Roxy Dao - 1073633
  * @version 1.02
  * @since 15/03/2021
- **/
+ *
+ */
 public class Product {
+
     private String productName;
     private int productID;
     private double price;
@@ -42,7 +46,6 @@ public class Product {
         this.stock = stock;
     }
 
-    // Getters and setter methods for Object's instance data.
     //-------------------------------------------------------
     public String getProductName() {
         return productName;
@@ -90,12 +93,13 @@ public class Product {
     //-------------------------------------------------------
 
     /**
-     * To String method to serialise object. Stringifies Object's
-     * attributes, which are separated by commas.
+     * To String method to serialise object. String files Object's attributes,
+     * which are separated by commas.
      *
-     * @return A String containing Product's name, ID, price, category,
-     *              and stock number, all separated by commas.
-     **/
+     * @return A String containing Product's name, ID, price, category, and
+     * stock number, all separated by commas.
+     *
+     */
     @Override
     public String toString() {
         String comma = ",";
