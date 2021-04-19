@@ -9,7 +9,8 @@ package com.online.shopping_cui.enumerations;
  * @author Roxy Dao - 1073633
  * @version 1.0
  * @since 15/03/2021
- **/
+ *
+ */
 public enum Category {
     PCPARTS, LAPTOP, CAMERA, PRINTER, SMARTPHONE, MISC
 }
