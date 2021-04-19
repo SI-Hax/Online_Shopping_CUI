@@ -470,10 +470,10 @@ public class UserInterface {
     {
         String productName;
         int productID = 0;
-        double price = 0;
-        Category category = Category.MISCELLANEOUS;
+        double price = 0D;
+        Category category = null;
         int productCategorySelection;
-        Integer stock = null;
+        Integer stock = new Integer(0);
         boolean success = false;
 
         do {
@@ -493,7 +493,7 @@ public class UserInterface {
                 scanner.nextLine();
                 success = true;
             } catch (InputMismatchException | IllegalArgumentException e) {
-                System.out.println("\nPlease Enter an Integer for Product ID");
+                System.out.println("\nPlease enter a valid Product ID");
                 System.err.flush();
                 scanner.nextLine();
             }
@@ -507,7 +507,7 @@ public class UserInterface {
                 scanner.nextLine();
                 success = true;
             } catch (InputMismatchException | IllegalArgumentException e) {
-                System.out.println("\nPlease Enter an integer for price");
+                System.out.println("\nPlease Enter a valid price");
                 System.err.flush();
                 scanner.nextLine();
             }
@@ -522,8 +522,9 @@ public class UserInterface {
                 System.out.println("\t3. Cameras");
                 System.out.println("\t4. Printers");
                 System.out.println("\t5. SmartPhones");
+                System.out.println("\t6. Miscellaneous");
                 System.out.print("Answer: ");
-                productCategorySelection = scanner.nextInt();
+                productCategorySelection = scanner.nextInt();   
 
                 switch (productCategorySelection) {
                     case 1:
@@ -546,14 +547,18 @@ public class UserInterface {
                         category = Category.SMARTPHONE;
                         success = true;
                         break;
+                    case 6:
+                        category = Category.MISC;
+                        success = true;
+                        break;
                     default:
                         throw new IndexOutOfBoundsException();
                 }
             } catch (IndexOutOfBoundsException e) {
-                System.err.println("\nPlease Enter The Correct Options, 1 - 5");
-                System.err.flush(); }
-            catch (InputMismatchException | IllegalArgumentException e) {
-                System.out.println("\nPlease Enter an integer for price");
+                System.err.println("\nPlease Select From 1 - 6");
+                System.err.flush(); 
+            } catch (InputMismatchException | IllegalArgumentException e) {
+                System.err.println("\nPlease Enter a Valid Number");
                 System.err.flush();
                 scanner.nextLine();
             }
@@ -567,56 +572,103 @@ public class UserInterface {
                 scanner.nextLine();
                 success = true;
             } catch (InputMismatchException | IllegalArgumentException e) {
-                System.out.println("\nPlease Enter an Integer for the initial stock");
+                System.out.println("\nPlease Enter a Valid Number");
                 System.err.flush();
                 scanner.nextLine();
             }
         } while(!success);
 
-        this.products = new ProductList(new Product(productName, productID, price, category, stock));
-
-        if (ProductFileIO.exportProductData(this.products)) {
-            System.out.println("\nProduct added to the database!");
-        } else {
-            System.out.println("\nCannot add product to the database!");
-        }
+        // Adds the product to the instantiated ProductList object.
+        this.products.addSingleProduct(new Product(productName, productID, price, category, stock));
     }
 
     private void removeProduct()
     {
         int counter = 1;
-        int productToRemove;
+        int productToRemove = 0;
+        Category category = null;
         boolean success = false;
-        System.out.println("Available product to remove");
+        
+        System.out.println("Available Categories to Remove From:");
+        System.out.println(Arrays.asList(Category.values()));
+        do {
+            try {
+                System.out.println("\n\t1. PC Parts");
+                System.out.println("\t2. Laptops");
+                System.out.println("\t3. Cameras");
+                System.out.println("\t4. Printers");
+                System.out.println("\t5. SmartPhones");
+                System.out.println("\t6. Miscellaneous");
+                System.out.print("Answer: ");
+                productToRemove = scanner.nextInt();   
 
-        for(Map.Entry<Category, ArrayList<Product>> category : products.getSingleProductList().entrySet()) {
-            for(Product product: category.getValue()) {
-                System.out.println();
-                System.out.println("\t" + (counter++) + ". " + "Product Name: " + product.getProductName() + " Stock: " + product.getStock() +
-                        " Price: " + product.getPrice());
-
-                do {
-                    try {
-                        System.out.println("Select product to remove: ");
-                        productToRemove = scanner.nextInt();
-                        scanner.nextLine();
+                switch (productToRemove) {
+                    case 1:
+                        category = Category.PCPARTS;
                         success = true;
-
-                        if (productToRemove <= counter) {
-                            // TODO remove product based on user choice
-                            products.removeProduct(product.getCategory(),productToRemove);
-                        } else {
-                            System.out.println("Enter between 1 - " + counter);
-                            success = false;
-                        }
-                    } catch (InputMismatchException | IllegalArgumentException e) {
-                        System.out.println("Please Enter an Integer");
-                        System.err.flush();
-                        scanner.nextLine();
-                    }
-                } while(!success);
+                        break;
+                    case 2:
+                        category = Category.LAPTOP;
+                        success = true;
+                        break;
+                    case 3:
+                        category = Category.CAMERA;
+                        success = true;
+                        break;
+                    case 4:
+                        category = Category.PRINTER;
+                        success = true;
+                        break;
+                    case 5:
+                        category = Category.SMARTPHONE;
+                        success = true;
+                        break;
+                    case 6:
+                        category = Category.MISC;
+                        success = true;
+                        break;
+                    default:
+                        throw new IndexOutOfBoundsException();
+                }
+            } catch (IndexOutOfBoundsException e) {
+                System.err.println("\nPlease Select From 1 - 6");
+                System.err.flush(); 
+            } catch (InputMismatchException | IllegalArgumentException e) {
+                System.err.println("\nPlease Enter a Valid Number");
+                System.err.flush();
+                scanner.nextLine();
             }
-        }
+        } while(!success);
+
+//        for(Map.Entry<Category, ArrayList<Product>> category : products.getSingleProductList().entrySet()) {
+//            System.out.println(products.getSingleProductList().);
+//            for(Product product: category.getValue()) {
+//                System.out.println();
+//                System.out.println("\t" + (counter++) + ". " + "Product Name: " + product.getProductName() + " Stock: " + product.getStock() +
+//                        " Price: " + product.getPrice());
+//
+//                do {
+//                    try {
+//                        System.out.println("Select product to remove: ");
+//                        productToRemove = scanner.nextInt();
+//                        scanner.nextLine();
+//                        success = true;
+//
+//                        if (productToRemove <= counter) {
+//                            // TODO remove product based on user choice
+//                            products.removeProduct(product.getCategory(),productToRemove);
+//                        } else {
+//                            System.out.println("Enter between 1 - " + counter);
+//                            success = false;
+//                        }
+//                    } catch (InputMismatchException | IllegalArgumentException e) {
+//                        System.out.println("Please Enter an Integer");
+//                        System.err.flush();
+//                        scanner.nextLine();
+//                    }
+//                } while(!success);
+//            }
+//        }
     }
 
     private void editProduct()
