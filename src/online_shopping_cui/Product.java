@@ -28,7 +28,7 @@ public class Product {
         this.productName = "";
         this.productID = 0;
         this.price = 0D;
-        this.category = Category.MISCELLANEOUS;
+        this.category = Category.MISC;
         this.stock = 0;
     }
 
