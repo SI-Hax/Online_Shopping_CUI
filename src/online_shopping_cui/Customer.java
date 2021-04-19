@@ -111,7 +111,7 @@ public class Customer extends User {
             if (Utilities.emailIsValid(email)) { // If passed in email passes check...
                 this.email = email; // Assign passed in data to instance's attribute.
             } else {
-                throw new IllegalArgumentException("Invalid email"); // Throw exception if does not satisfy pattern.
+                throw new IllegalArgumentException("Invalid email format"); // Throw exception if does not satisfy pattern.
             }
         } else {
             this.email = "UNKNOWN";
