@@ -109,7 +109,7 @@ public class ProductList {
     @Override
     public String toString(){
         ArrayList<Product> pList = this.getProductList();
-        String pListStr = "\nAvailable Products:\n";
+        String pListStr = "\nAvailable Products:\n\n";
         
         // For loop to traverse through the ArrayList-ed products.
         for(int i = 0; i < pList.size(); i++){
