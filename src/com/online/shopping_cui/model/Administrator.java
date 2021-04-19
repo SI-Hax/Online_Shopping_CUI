@@ -3,22 +3,22 @@ package com.online.shopping_cui.model;
 import com.online.shopping_cui.utilities.Utilities;
 
 /**
- * This class holds information about an Administrator of the system.
- * It is an extension of User class. Behaviours include getters and
- * setters that uses externally-sourced validation methods
- * (from Utilities class).
+ * This class holds information about an Administrator of the system. It is an
+ * extension of User class. Behaviours include getters and setters that uses
+ * externally-sourced validation methods (from Utilities class).
  *
- * <p>Attributes:</p>
+ * <p>
+ * Attributes:</p>
  * <ul>
- *  <li>Administrator's Name</li>
- *  <li>E-mail Address</li>
+ * <li>Administrator's Name</li>
+ * <li>E-mail Address</li>
  * </ul>
  * Behaviours:
  * <ul>
- *  <li>2-Parameter Constructor</li>
- *  <li>4-Parameter Constructor</li>
- *  <li>Getters and Setters</li>
- *  <li>To String Method</li>
+ * <li>2-Parameter Constructor</li>
+ * <li>4-Parameter Constructor</li>
+ * <li>Getters and Setters</li>
+ * <li>To String Method</li>
  * </ul>
  *
  * @author Miguel Emmara - 18022146
@@ -26,38 +26,38 @@ import com.online.shopping_cui.utilities.Utilities;
  * @author Roxy Dao - 1073633
  * @version 1.02
  * @since 30/03/2021
- **/
+ *
+ */
 public class Administrator extends User {
-    //Veriables----------------------------------------------------------------
+
     private String adminName;
     private String adminEmail;
 
     /**
-     * 2-parameter constructor for Administrator class. This is a
-     * constructor for Administrator class. Admins must have at least
-     * a loginID and a password. The rest will be computer-assigned.
+     * 2-parameter constructor for Administrator class. Admins must have at
+     * least a loginID and a password. The rest will be computer-assigned.
      *
-     * @param loginID    : Login identifier for admins.
-     * @param password   : Password defined by the admin.
-     **/
+     * @param loginID : Login identifier for admins.
+     * @param password : Password defined by the admin.
+     *
+     */
     public Administrator(String loginID, String password) {
         super(loginID);
         this.setPassword(password);
         this.setAdminName("Admin");
         this.setAdminEmail("");
     }
-    
-    //Constructors-------------------------------------------------------------
+
     /**
-     * 4-parameter constructor for Administrator class. This is a
-     * constructor for Administrator class. Admins can have a loginID,
-     * password, name, and email.
+     * 4-parameter constructor for Administrator class. Admins can have a
+     * loginID, password, name, and email.
      *
-     * @param loginID    : Login identifier for admins.
-     * @param password   : Password defined by the admin.
-     * @param adminName  : Name of the administrator.
+     * @param loginID : Login identifier for admins.
+     * @param password : Password defined by the admin.
+     * @param adminName : Name of the administrator.
      * @param adminEmail : Email address of the admin.
-     **/
+     *
+     */
     public Administrator(String loginID, String password, String adminName, String adminEmail) throws IllegalArgumentException {
         super(loginID);
         this.setPassword(password);
@@ -65,7 +65,6 @@ public class Administrator extends User {
         this.setAdminEmail(adminEmail);
     }
 
-    // Getters and Setters-----------------------------------------------------
     public String getAdminName() {
         return adminName;
     }
@@ -79,7 +78,7 @@ public class Administrator extends User {
     }
 
     public void setAdminEmail(String adminEmail) throws IllegalArgumentException {
-        if(adminEmail.equalsIgnoreCase("UNKNOWN")) { // Checks if passed in data is "UNKNOWN"...
+        if (adminEmail.equalsIgnoreCase("UNKNOWN")) { // Checks if passed in data is "UNKNOWN"...
             this.adminEmail = "UNKNOWN";
         } else if (!(adminEmail.isEmpty() || adminEmail.equals(" "))) { // Checks if passed in data is not empty...
             if (Utilities.emailIsValid(adminEmail)) { // If passed in email passes check...
@@ -96,12 +95,14 @@ public class Administrator extends User {
      * Overridden method from superclass (User). Users that are Administrators
      * are required to have a password length of at least 14 characters.
      *
-     * <p>In addition, the password must also meet general password requirements
+     * <p>
+     * In addition, the password must also meet general password requirements
      * (At least: 1 Uppercase, 1 Lowercase, 1 Number, and 1 Symbol).</p>
      *
      * @param password : User defined password.
      * @throws IllegalArgumentException
-     **/
+     *
+     */
     @Override
     public void setPassword(String password) throws IllegalArgumentException {
         // Check if password length is at least 14 characters and if its secure...
@@ -113,12 +114,13 @@ public class Administrator extends User {
     }
 
     /**
-     * To String method to serialise object. Stringifies Object's
-     * attributes, which are separated by commas.
+     * To String method to serialise object. String files Object's attributes,
+     * which are separated by commas.
      *
-     * @return A String containing User type, Admin's login
-     *          credentials and details, all separated by commas.
-     **/
+     * @return A String containing User type, Admin's login credentials and
+     * details, all separated by commas.
+     *
+     */
     @Override
     public String toString() {
         String comma = ",";
