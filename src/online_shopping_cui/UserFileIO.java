@@ -47,11 +47,11 @@ public final class UserFileIO
     {
         HashMap<String, User> usersData = new HashMap<>();
         
-        // Block to import data from customer_database.csv
-        BufferedReader br = null;
-        try
+         // Try-with-resources to import data from 2 csv files (1st:customer_database; 2nd:admin_database).
+        try (BufferedReader br2 = new BufferedReader(new FileReader(UserFileIO.ADMIN_FILEPATH));
+                BufferedReader br = new BufferedReader(new FileReader(UserFileIO.CUSTOMER_FILEPATH));)
         {
-            br = new BufferedReader(new FileReader(UserFileIO.CUSTOMER_FILEPATH));
+            // Block to import data from customer_database.csv
             String line = null;
             String[] data = new String[8];
             
@@ -76,49 +76,32 @@ public final class UserFileIO
                             data[7]));                           // Card holder
                 }
             }
-        } catch (IOException e) {
-            System.err.println("Error reading from file.");
-        } 
-        
-        // Block to import data from admin_database.csv
-        BufferedReader br2 = null;
-        try 
-        {
-            br2 = new BufferedReader(new FileReader(UserFileIO.ADMIN_FILEPATH));
-            String line = null;
-            String[] data = new String[4];
+            
+            // Block to import data from admin_database.csv    
+            String line2 = null;
+            String[] data2 = new String[4];
             
             br2.readLine(); // Skips the column headers.
             
             while(br2.ready()) // While there are more data to be read....
             {
-                line = br2.readLine(); // Read next line and save it to local String.
+                line2 = br2.readLine(); // Read next line and save it to local String.
                 
-                if(!line.isEmpty()) { // Check if read line is not empty...
+                if(!line2.isEmpty()) { // Check if read line is not empty...
                     // Splits each line into individual values and store them in the String array.
-                    data = line.split(","); 
+                    data2 = line2.split(","); 
 
                     // Stores imported Administrator data onto a local HashMap.
-                    usersData.put(data[0], new Administrator(data[0], // LoginID
-                            Utilities.decrypt(data[1]),               // Password
-                            data[2],                                  // Name
-                            data[3]));                                // Email                                                
+                    usersData.put(data2[0], new Administrator(data2[0], // LoginID
+                            Utilities.decrypt(data2[1]),                // Password
+                            data2[2],                                   // Name
+                            data2[3]));                                 // Email                                                
                 }
-            }
+            }  
         } catch (IOException e) {
             System.err.println("Error reading from file.");
-        } finally {
-            // Close the BufferedReaders and their wrapped objects last.
-            if (br != null && br2 != null) {
-                try {
-                    br.close();
-                    br2.close();
-                } catch (IOException ex) {
-                    System.err.println("Error closing buffered reader.");
-                }
-            }
-        }
-       
+        } 
+        
         return usersData;
     }
     
@@ -143,15 +126,10 @@ public final class UserFileIO
     {
         boolean writeSuccess = false;
         
-        PrintWriter pw = null;
-        PrintWriter pw2 = null;
-        
-        try 
+        // Try-with-resources (Buffered PrintWriter which overwrites existing files with new data).
+        try (PrintWriter pw2 = new PrintWriter(new BufferedWriter(new FileWriter(UserFileIO.ADMIN_FILEPATH, false)));
+                PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(UserFileIO.CUSTOMER_FILEPATH, false)));)
         {
-            // Buffered PrintWriter which overwrites existing files with new data.
-            pw = new PrintWriter(new BufferedWriter(new FileWriter(UserFileIO.CUSTOMER_FILEPATH, false)));
-            pw2 = new PrintWriter(new BufferedWriter(new FileWriter(UserFileIO.ADMIN_FILEPATH, false)));
-            
             // Prints out column headers.
             pw.println("LoginID,Password,Name,Phone,Email,Address,Card Number,Card Holder");
             pw2.println("LoginID,Password,Name,Email");
@@ -165,21 +143,15 @@ public final class UserFileIO
                     pw2.println(user.getValue().toString().trim()); // Write data to admin_database.csv
                 }
             }
+            writeSuccess = true;
         } catch (FileNotFoundException fe) { 
             System.err.println("File not found.");
             writeSuccess = false;
         } catch (IOException e) {
             System.err.println("Error writing onto file.");
             writeSuccess = false;
-        } finally {
-            if (pw != null && pw2 != null) {
-                // Flushes then closes the PrintWriters and their wrapped objects.
-                pw.close();
-                pw2.close();
-                writeSuccess = true;
-            }    
-        }
-        
+        } 
+    
         return writeSuccess;
     }
 }
