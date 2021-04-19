@@ -10,15 +10,16 @@ import java.util.ArrayList;
  *  <li>Quantity : Amount of a specific product the customer ordered.</li>
  *  <li>GrandTotal: Total cost.</li>
  *   <li>User: Logged in user who is using the cart.</li>
- * <p>Methods:</p>
+ * </ul>
+ * Methods:
  * <ul>
  *  <li>1-Parameter Constructor</li>
  *  <li>Getter</li>
- *  <li>AddToCart<\li>
- *  <li>RemoveFromCart<\li>
- *  <li>ClearCart<\li>
- *  <li>CartList<\li>
- *  <li>GenerateInvoice<\li>
+ *  <li>AddToCart</li>
+ *  <li>RemoveFromCart</li>
+ *  <li>ClearCart</li>
+ *  <li>CartList</li>
+ *  <li>GenerateInvoice</li>
  * </ul>
  *
  * @author  Miguel Emmara - 18022146
