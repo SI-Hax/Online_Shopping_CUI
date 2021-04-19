@@ -17,7 +17,6 @@ import com.online.shopping_cui.utilities.Utilities;
  *  <li>Card Number</li>
  *  <li>Card Holder</li>
  * </ul>
- * <p>
  * Behaviours:
  * <ul>
  *  <li>2-Parameter Constructor</li>
