@@ -8,16 +8,17 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * This class maintains a set of tools (static methods)
- * paramount to data validation and data protection.
+ * This class maintains a set of tools (static methods) paramount to data
+ * validation and data protection.
  *
- * <p>Behaviours:</p>
+ * <p>
+ * Behaviours:</p>
  * <ul>
- *   <li>Password Requirements Enforcer</li>
- *   <li>E-mail Format Checker</li>
- *   <li>Card Number Validator</li>
- *   <li>Text Encryptor</li>
- *   <li>CipherText Decryptor</li>
+ * <li>Password Requirements Enforcer</li>
+ * <li>E-mail Format Checker</li>
+ * <li>Card Number Validator</li>
+ * <li>Text Encryptor</li>
+ * <li>CipherText Decryptor</li>
  * </ul>
  *
  * @author Miguel Emmara - 18022146
@@ -25,21 +26,22 @@ import java.util.regex.Pattern;
  * @author Roxy Dao - 1073633
  * @version 1.01
  * @since 30/03/2021
- **/
+ *
+ */
 public class Utilities {
     // Data format validators, promoting the security/validity of data.
     //#################################################################################################
 
     /**
-     * Static method with an algorithm to check if the passed in
-     * data satisfies password requirements (at least one uppercase,
-     * a lowercase, a number, meet minimum # characters, and a 
-     * special character).
+     * Static method with an algorithm to check if the passed in data satisfies
+     * password requirements (at least one uppercase, a lowercase, a number,
+     * meet minimum # characters, and a special character).
      *
      * @param password : String containing the password to be checked.
      * @param minCharacters : Minimum-required number of characters.
      * @return T/F whether the passed in String is considered secure.
-     **/
+     *
+     */
     public static boolean passIsSecure(String password, int minCharacters) {
         boolean upperCase = false;
         boolean lowerCase = false;
@@ -47,7 +49,7 @@ public class Utilities {
         boolean specialChar = false;
         boolean secure = false;
 
-        if(password.length() >= minCharacters) { // If passed in password satisfies the number of characters...
+        if (password.length() >= minCharacters) { // If passed in password satisfies the number of characters...
             // For loop to iterate through the String.
             for (int i = 0; i < password.length(); i++) {
                 char temp = password.charAt(i);
@@ -58,11 +60,11 @@ public class Utilities {
                     lowerCase = true;
                 } else if (Character.isDigit(temp)) { // Check for number...
                     number = true;
-                } else if ((temp >= 33 && temp <= 47) || (temp >= 58 && temp <= 64) ||
-                        (temp >= 91 && temp <= 96) || (temp >= 123 && temp <= 126)) { // Check for special characters (symbols only).
+                } else if ((temp >= 33 && temp <= 47) || (temp >= 58 && temp <= 64)
+                        || (temp >= 91 && temp <= 96) || (temp >= 123 && temp <= 126)) { // Check for special characters (symbols only).
                     specialChar = true;
                 }
-            } 
+            }
         }
 
         if (upperCase && lowerCase && number && specialChar) { // If all checks are true....
@@ -73,14 +75,17 @@ public class Utilities {
     }
 
     /**
-     * Static method to check if the passed String is in email format (e.g "_____@___.__._").
+     * Static method to check if the passed String is in email format (e.g
+     * "_____@___.__._").
      *
-     * <p>Reference:</p>
+     * <p>
+     * Reference:</p>
      * https://stackoverflow.com/questions/624581/what-is-the-best-java-email-address-validation-method
      *
      * @param email : String containing the email to be checked.
      * @return T/F whether the String is in an email format.
-     **/
+     *
+     */
     public static boolean emailIsValid(String email) {
         Pattern pattern = Pattern.compile("^.+@.+\\..+$"); // Pattern for email.
         Matcher matcher = pattern.matcher(email); // Check if passed in data matches pattern.
@@ -90,15 +95,17 @@ public class Utilities {
     }
 
     /**
-     * Static method to determine if passed in String is a valid card
-     * number. Uses Luhn's algorithm to evaluate a card's validity.
+     * Static method to determine if passed in String is a valid card number.
+     * Uses Luhn's algorithm to evaluate a card's validity.
      *
-     * <p> Reference:</p>
+     * <p>
+     * Reference:</p>
      * https://en.wikipedia.org/wiki/Luhn_algorithm
      *
      * @param cardNumber : String containing the card number to be checked.
      * @return T/F whether the card number is valid or not.
-     **/
+     *
+     */
     public static boolean cardIsValid(String cardNumber) {
         int numDigits = cardNumber.length();
         int sum = Character.getNumericValue(cardNumber.charAt(numDigits - 1)); // Start from the right-most digit... 
@@ -127,21 +134,22 @@ public class Utilities {
 
     // Cryptographic Methods for Encryption and Decryption, protecting data. 
     //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-
     /**
      * Static method that encrypts a String. Uses a symmetric-key encryption
-     * algorithm called the Advanced Encryption Standard (AES) operating
-     * in Electronic Code Book (ECB) mode.
+     * algorithm called the Advanced Encryption Standard (AES) operating in
+     * Electronic Code Book (ECB) mode.
      *
-     * <p>References:</p>
+     * <p>
+     * References:</p>
      * <ul>
-     *   <li>https://stackoverflow.com/questions/28025742/encrypt-and-decrypt-a-string-with-aes-128</li>
-     *   <li>https://www.baeldung.com/java-aes-encryption-decryption</li>
+     * <li>https://stackoverflow.com/questions/28025742/encrypt-and-decrypt-a-string-with-aes-128</li>
+     * <li>https://www.baeldung.com/java-aes-encryption-decryption</li>
      * </ul>
      *
      * @param text : String containing the text to be encrypted.
      * @return A String containing the cipherText (encrypted String).
-     **/
+     *
+     */
     public static String encrypt(String text) {
         String key = "f0r4n31337h4xx0r"; // 128-bit key.
         String cipherText = null;
@@ -165,18 +173,20 @@ public class Utilities {
 
     /**
      * Static method that decrypts a String. Uses a symmetric-key decryption
-     * algorithm called the Advanced Encryption Standard (AES) operating
-     * in Electronic Code Book (ECB) mode.
+     * algorithm called the Advanced Encryption Standard (AES) operating in
+     * Electronic Code Book (ECB) mode.
      *
-     * <p>References:</p>
+     * <p>
+     * References:</p>
      * <ul>
-     *   <li>https://stackoverflow.com/questions/28025742/encrypt-and-decrypt-a-string-with-aes-128</li>
-     *   <li>https://www.baeldung.com/java-aes-encryption-decryption</li>
+     * <li>https://stackoverflow.com/questions/28025742/encrypt-and-decrypt-a-string-with-aes-128</li>
+     * <li>https://www.baeldung.com/java-aes-encryption-decryption</li>
      * </ul>
      *
      * @param cipheredText : String containing the text to be decrypted.
      * @return A String containing the decrypted text (decrypted String).
-     **/
+     *
+     */
     public static String decrypt(String cipheredText) {
         String key = "f0r4n31337h4xx0r"; // 128-bit key.
         String decryptedText = null;
