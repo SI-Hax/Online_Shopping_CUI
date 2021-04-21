@@ -25,10 +25,10 @@ import java.util.*;
  */
 public class UserInterface {
     //Messages
-    static String PASSWORDSTRENGTH = "Password is not strong enough (Requirements: 8+ Characters with 1 Upper, 1 Lower, 1 Number, 1 Symbol), try another: ";
+    static String PASSWORDSTRENGTH = "Password is not strong enough (Requirements: 1 Upper, 1 Lower, 1 Number, 1 Symbol, and ";
     static String REQUIRED = "\n*Required Fields (\"b\" to go back or press \"enter\" to skip non-essential fields)";
-    static String ERROR = "Please choose from the options below";
-    static String BACK = "Select (0 to go back): ";
+    static String ERROR = "Please choose from the options above";
+    static String BACK = "Select a Number (0 to go back): ";
     static String VALIDNO = "Please enter a number";
     static String WRONGPASS = "Incorrect password!";
     
@@ -322,7 +322,7 @@ public class UserInterface {
             password = scanner.nextLine();
 
             if (!Utilities.passIsSecure(password, 8)) {
-                System.err.println(PASSWORDSTRENGTH);
+                System.err.println(PASSWORDSTRENGTH + "8+ Characters): ");
             }
         } while (!Utilities.passIsSecure(password, 8)); // While user-defined password is not secure
 
@@ -378,7 +378,7 @@ public class UserInterface {
             password = scanner.nextLine();
 
             if (!Utilities.passIsSecure(password, 14)) {
-                System.err.println(PASSWORDSTRENGTH);
+                System.err.println(PASSWORDSTRENGTH + "14+ Characters): ");
             }
             // While user-defined password is not secure
         } while (!Utilities.passIsSecure(password, 14));
@@ -408,21 +408,36 @@ public class UserInterface {
 
         while (run) {
             System.out.print("Please select a product to add to cart (0 to proceed to checkout): ");
-            int productSelection = scanner.nextInt();
-            scanner.nextLine();
-
-            if (productSelection == 0) { // If user selects to stop adding products...
-                run = false; //
-                continue;
+            String productSelection = scanner.nextLine();
+            Product selectedProduct = null;
+            
+            if(productSelection.matches("^-?\\d+\\.?\\d*$")){ // If user entered a number (accounts for negatives and decimals too)...
+                int selectedNo = Integer.parseInt(productSelection);
+                if(selectedNo < 0 || selectedNo > products.getProductList().size()){ // If user-selected number is outside of the available choices...
+                    System.err.println(ERROR); // Outputs error message.
+                    continue; // Re-prompts user to select a product to add to cart.
+                } else if (selectedNo == 0) { // If user selects to stop adding products...
+                    run = false; // Stops the loop.
+                    continue; // And go back one level.
+                } else {
+                    selectedProduct = products.getProductList().get(selectedNo - 1); // Get the product from the ArrayList via ArrayList.get().                   
+                }
+            } else { // Otherwise (e.g user enters the partial/full Product Name)...
+                selectedProduct = products.searchProduct(productSelection); // Use ProductList search by keyword (String).
+                
+                if(selectedProduct == null) {
+                    System.err.println(ERROR); // Outputs error message.
+                    continue; // Reprompts the user to select another product.
+                }
             }
 
             System.out.print("Quantity: ");
             int quantity = scanner.nextInt();
             scanner.nextLine();
 
-            if (quantity > 0) { // If user specifies 1 or more as quantity...
+            if (quantity > 0 && selectedProduct != null) { // If user specifies 1 or more as quantity and selectedProduct is not empty...
                 // Finds the product via indexing and adds it to the cart alongside user-specified quantity.
-                cart.addToCart(products.getProductList().get(productSelection - 1), quantity);
+                cart.addToCart(selectedProduct, quantity);
             }
         }
 
@@ -534,7 +549,7 @@ public class UserInterface {
                 for (String cat : categories) {
                     System.out.print("\t" + cat); // Print out the categories.
                 }
-                System.out.print("\n\tSelect: ");
+                System.out.print("\n\tSelect 1-6: ");
                 productCategorySelection = scanner.nextInt();
                 scanner.nextLine();
 
@@ -587,14 +602,11 @@ public class UserInterface {
 
                 if (pIndRmv == -1) { // If user wishes to go back (0 pressed)...
                     return; // Exit this method.
-                }
-
-                pToRmv = this.products.getProductList().get(pIndRmv); // Gets the specific Product object that is to be removed.
-                this.products.removeProduct(pToRmv.getCategory(), pToRmv); // Removes the product from the ProductList Object.
-
-                if (pIndRmv < 0 || pIndRmv > this.products.getProductList().size()) { // If user's selection is out of bounds...
+                } else if (pIndRmv < 0 || pIndRmv > this.products.getProductList().size() - 1) { // If user's selection is out of bounds...
                     throw new IndexOutOfBoundsException(ERROR);
                 } else { // Otherwise
+                    pToRmv = this.products.getProductList().get(pIndRmv); // Gets the specific Product object that is to be removed.
+                    this.products.removeProduct(pToRmv.getCategory(), pToRmv); // Removes the product from the ProductList Object.
                     success = true;
                     System.out.println("Product removed!");
                 }
@@ -613,7 +625,7 @@ public class UserInterface {
     private void editProduct() {
         ArrayList<Product> pList = this.products.getProductList();
 
-        int pIndEdit = -10;
+        int pIndEdit = -1;
         boolean editSuccess = false;
         Product pToEdit = null;
         do {
@@ -625,7 +637,7 @@ public class UserInterface {
 
                 if (pIndEdit == -1) { // If user wishes to go back (0 pressed)...
                     return; // Exit this method.
-                } else if (pIndEdit < 0 || pIndEdit > this.products.getProductList().size()) { // If user's selection is out of bounds...
+                } else if (pIndEdit < 0 || pIndEdit > this.products.getProductList().size() - 1) { // If user's selection is out of bounds...
                     throw new IndexOutOfBoundsException(ERROR);
                 } else {
                     pToEdit = pList.get(pIndEdit); // Saves the reference of the product to be edited.
@@ -672,7 +684,7 @@ public class UserInterface {
                             break;
                         case 5:
                             System.out.print("Stock: ");
-                            pToEdit.setStock(new Integer(scanner.nextInt())); // Modifies the stock.
+                            pToEdit.setStock(scanner.nextInt()); // Modifies the stock.
                             scanner.nextLine();
                             break;
                         default:
