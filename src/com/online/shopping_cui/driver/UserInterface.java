@@ -435,9 +435,8 @@ public class UserInterface {
             int quantity = scanner.nextInt();
             scanner.nextLine();
 
-            if (quantity > 0 && selectedProduct != null) { // If user specifies 1 or more as quantity and selectedProduct is not empty...
-                // Finds the product via indexing and adds it to the cart alongside user-specified quantity.
-                cart.addToCart(selectedProduct, quantity);
+            if (quantity > 0 && selectedProduct != null) { // If user specifies 1 or more as quantity and selectedProduct is not empty...               
+                cart.addToCart(selectedProduct, quantity); // Adds the product to the cart alongside user-specified quantity.
             }
         }
 
