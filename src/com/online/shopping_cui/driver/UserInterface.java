@@ -413,20 +413,6 @@ public class UserInterface {
             
             if(productSelection.matches("^-?\\d+\\.?\\d*$")){ // If user entered a number (accounts for negatives and decimals too)...
                 int selectedNo = Integer.parseInt(productSelection);
-                
-                if(selectedNo < 0 || selectedNo > products.getProductList().size()){ // If user-selected number is outside of the available choices...
-                    System.err.println(ERROR); // Outputs error message.
-                    continue; // Re-prompts user to select a product to add to cart.
-                } else if (selectedNo == 0) { // If user selects to stop adding products...
-                    run = false; // Stops the loop.
-                    continue; // And go back up one level.
-                } else { // If user enters a number within range of the product list (e.g. 1-12)...
-                    selectedProduct = products.getProductList().get(selectedNo - 1); // Get the product from the ArrayList via ArrayList.get(product index).                   
-                }
-            } else { // Otherwise (e.g user enters the partial/full Product Name)...
-                selectedProduct = products.searchProduct(productSelection); // Use ProductList search by keyword (String).
-                
-                if(selectedProduct == null) { // If user enters a name that is not the name (or no partial match) of any of the products...
                 if(selectedNo < 0 || selectedNo > products.getProductList().size()){ // If user-selected number is outside of the available choices...
                     System.err.println(ERROR); // Outputs error message.
                     continue; // Re-prompts user to select a product to add to cart.
@@ -450,7 +436,8 @@ public class UserInterface {
             scanner.nextLine();
 
             if (quantity > 0 && selectedProduct != null) { // If user specifies 1 or more as quantity and selectedProduct is not empty...
-                cart.addToCart(selectedProduct, quantity); // Adds the product to the cart alongside user-specified quantity.
+                // Finds the product via indexing and adds it to the cart alongside user-specified quantity.
+                cart.addToCart(selectedProduct, quantity);
             }
         }
 
