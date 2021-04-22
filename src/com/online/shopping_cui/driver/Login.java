@@ -5,16 +5,10 @@
  */
 package com.online.shopping_cui.driver;
 
-import com.online.shopping_cui.enumerations.Category;
 import com.online.shopping_cui.model.Customer;
-import com.online.shopping_cui.model.ProductList;
 import com.online.shopping_cui.model.User;
 import com.online.shopping_cui.model.Administrator;
-import com.online.shopping_cui.model.ShoppingCart;
-import com.online.shopping_cui.model.Product;
-import com.online.shopping_cui.utilities.ProductFileIO;
-import com.online.shopping_cui.utilities.Utilities;
-import com.online.shopping_cui.utilities.UserFileIO;
+
 import java.util.*;
 
 /**
@@ -24,23 +18,23 @@ import java.util.*;
  * @author Miguel Emmara - 18022146
  * @author Amos Foong - 18044418
  * @author Roxy Dao - 1073633
- * @version 1.01
+ * @version 1.03
  * @since 18/04/2021
  *
  */
 public class Login {
     static String WRONGPASS = "Incorrect password!";
 
-    protected static Scanner scanner;
+    protected Scanner scanner;
     protected User currentUser;
     protected ProductMenu productMenu;
     protected HashMap<String, User> users;
 
-    public Login() {
-        this.scanner = new Scanner(System.in);
-        this.productMenu = new ProductMenu();
-        this.users = UserFileIO.importUserData();
-
+    public Login(Scanner scanner, ProductMenu productMenu, User currentUser, HashMap<String, User> users) {
+        this.scanner = scanner;
+        this.productMenu = productMenu;
+        this.currentUser = currentUser;
+        this.users = users;
     }
 
     /**
@@ -57,7 +51,7 @@ public class Login {
 
             if (loginID.equalsIgnoreCase("b")) { // If user wishes to go back...
                 return false; // Exits method and returns false to caller to go back up a level for menu.
-            } else if (this.users.containsKey(loginID)) { // If user-specified login is in the database...
+            } else if (this.users.containsKey(loginID) && (users.get(loginID)instanceof Customer)) { // If user-specified login is in the database and is of customer-type...
                 boolean promptPassword = true;
 
                 do {
@@ -79,7 +73,7 @@ public class Login {
                     }
                 } while (promptPassword);
             } else { // If user-specified login ID is non-existent...
-                System.out.println("\nSorry, " + loginID + " is not a registered user!");
+                System.out.println("\nSorry, " + loginID + " is not a registered customer!");
                 promptLogin = true;
             }
         } while (promptLogin);
@@ -101,7 +95,7 @@ public class Login {
 
             if (loginID.equalsIgnoreCase("b")) { // If user wishes to go back...
                 return false; // Exits method and returns false to caller to go back up a level for menu.
-            } else if (this.users.containsKey(loginID)) { // If user-specified login is in the database...
+            } else if (this.users.containsKey(loginID) && (users.get(loginID) instanceof Administrator)) { // If user-specified login is in the database and is of admin-typed...
                 boolean promptPassword = true;
 
                 do {
@@ -123,7 +117,7 @@ public class Login {
                     }
                 } while (promptPassword);
             } else { // If user-specified login ID is non-existent...
-                System.out.println("\nSorry, " + loginID + " is not a registered user!");
+                System.out.println("\nSorry, " + loginID + " is not a registered administrator!");
                 promptLogin = true;
             }
         } while (promptLogin);
