@@ -8,10 +8,9 @@ package com.online.shopping_cui.driver;
 import com.online.shopping_cui.enumerations.Category;
 import com.online.shopping_cui.model.ProductList;
 import com.online.shopping_cui.model.Product;
-import com.online.shopping_cui.utilities.ProductFileIO;
 import com.online.shopping_cui.model.ShoppingCart;
 import com.online.shopping_cui.model.User;
-import com.online.shopping_cui.utilities.UserFileIO;
+
 import java.util.*;
 
 /**
@@ -21,26 +20,24 @@ import java.util.*;
  * @author Miguel Emmara - 18022146
  * @author Amos Foong - 18044418
  * @author Roxy Dao - 1073633
- * @version 1.01
+ * @version 1.03
  * @since 18/04/2021
  *
  */
 public class ProductMenu {
 
-    static String ERROR = "Please choose from the options below";
+    static String ERROR = "Please choose from the given options";
     static String BACK = "Select (0 to go back): ";
     static String VALIDNO = "Please enter a number";
 
     protected String[] categories = {"\t1. PC Parts\n", "\t2. Laptop\n", "\t3. Camera\n", "\t4. Printer\n", "\t5. Smartphone\n", "\t6. Misc"};
 
-    protected static Scanner scanner;
+    protected Scanner scanner;
     protected ProductList products;
-    protected Login login;
     
-    public ProductMenu() {
-        this.scanner = new Scanner(System.in);
-        this.products = ProductFileIO.importProductData();
-        this.login = new Login();
+    public ProductMenu(Scanner scanner, ProductList products) {
+        this.scanner = scanner;
+        this.products = products;
     }
 
     public void displayProducts() {
@@ -63,12 +60,12 @@ public class ProductMenu {
             System.out.print("\tProduct Name: ");
             productName = scanner.nextLine();
 
-            if (productName.isEmpty()) {
+            if (productName.trim().isEmpty()) {
                 System.err.println("Error: Name can't be empty.");
             } else if (productName.equalsIgnoreCase("b")) { // If user wishes to go back...
                 return; // Exit method.
             }
-        } while (productName.isEmpty());
+        } while (productName.trim().isEmpty());
 
         while (true) {
             try {
@@ -81,7 +78,7 @@ public class ProductMenu {
                         throw new IllegalArgumentException("Existing Product ID Detected!");
                     }
                 }
-                break;
+                break; // Move to next prompt.
             } catch (InputMismatchException e) {
                 System.err.println("Please enter a valid Product ID");
                 scanner.nextLine();
@@ -95,7 +92,7 @@ public class ProductMenu {
                 System.out.print("\tPrice: $");
                 price = scanner.nextDouble();
                 scanner.nextLine();
-                break;
+                break; // Move to next prompt.
             } catch (InputMismatchException e) {
                 System.err.println(VALIDNO);
                 scanner.nextLine();
@@ -117,7 +114,7 @@ public class ProductMenu {
                 if (category == null) {
                     throw new IndexOutOfBoundsException(ERROR);
                 } else {
-                    break;
+                    break; // Move to next prompt.
                 }
             } catch (IndexOutOfBoundsException e) {
                 System.err.println(ERROR);
@@ -132,7 +129,7 @@ public class ProductMenu {
                 System.out.print("\tInitial Stock: ");
                 stock = scanner.nextInt();
                 scanner.nextLine();
-                break;
+                break; // Move to add product.
             } catch (InputMismatchException e) {
                 System.err.println(VALIDNO);
                 scanner.nextLine();
@@ -161,14 +158,11 @@ public class ProductMenu {
 
                 if (pIndRmv == -1) { // If user wishes to go back (0 pressed)...
                     return; // Exit this method.
-                }
-
-                pToRmv = this.products.getProductList().get(pIndRmv); // Gets the specific Product object that is to be removed.
-                this.products.removeProduct(pToRmv.getCategory(), pToRmv); // Removes the product from the ProductList Object.
-
-                if (pIndRmv < 0 || pIndRmv > this.products.getProductList().size()) { // If user's selection is out of bounds...
+                } else if (pIndRmv < 0 || pIndRmv > this.products.getProductList().size() - 1) { // If user's selection is out of bounds...
                     throw new IndexOutOfBoundsException(ERROR);
-                } else { // Otherwise
+                } else { // Otherwise...
+                    pToRmv = this.products.getProductList().get(pIndRmv); // Gets the specific Product object that is to be removed.
+                    this.products.removeProduct(pToRmv.getCategory(), pToRmv); // Removes the product from the ProductList Object.
                     success = true;
                     System.out.println("Product removed!");
                 }
@@ -217,6 +211,7 @@ public class ProductMenu {
                     int editType = scanner.nextInt();
                     scanner.nextLine();
 
+                    int newID = -1;
                     switch (editType) {
                         case 0:
                             edit2Success = true;
@@ -226,9 +221,19 @@ public class ProductMenu {
                             pToEdit.setProductName(scanner.nextLine()); // Modifies the name.
                             break;
                         case 2:
-                            System.out.print("New Product ID: ");
-                            pToEdit.setProductID(scanner.nextInt()); // Modifies the Product ID.
-                            scanner.nextLine();
+                            do{
+                                System.out.print("New Product ID: ");
+                                newID = scanner.nextInt(); 
+                                scanner.nextLine();
+                                for (Product product : this.products.getProductList()) { // Traverse through the list of products.
+                                    if (newID == product.getProductID()) { // If product ID is already existent...
+                                        System.err.println("Existing Product ID Detected!");
+                                        newID = -1;
+                                        break;
+                                    }
+                                }
+                            } while(newID == -1);
+                            pToEdit.setProductID(newID); // Modifies the Product ID.
                             break;
                         case 3:
                             System.out.print("New Price: $");
@@ -246,7 +251,7 @@ public class ProductMenu {
                             break;
                         case 5:
                             System.out.print("Stock: ");
-                            pToEdit.setStock(new Integer(scanner.nextInt())); // Modifies the stock.
+                            pToEdit.setStock(scanner.nextInt()); // Modifies the stock.
                             scanner.nextLine();
                             break;
                         default:
@@ -266,9 +271,11 @@ public class ProductMenu {
 
     /**
      * Level 5a menu (Shopping function for customer).
+     * 
+     * @param currentUser : User that is currently logged in.
      */
-    public void addToCart() {
-        ShoppingCart cart = new ShoppingCart(login.currentUser);
+    public void addToCart(User currentUser) {
+        ShoppingCart cart = new ShoppingCart(currentUser);
         boolean run = true;
 
         while (run) {
@@ -308,7 +315,7 @@ public class ProductMenu {
                     throw new IllegalArgumentException(VALIDNO);
                 }
             } catch (Exception e) {
-                System.err.println(ERROR);
+                System.err.println(e.getMessage());
             }
 
             if (quantity > 0 && selectedProduct != null) { // If user specifies 1 or more as quantity and selectedProduct is not empty...               
@@ -316,6 +323,6 @@ public class ProductMenu {
             }
         }
 
-        System.out.println(cart.generateInvoice(login.currentUser)); // Outputs invoice to user.
+        System.out.println(cart.generateInvoice(currentUser)); // Outputs invoice to user.
     }
 }
