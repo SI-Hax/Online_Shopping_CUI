@@ -1,15 +1,12 @@
 package com.online.shopping_cui.driver;
 
-import com.online.shopping_cui.enumerations.Category;
 import com.online.shopping_cui.model.Customer;
 import com.online.shopping_cui.model.ProductList;
 import com.online.shopping_cui.model.User;
 import com.online.shopping_cui.model.Administrator;
-import com.online.shopping_cui.model.ShoppingCart;
-import com.online.shopping_cui.model.Product;
 import com.online.shopping_cui.utilities.ProductFileIO;
-import com.online.shopping_cui.utilities.Utilities;
 import com.online.shopping_cui.utilities.UserFileIO;
+
 import java.util.*;
 
 /**
@@ -19,15 +16,17 @@ import java.util.*;
  * @author Miguel Emmara - 18022146
  * @author Amos Foong - 18044418
  * @author Roxy Dao - 1073633
- * @version 1.08
+ * @version 1.10
  * @since 18/04/2021
  *
  */
 public class UserInterface {
-    static String ERROR = "Please choose from the options above"; 
+    static String ERROR = "Please choose from the given options"; 
     
-    protected static Scanner scanner;
+    protected Scanner scanner;
     protected ProductList products;
+    protected HashMap<String, User> users;
+    protected User currentUser;
     protected ProductMenu productMenu;
     protected Login login;
     protected CreateAccount create;
@@ -36,12 +35,14 @@ public class UserInterface {
     public UserInterface() {
         this.scanner = new Scanner(System.in);
         this.products = ProductFileIO.importProductData();
+        this.users = UserFileIO.importUserData();
+        this.currentUser = null;
         this.mainMenuLoop = true;
         this.accountCreationSuccess = false;
         this.loginSuccess = false;
-        this.productMenu = new ProductMenu();
-        this.login = new Login();
-        this.create = new CreateAccount();
+        this.productMenu = new ProductMenu(this.scanner, this.products);
+        this.login = new Login(this.scanner, this.productMenu, this.currentUser, this.users);
+        this.create = new CreateAccount(this.scanner, this.users);
     }
 
     /**
@@ -109,6 +110,7 @@ public class UserInterface {
                         mainMenuLoop = false; // Exits the program.
                         ProductFileIO.exportProductData(this.products); // Exports/backs-up products' data.
                         UserFileIO.exportUserData(create.users); // Exports/backs-up users' data.
+                        scanner.close();
                         break;
                     default:
                         throw new IndexOutOfBoundsException();
@@ -149,7 +151,7 @@ public class UserInterface {
                     if (login.currentUser != null) { // If currentUser is not null...
                         do {
                             productMenu.displayProducts(); // Displays available products.
-                            productMenu.addToCart();  // Allows Customer-typed user to add items to cart and checkout.
+                            productMenu.addToCart(login.currentUser);  // Allows Customer-typed user to add items to cart and checkout.
                             
                             do{
                                 System.out.print("Continue shopping (y/n)? "); // Prompt user if they wish to continue shopping.
@@ -178,7 +180,7 @@ public class UserInterface {
                     if (login.currentUser != null) { // If currentUser is not null...
                         do {
                             productMenu.displayProducts(); // Displays available products.
-                            productMenu.addToCart();  // Allows Customer(Guest)-typed user to add items to cart and checkout.
+                            productMenu.addToCart(login.currentUser);  // Allows Customer(Guest)-typed user to add items to cart and checkout.
                             
                             do{
                                 System.out.print("Continue shopping (y/n)? "); // Prompt user if they wish to continue shopping.
