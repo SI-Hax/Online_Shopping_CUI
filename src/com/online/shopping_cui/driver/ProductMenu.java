@@ -9,11 +9,14 @@ import com.online.shopping_cui.enumerations.Category;
 import com.online.shopping_cui.model.ProductList;
 import com.online.shopping_cui.model.Product;
 import com.online.shopping_cui.utilities.ProductFileIO;
+import com.online.shopping_cui.model.ShoppingCart;
+import com.online.shopping_cui.model.User;
+import com.online.shopping_cui.utilities.UserFileIO;
 import java.util.*;
 
 /**
- * Product Menu Class - This class contains methods and attributes that handle the
- * product menu.
+ * Product Menu Class - This class contains methods and attributes that handle
+ * the product menu.
  *
  * @author Miguel Emmara - 18022146
  * @author Amos Foong - 18044418
@@ -32,6 +35,7 @@ public class ProductMenu {
 
     protected static Scanner scanner;
     protected ProductList products;
+    protected User currentUser;
 
     public ProductMenu() {
         this.scanner = new Scanner(System.in);
@@ -257,5 +261,60 @@ public class ProductMenu {
         } while (!editSuccess);
 
         System.out.println("Product edited!");
+    }
+
+    /**
+     * Level 5a menu (Shopping function for customer).
+     */
+    public void addToCart() {
+        ShoppingCart cart = new ShoppingCart(this.currentUser);
+        boolean run = true;
+
+        while (run) {
+            System.out.print("Please select a product to add to cart (0 to proceed to checkout): ");
+            String productSelection = scanner.nextLine();
+            Product selectedProduct = null;
+
+            if (productSelection.matches("^-?\\d+\\.?\\d*$")) { // If user entered a number (accounts for negatives and decimals too)...
+                int selectedNo = Integer.parseInt(productSelection);
+                if (selectedNo < 0 || selectedNo > products.getProductList().size()) { // If user-selected number is outside of the available choices...
+                    System.err.println(ERROR); // Outputs error message.
+                    continue; // Re-prompts user to select a product to add to cart.
+                } else if (selectedNo == 0) { // If user selects to stop adding products...
+                    run = false; // Stops the loop.
+                    continue; // And go back one level.
+                } else {
+                    selectedProduct = products.getProductList().get(selectedNo - 1); // Get the product from the ArrayList via ArrayList.get().                   
+                }
+            } else { // Otherwise (e.g user enters the partial/full Product Name)...
+                selectedProduct = products.searchProduct(productSelection); // Use ProductList search by keyword (String).
+
+                if (selectedProduct == null) {
+                    System.err.println(ERROR); // Outputs error message.
+                    continue; // Reprompts the user to select another product.
+                }
+            }
+
+            System.out.print("Quantity: ");
+            String quantityStr = "";
+            int quantity = 0;
+
+            try {
+                quantityStr = scanner.nextLine();
+                if (quantityStr.matches("^-?\\d+\\.?\\d*$")) { // If user enters a number...
+                    quantity = Integer.parseInt(quantityStr); // Convert the String to an Integer.
+                } else { // Otherwise...
+                    throw new IllegalArgumentException(VALIDNO);
+                }
+            } catch (Exception e) {
+                System.err.println(ERROR);
+            }
+
+            if (quantity > 0 && selectedProduct != null) { // If user specifies 1 or more as quantity and selectedProduct is not empty...               
+                cart.addToCart(selectedProduct, quantity); // Adds the product to the cart alongside user-specified quantity.
+            }
+        }
+
+        System.out.println(cart.generateInvoice(this.currentUser)); // Outputs invoice to user.
     }
 }
