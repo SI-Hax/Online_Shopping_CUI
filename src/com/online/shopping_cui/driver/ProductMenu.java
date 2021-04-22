@@ -35,11 +35,12 @@ public class ProductMenu {
 
     protected static Scanner scanner;
     protected ProductList products;
-    protected User currentUser;
-
+    protected Login login;
+    
     public ProductMenu() {
         this.scanner = new Scanner(System.in);
         this.products = ProductFileIO.importProductData();
+        this.login = new Login();
     }
 
     public void displayProducts() {
@@ -267,7 +268,7 @@ public class ProductMenu {
      * Level 5a menu (Shopping function for customer).
      */
     public void addToCart() {
-        ShoppingCart cart = new ShoppingCart(this.currentUser);
+        ShoppingCart cart = new ShoppingCart(login.currentUser);
         boolean run = true;
 
         while (run) {
@@ -315,6 +316,6 @@ public class ProductMenu {
             }
         }
 
-        System.out.println(cart.generateInvoice(this.currentUser)); // Outputs invoice to user.
+        System.out.println(cart.generateInvoice(login.currentUser)); // Outputs invoice to user.
     }
 }
