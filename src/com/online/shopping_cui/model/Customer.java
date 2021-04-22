@@ -107,18 +107,24 @@ public class Customer extends User {
         return email;
     }
 
-    public void setEmail(String email) throws IllegalArgumentException {
+    public boolean setEmail(String email){
+        boolean set = false;
         if (email.equalsIgnoreCase("UNKNOWN")) { // Checks if passed in data is "UNKNOWN"...
             this.email = "UNKNOWN";
+            set = true;
         } else if (!(email.isEmpty() || email.equals(" "))) { // Checks if passed in data is not empty...
             if (Utilities.emailIsValid(email)) { // If passed in email passes check...
                 this.email = email; // Assign passed in data to instance's attribute.
-            } else {
-                throw new IllegalArgumentException("Invalid email format"); // Throw exception if does not satisfy pattern.
+                set = true;
+            } else { // If email in an invalid format...
+                set = false; // Do not save email and reprompt user to enter a valid email/blank one.
             }
-        } else {
-            this.email = "UNKNOWN";
+        } else { // If its blank...
+            this.email = "UNKNOWN"; // Set email to unknown.
+            set = true;
         }
+        
+        return set;
     }
 
     public String getAddress() {
@@ -133,18 +139,24 @@ public class Customer extends User {
         return cardNumber;
     }
 
-    public void setCardNumber(String cardNumber) throws IllegalArgumentException {
+    public boolean setCardNumber(String cardNumber){
+        boolean set = false;
         if (cardNumber.equalsIgnoreCase("UNKNOWN")) { // Checks if passed in data is "UNKNOWN"...
             this.cardNumber = "UNKNOWN";
+            set = true;
         } else if (!(cardNumber.isEmpty() || cardNumber.equals(" "))) { // Checks if passed in data is not empty...
             if (Utilities.cardIsValid(cardNumber.trim())) { // If passed in card number passes check...
                 this.cardNumber = cardNumber.trim(); // Assign passed in data to instance's attribute.
+                set = true;
             } else {
-                throw new IllegalArgumentException("Invalid card number"); // Throw exception if card does not pass the Luhn's algorithm.
+                set = false; // Return false to caller
             }
         } else {
             this.cardNumber = "UNKNOWN";
+            set = true;
         }
+        
+        return set;
     }
 
     public String getCardHolder() {
@@ -175,13 +187,17 @@ public class Customer extends User {
      *
      */
     @Override
-    public void setPassword(String password) throws IllegalArgumentException {
+    public boolean setPassword(String password) {
+        boolean set = false;
         // Check if password length is at least 8 characters and if its secure...
         if (Utilities.passIsSecure(password, password.length())) {
             this.password = password; // Saves user-defined password.
+            set = true;
         } else {
-            throw new IllegalArgumentException("Weak password."); // Throw an exception.
+            set = false;
         }
+        
+        return set;
     }
 
     /**
