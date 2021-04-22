@@ -77,18 +77,24 @@ public class Administrator extends User {
         return adminEmail;
     }
 
-    public void setAdminEmail(String adminEmail) throws IllegalArgumentException {
+    public boolean setAdminEmail(String adminEmail){
+        boolean set = false;
         if (adminEmail.equalsIgnoreCase("UNKNOWN")) { // Checks if passed in data is "UNKNOWN"...
             this.adminEmail = "UNKNOWN";
+            set = true;
         } else if (!(adminEmail.isEmpty() || adminEmail.equals(" "))) { // Checks if passed in data is not empty...
             if (Utilities.emailIsValid(adminEmail)) { // If passed in email passes check...
                 this.adminEmail = adminEmail; // Assign passed in data to instance's attribute.
+                set = true;
             } else {
-                throw new IllegalArgumentException("Invalid email format"); // Throw exception if does not satisfy pattern.
+                set = false; 
             }
         } else {
             this.adminEmail = "UNKNOWN";
+            set = true;
         }
+        
+        return set;
     }
 
     /**
@@ -104,13 +110,17 @@ public class Administrator extends User {
      *
      */
     @Override
-    public void setPassword(String password) throws IllegalArgumentException {
+    public boolean setPassword(String password){
+        boolean set = false;
         // Check if password length is at least 14 characters and if its secure...
-        if (Utilities.passIsSecure(password, password.length())) {
+        if (Utilities.passIsSecure(password, password.length())){
             this.password = password; // Saves user-defined password.
+            set = true;
         } else {
-            throw new IllegalArgumentException("Weak password."); // Throw an exception.
+            set = false;
         }
+        
+        return set;
     }
 
     /**
