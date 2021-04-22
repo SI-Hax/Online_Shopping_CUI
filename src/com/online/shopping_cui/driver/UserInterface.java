@@ -154,9 +154,12 @@ public class UserInterface {
                         do {
                             displayProducts(); // Displays available products.
                             addToCart();  // Allows Customer-typed user to add items to cart and checkout.
-
-                            System.out.print("Continue shopping (y/n)? "); // Prompt user if they wish to continue shopping.
-                            continueShop = scanner.nextLine();
+                            
+                            do{
+                                System.out.print("Continue shopping (y/n)? "); // Prompt user if they wish to continue shopping.
+                                continueShop = scanner.nextLine();
+                            } while(!continueShop.equalsIgnoreCase("y") && !continueShop.equalsIgnoreCase("n")); // While user-entry is not y/n...
+                            
                             if (continueShop.equalsIgnoreCase("n")) { // If user wishes to stop shopping...
                                 System.out.println("Goodbye " + ((Customer) currentUser).getName() + "! Logging out...");
                                 this.currentUser = null; // Log the user out.
@@ -180,9 +183,12 @@ public class UserInterface {
                         do {
                             displayProducts(); // Displays available products.
                             addToCart();  // Allows Customer(Guest)-typed user to add items to cart and checkout.
-
-                            System.out.print("Continue shopping (y/n)? "); // Prompt user if they wish to continue shopping.
-                            continueShop = scanner.nextLine();
+                            
+                            do{
+                                System.out.print("Continue shopping (y/n)? "); // Prompt user if they wish to continue shopping.
+                                continueShop = scanner.nextLine();
+                            } while(!continueShop.equalsIgnoreCase("y") && !continueShop.equalsIgnoreCase("n")); // While user-entry is not y/n...
+                            
                             if (continueShop.equalsIgnoreCase("n")) { // If user wishes to stop shopping...
                                 System.out.println("Goodbye " + ((Customer) currentUser).getName() + "! Logging out...");
                                 this.currentUser = null; // Log the user out.
@@ -200,6 +206,7 @@ public class UserInterface {
         } catch (IndexOutOfBoundsException e) {
             System.err.println(ERROR);
         } catch (InputMismatchException e) {
+            currentUser = null; // Logs out any current user.
             System.err.println(ERROR);
             scanner.nextLine();
         }
@@ -301,7 +308,8 @@ public class UserInterface {
      * @return T/F whether account was created.
      */
     public boolean createCustomerAccount() {
-        String loginID, password, name, phone, email, address, cardNumber, cardHolder;
+        String loginID, password;
+        boolean saved = false;
 
         System.out.println(REQUIRED);
         System.out.print("\tLogin ID*: ");
@@ -321,30 +329,44 @@ public class UserInterface {
             System.out.print("\tPassword*: ");
             password = scanner.nextLine();
 
-            if (!Utilities.passIsSecure(password, 8)) {
-                System.err.println(PASSWORDSTRENGTH + "8+ Characters): ");
+            if (!Utilities.passIsSecure(password, 8)) { // If user-defined password is not secure enough...
+                System.err.println(PASSWORDSTRENGTH + "8+ Characters): "); // Output guide/prompt.
             }
-        } while (!Utilities.passIsSecure(password, 8)); // While user-defined password is not secure
+        } while (!Utilities.passIsSecure(password, 8)); // While user-defined password is not secure.
 
+        Customer newCustomer = new Customer(loginID, password); // Create a new instance of Customer.
+        
         System.out.print("\tFull Name: ");
-        name = scanner.nextLine();
+        newCustomer.setName(scanner.nextLine());
 
         System.out.print("\tPhone Number: ");
-        phone = scanner.nextLine();
+        newCustomer.setPhone(scanner.nextLine());
 
-        System.out.print("\tEmail: ");
-        email = scanner.nextLine();
+        do{
+            System.out.print("\tEmail: ");
+            saved = newCustomer.setEmail(scanner.nextLine());
+            
+            if(!saved){ // If email is not saved...
+                System.err.println("Input is not in email format (e.g. john@gmail.com)");
+            }
+        } while(!saved); // Keep looping while email is not blank but is in an invalid format.
 
         System.out.print("\tAddress: ");
-        address = scanner.nextLine();
+        newCustomer.setAddress(scanner.nextLine());
 
-        System.out.print("\tCard Number: ");
-        cardNumber = scanner.nextLine();
+        do{
+            System.out.print("\tCard Number: ");
+            saved = newCustomer.setCardNumber(scanner.nextLine());
+            
+            if(!saved){ // If card number was not saved...
+                System.err.println("Please enter a valid card number.");
+            }
+        } while(!saved); // Keep looping while cardnumber is not blank but is an invalid number.
 
         System.out.print("\tCard Holder Name: ");
-        cardHolder = scanner.nextLine();
+        newCustomer.setCardHolder(scanner.nextLine());
 
-        this.users.put(loginID, new Customer(loginID, password, name, phone, email, address, cardNumber, cardHolder));
+        this.users.put(loginID, newCustomer);
 
         System.out.println("Account created. Please log in to start shopping =)");
 
@@ -358,7 +380,8 @@ public class UserInterface {
      */
     private boolean createAdministratorAccount() {
         String loginID, password, name, email;
-
+        boolean saved = false;
+        
         System.out.println(REQUIRED);
         System.out.print("\tLogin ID*: ");
         loginID = scanner.nextLine();
@@ -377,19 +400,26 @@ public class UserInterface {
             System.out.print("\tPassword*: ");
             password = scanner.nextLine();
 
-            if (!Utilities.passIsSecure(password, 14)) {
-                System.err.println(PASSWORDSTRENGTH + "14+ Characters): ");
+            if (!Utilities.passIsSecure(password, 14)) { // If user-defined password is not secure enough...
+                System.err.println(PASSWORDSTRENGTH + "14+ Characters): "); // Output guide/prompt.
             }
-            // While user-defined password is not secure
-        } while (!Utilities.passIsSecure(password, 14));
+        } while (!Utilities.passIsSecure(password, 14)); // While user-defined password is not secure
 
+        Administrator newAdmin = new Administrator(loginID, password); // Creates a new instance of an Administrator.
+        
         System.out.print("\tFull Name: ");
-        name = scanner.nextLine();
+        newAdmin.setAdminName(scanner.nextLine());
 
-        System.out.print("\tEmail: ");
-        email = scanner.nextLine();
+        do{
+            System.out.print("\tEmail: ");
+            saved = newAdmin.setAdminEmail(scanner.nextLine());
+            
+            if(!saved){ // If email is not saved...
+                System.err.println("Input is not in email format (e.g. john@gmail.com)");
+            }
+        } while(!saved); // Keep looping while email is not blank but is in an invalid format.
 
-        this.users.put(loginID, new Administrator(loginID, password, name, email));
+        this.users.put(loginID, newAdmin);
 
         System.out.println("Account created. Please log in to commence administration =)");
         return true;
@@ -432,8 +462,19 @@ public class UserInterface {
             }
 
             System.out.print("Quantity: ");
-            int quantity = scanner.nextInt();
-            scanner.nextLine();
+            String quantityStr = "";
+            int quantity = 0;
+            
+            try{
+                quantityStr = scanner.nextLine();
+                if(quantityStr.matches("^-?\\d+\\.?\\d*$")){ // If user enters a number...
+                    quantity = Integer.parseInt(quantityStr); // Convert the String to an Integer.
+                } else { // Otherwise...
+                    throw new IllegalArgumentException(VALIDNO);
+                }
+            } catch(Exception e) {
+                System.err.println(ERROR);
+            }
 
             if (quantity > 0 && selectedProduct != null) { // If user specifies 1 or more as quantity and selectedProduct is not empty...               
                 cart.addToCart(selectedProduct, quantity); // Adds the product to the cart alongside user-specified quantity.
