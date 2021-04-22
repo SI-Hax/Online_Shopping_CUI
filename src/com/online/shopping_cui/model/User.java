@@ -71,7 +71,7 @@ public abstract class User {
         return password;
     }
 
-    public abstract void setPassword(String password) throws IllegalArgumentException;
+    public abstract boolean setPassword(String password);
 
     //-------------------------------------------------------
     public State getState() {
