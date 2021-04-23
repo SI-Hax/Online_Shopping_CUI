@@ -1,20 +1,25 @@
+<p align="center">
+    <a href="https://github.com/SI-Hax/Online_Shopping_CUI/">
+        <img height=85 src="https://github.com/SI-Hax/Online_Shopping_CUI/blob/master/screenshots/Banner.PNG">
+    </a>
+</p>
+
 # Online Shopping Command Line Interface
 
 An online shopping system with an integrated inventory management system for Program Design Construction Assignment 1.
 
 # Key Features
 
-1. Create your own account and save all your personal information into .txt file (Password Will Be Saved As Encrypted
-   Text).
+1. Create your own account and save all your personal information (Sensitive Information Will Be Saved As Encrypted Text).
 2. Get detailed information of the product.
-3. Checkout
+3. Checkout.
 4. Order management.
-5. Management Privilege Login.
+5. Administrator Privilege Login.
 
 # Technology Stacks
 
 1. Java 8
-2. File Handling (.txt / .csv)
+2. File Handling (.csv)
 
 # How To Use
 
@@ -29,7 +34,7 @@ This App is based on Menu Driven Interface. Depending on your choice, It will di
 
 # Screenshots
 
-![Screenshot 1](https://github.com/SI-Hax/Online_Shopping_CUI/blob/master/screenshots/Demo.PNG)
+![Screenshot 1](https://github.com/SI-Hax/Online_Shopping_CUI/blob/master/screenshots/Demo-Login.PNG)
 
 # License
 
