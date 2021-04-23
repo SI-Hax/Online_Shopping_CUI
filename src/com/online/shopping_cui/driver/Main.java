@@ -18,7 +18,8 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        System.err.println(""); // Synchronises the System.err with System.out.
+        System.err.println(""); // Synchronises future System.err.printlns with System.out.
+        System.out.println(UserInterface.EMBLEM);
         System.out.println("Welcome To Shop & Run Online Shopping");           
         UserInterface userInterface = new UserInterface();
         userInterface.menuSelections();
