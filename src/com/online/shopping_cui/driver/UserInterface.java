@@ -21,6 +21,11 @@ import java.util.*;
  *
  */
 public class UserInterface {
+    static String EMBLEM =  "   ______                  ___          \n" +
+                            "  / __/ /  ___  ___  ___  / _ \\__ _____ \n" +
+                            " _\\ \\/ _ \\/ _ \\/ _ \\/ _ \\/ , _/ // / _ \\\n" +
+                            "/___/_//_/\\___/ .__/_//_/_/|_|\\_,_/_//_/\n" +
+                            "             /_/                        ";
     static String ERROR = "Please choose from the given options"; 
     
     protected Scanner scanner;
