@@ -23,5 +23,6 @@ public class Main {
         System.out.println("Welcome To Shop & Run Online Shopping");           
         UserInterface userInterface = new UserInterface();
         userInterface.menuSelections();
+        System.out.println("Test");
     }
 }
